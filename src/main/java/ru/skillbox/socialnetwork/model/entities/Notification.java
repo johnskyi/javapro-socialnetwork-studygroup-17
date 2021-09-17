@@ -23,9 +23,8 @@ public class Notification {
     @JoinColumn(name = "parson_id", referencedColumnName = "id")
     private Person person;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "entity_id", referencedColumnName = "id")
-    private Object entity;
+    @Column(name = "entity_id")
+    private int entity;
 
     private String contact;
 }

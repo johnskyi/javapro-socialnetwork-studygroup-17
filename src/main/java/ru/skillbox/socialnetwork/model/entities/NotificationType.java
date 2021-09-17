@@ -14,7 +14,7 @@ public class NotificationType {
 
     private Integer code;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "name", referencedColumnName = "id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name", length = 16)
     private NotificationTypeName name;
 }
