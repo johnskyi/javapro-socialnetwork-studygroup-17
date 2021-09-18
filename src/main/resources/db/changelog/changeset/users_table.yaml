@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-table
+      comment: "Create table users"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: e_mail
+                  type: varchar(255)
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: type
+                  type: varchar(16)
+  - changeSet:
+      id: add_data_users
+      comment: "Add data to table users"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  value: "user1"
+              - column:
+                  name: e_mail
+                  value: "user1@user.net"
+              - column:
+                  name: password
+                  value: "222222"
+              - column:
+                  name: type
+                  value: ADMIN
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  value: "user2"
+              - column:
+                  name: e_mail
+                  value: "user2@user.net"
+              - column:
+                  name: password
+                  value: "222222"
+              - column:
+                  name: type
+                  value: ADMIN
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  value: "moderator1"
+              - column:
+                  name: e_mail
+                  value: "moderator1@admin.net"
+              - column:
+                  name: password
+                  value: "222222"
+              - column:
+                  name: type
+                  value: MODERATOR
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  value: "moderator2"
+              - column:
+                  name: e_mail
+                  value: "moderator2@admin.net"
+              - column:
+                  name: password
+                  value: "222222"
+              - column:
+                  name: type
+                  value: MODERATOR

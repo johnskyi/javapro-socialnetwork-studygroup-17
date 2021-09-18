@@ -9,6 +9,12 @@ databaseChangeLog: #параметр в котором находятся миг
       file: db/changelog/changeset/post_table.yaml
   - include:
       file: db/changelog/changeset/post2tag_table.yaml
+  - include:
+      file: db/changelog/changeset/users_table.yaml
+  - include:
+      file: db/changelog/changeset/friendship_table.yaml
+  - include:
+      file: db/changelog/changeset/friendship_status_table.yaml
 
 #
 #  - include:

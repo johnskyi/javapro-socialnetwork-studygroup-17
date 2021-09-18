@@ -1,6 +1,7 @@
+debug: true
 spring:
   liquibase:
-    enabled: false
+    enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
@@ -13,5 +14,5 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     database: postgresql

@@ -6,8 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "user")
-
+@Table(name = "users")
 public class User {
 
     @Id
@@ -22,6 +21,6 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = 8)
+    @Column(name = "type", length = 16)
     private UserType type;
 }
