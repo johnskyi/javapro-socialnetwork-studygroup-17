@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-post_like-table
+      comment: "Create table post_like"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: post_like
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: BIGINT
+              - column:
+                  name: person_id
+                  type: INT
+              - column:
+                  name: post_id
+                  type: INT
+  - changeSet:
+      id: add_data_post_like
+      comment: "Add data to table post_like"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: post_like
+            columns:
+              - column:
+                  name: time
+                  value: 1612894403
+              - column:
+                  name: person_id
+                  value: 4
+              - column:
+                  name: post_id
+                  value: 4
+        - insert:
+            tableName: post_like
+            columns:
+              - column:
+                  name: time
+                  value: 1612895403
+              - column:
+                  name: person_id
+                  value: 4
+              - column:
+                  name: post_id
+                  value: 11
+        - insert:
+            tableName: post_like
+            columns:
+              - column:
+                  name: time
+                  value: 1612896403
+              - column:
+                  name: person_id
+                  value: 4
+              - column:
+                  name: post_id
+                  value: 15
+        - insert:
+            tableName: post_like
+            columns:
+              - column:
+                  name: time
+                  value: 1612893403
+              - column:
+                  name: person_id
+                  value: 5
+              - column:
+                  name: post_id
+                  value: 15
+        - insert:
+            tableName: post_like
+            columns:
+              - column:
+                  name: time
+                  value: 1612816403
+              - column:
+                  name: person_id
+                  value: 5
+              - column:
+                  name: post_id
+                  value: 4

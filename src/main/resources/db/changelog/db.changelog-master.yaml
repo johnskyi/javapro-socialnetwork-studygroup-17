@@ -1,6 +1,4 @@
-databaseChangeLog: #параметр в котором находятся миграции
-  - include: # список активных миграций
-      file: db/changelog/changeset/test_table.yaml
+databaseChangeLog:
   - include:
       file: db/changelog/changeset/tag_table.yaml
   - include:
@@ -17,6 +15,12 @@ databaseChangeLog: #параметр в котором находятся миг
       file: db/changelog/changeset/friendship_status_table.yaml
   - include:
       file: db/changelog/changeset/post_comment_table.yaml
+  - include:
+      file: db/changelog/changeset/post_file_table.yaml
+  - include:
+      file: db/changelog/changeset/post_like_table.yaml
+  - include:
+      file: db/changelog/changeset/block_history_table.yaml
 
 #
 #  - include:

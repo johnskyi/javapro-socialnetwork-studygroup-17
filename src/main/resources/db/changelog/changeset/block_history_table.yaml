@@ -1,0 +1,108 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-block_history-table
+      comment: "Create table block_history"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: block_history
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: BIGINT
+              - column:
+                  name: person_id
+                  type: INT
+              - column:
+                  name: post_id
+                  type: INT
+              - column:
+                  name: comment_id
+                  type: INT
+              - column:
+                  name: action
+                  type: varchar(16)
+  - changeSet:
+      id: add_data_block_history
+      comment: "Add data to table block_history"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: block_history
+            columns:
+              - column:
+                  name: time
+                  value: 1612894403
+              - column:
+                  name: person_id
+                  value: 5
+              - column:
+                  name: post_id
+                  value: 5
+#              - column:
+#                  name: comment_id
+#                  value: 4
+              - column:
+                  name: action
+                  value: BLOCK
+        - insert:
+            tableName: block_history
+            columns:
+              - column:
+                  name: time
+                  value: 1612994403
+              - column:
+                  name: person_id
+                  value: 5
+#              - column:
+#                  name: post_id
+#                  value: 5
+#              - column:
+#                  name: comment_id
+#                  value: 4
+              - column:
+                  name: action
+                  value: UNBLOCK
+        - insert:
+            tableName: block_history
+            columns:
+              - column:
+                  name: time
+                  value: 1612994403
+              - column:
+                  name: person_id
+                  value: 4
+#              - column:
+#                  name: post_id
+#                  value: 5
+              - column:
+                  name: comment_id
+                  value: 6
+              - column:
+                  name: action
+                  value: BLOCK
+        - insert:
+            tableName: block_history
+            columns:
+              - column:
+                  name: time
+                  value: 1613004403
+              - column:
+                  name: person_id
+                  value: 4
+#              - column:
+#                  name: post_id
+#                  value: 5
+#              - column:
+#                  name: comment_id
+#                  value: 6
+              - column:
+                  name: action
+                  value: UNBLOCK

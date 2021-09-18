@@ -28,6 +28,6 @@ public class BlockHistory {
     private PostComment postComment;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "action", length = 8)
+    @Column(name = "action", length = 16)
     private BlockAction action;
 }
