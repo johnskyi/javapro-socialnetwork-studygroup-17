@@ -3,7 +3,6 @@ package ru.skillbox.socialnetwork.model.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
@@ -17,10 +16,7 @@ public class Post2Tag {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToMany
-    @JoinTable(name = "tag",
-            joinColumns = {@JoinColumn(name = "tag_id")},
-            inverseJoinColumns = {@JoinColumn(name = "id")}
-    )
-    private List<Tag> tags;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    private Tag tag;
 }

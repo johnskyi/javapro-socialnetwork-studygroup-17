@@ -1,0 +1,15 @@
+databaseChangeLog: #параметр в котором находятся миграции
+  - include: # список активных миграций
+      file: db/changelog/changeset/test_table.yaml
+  - include:
+      file: db/changelog/changeset/tag_table.yaml
+  - include:
+      file: db/changelog/changeset/person_table.yaml
+  - include:
+      file: db/changelog/changeset/post_table.yaml
+  - include:
+      file: db/changelog/changeset/post2tag_table.yaml
+
+#
+#  - include:
+#      file: db/changelog/changeset/add_tag.yaml
