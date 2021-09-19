@@ -16,13 +16,13 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: src_person_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: dst_person_id
-                  type: INT
+                  type: BIGINT
   - changeSet:
       id: add_data_friendship
       comment: "Add data to table friendship"

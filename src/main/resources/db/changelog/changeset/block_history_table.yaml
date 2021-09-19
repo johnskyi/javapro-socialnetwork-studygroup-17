@@ -19,13 +19,13 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: person_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: post_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: comment_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: action
                   type: varchar(16)

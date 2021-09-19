@@ -19,13 +19,13 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: post_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: parent_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: author_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: comment_text
                   type: varchar(1024)

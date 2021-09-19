@@ -28,7 +28,8 @@ public class Message {
     @Column(name = "message_text")
     private String text;
 
-    @Column(name = "read_status")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "read_status", length = 16)
     private ReadStatus readStatus;
 
 }

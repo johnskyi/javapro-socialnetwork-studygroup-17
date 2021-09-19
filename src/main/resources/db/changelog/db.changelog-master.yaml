@@ -21,6 +21,12 @@ databaseChangeLog:
       file: db/changelog/changeset/post_like_table.yaml
   - include:
       file: db/changelog/changeset/block_history_table.yaml
+  - include:
+      file: db/changelog/changeset/message_table.yaml
+  - include:
+      file: db/changelog/changeset/notification_type_table.yaml
+  - include:
+      file: db/changelog/changeset/notification_table.yaml
 
 #
 #  - include:

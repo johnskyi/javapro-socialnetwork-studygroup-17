@@ -12,9 +12,8 @@ public class NotificationType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private Integer code;
+    private int code;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "name", length = 16)
-    private NotificationTypeName name;
+    @Column(name = "name", length = 32)
+    private String name;
 }

@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-notification-table
+      comment: "Create table notification"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: notification
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type_id
+                  type: BIGINT
+              - column:
+                  name: sent_time
+                  type: BIGINT
+              - column:
+                  name: person_id
+                  type: BIGINT
+              - column:
+                  name: entity_id
+                  type: BIGINT
+              - column:
+                  name: contact
+                  type: varchar(255)
+  - changeSet:
+      id: add_data_notification
+      comment: "Add data to table notification"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: notification
+            columns:
+              - column:
+                  name: type_id
+                  value: 1
+              - column:
+                  name: sent_time
+                  value: 1615196434
+              - column:
+                  name: person_id
+                  value: 4
+              - column:
+                  name: entity_id
+                  value: 1
+              - column:
+                  name: contact
+                  value: "xbill@microsoft.com"
+        - insert:
+            tableName: notification
+            columns:
+              - column:
+                  name: type_id
+                  value: 2
+              - column:
+                  name: sent_time
+                  value: 1625196434
+              - column:
+                  name: person_id
+                  value: 3
+              - column:
+                  name: entity_id
+                  value: 2
+              - column:
+                  name: contact
+                  value: "xserver@server.com"
+        - insert:
+            tableName: notification
+            columns:
+              - column:
+                  name: type_id
+                  value: 4
+              - column:
+                  name: sent_time
+                  value: 1605196434
+              - column:
+                  name: person_id
+                  value: 2
+              - column:
+                  name: entity_id
+                  value: 3
+              - column:
+                  name: contact
+                  value: "+777-888-999"

@@ -5,8 +5,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    password: test
+    url: jdbc:postgresql://45.134.255.54:22
     platform: postgres
     initialization-mode: always
     continue-on-error: true
@@ -15,4 +15,4 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-    database: postgresql
+    database: javapro

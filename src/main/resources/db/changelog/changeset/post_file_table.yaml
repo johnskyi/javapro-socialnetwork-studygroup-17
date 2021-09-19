@@ -16,7 +16,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: post_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: name
                   type: varchar(255)

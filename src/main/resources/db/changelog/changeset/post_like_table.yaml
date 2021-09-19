@@ -19,10 +19,10 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: person_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: post_id
-                  type: INT
+                  type: BIGINT
   - changeSet:
       id: add_data_post_like
       comment: "Add data to table post_like"

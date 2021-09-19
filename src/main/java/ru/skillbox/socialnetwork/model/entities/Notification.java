@@ -20,11 +20,11 @@ public class Notification {
     private long time;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parson_id", referencedColumnName = "id")
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
     @Column(name = "entity_id")
-    private int entity;
+    private long entityId;
 
     private String contact;
 }
