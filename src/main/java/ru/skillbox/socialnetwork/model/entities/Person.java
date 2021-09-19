@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -51,5 +51,5 @@ public class Person {
     private long lastOnlineTime;
 
     @Column(name = "is_blocked")
-    private byte blocked;
+    private boolean isBlocked;
 }

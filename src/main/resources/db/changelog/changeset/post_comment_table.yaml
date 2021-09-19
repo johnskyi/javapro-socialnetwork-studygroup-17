@@ -9,7 +9,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: INT
+                  type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -31,7 +31,7 @@ databaseChangeLog:
                   type: varchar(1024)
               - column:
                   name: is_blocked
-                  type: TINYINT
+                  type: BOOLEAN
   - changeSet:
       id: add_data_post_comment
       comment: "Add data to table post_comment"

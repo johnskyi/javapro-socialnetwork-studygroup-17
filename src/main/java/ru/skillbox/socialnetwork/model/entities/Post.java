@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private long time;
 
@@ -25,5 +25,5 @@ public class Post {
     private String textHtml;
 
     @Column(name = "is_blocked")
-    private byte blocked;
+    private boolean isBlocked;
 }

@@ -9,21 +9,21 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: INT
+                  type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
               - column:
-                  name: firstName
+                  name: first_name
                   type: varchar(255)
               - column:
-                  name: lastName
+                  name: last_name
                   type: varchar(255)
               - column:
-                  name: regTime
+                  name: reg_date
                   type: BIGINT
               - column:
-                  name: birthTime
+                  name: birth_date
                   type: BIGINT
               - column:
                   name: email
@@ -47,17 +47,17 @@ databaseChangeLog:
                   name: code
                   type: varchar(255)
               - column:
-                  name: isApproved
+                  name: is_approved
                   type: BOOLEAN
               - column:
-                  name: messagePermission
+                  name: message_permission
                   type: VARCHAR(8)
               - column:
-                  name: lastOnlineTime
+                  name: last_online_time
                   type: BIGINT
               - column:
-                  name: blocked
-                  type: TINYINT
+                  name: is_blocked
+                  type: BOOLEAN
 
   - changeSet:
       id: add_data_persons
@@ -68,16 +68,16 @@ databaseChangeLog:
             tableName: person
             columns:
               - column:
-                  name: firstName
+                  name: first_name
                   value: "имя"
               - column:
-                  name: lastName
+                  name: last_name
                   value: "фамилия"
               - column:
-                  name: regTime
+                  name: reg_date
                   value: 1565000769
               - column:
-                  name: birthTime
+                  name: birth_date
                   value: 495906724
               - column:
                   name: email
@@ -101,16 +101,16 @@ databaseChangeLog:
                   name: code
                   value: "код восстановления пароля / подтверждения регистрации"
               - column:
-                  name: isApproved
+                  name: is_approved
                   value: false
               - column:
-                  name: messagePermission
+                  name: message_permission
                   value: ALL
               - column:
-                  name: lastOnlineTime
+                  name: last_online_time
                   value: 1627212720
               - column:
-                  name: blocked
+                  name: is_blocked
                   value: 0
   - changeSet:
       id: add_data_persons1
@@ -121,16 +121,16 @@ databaseChangeLog:
             tableName: person
             columns:
               - column:
-                  name: firstName
+                  name: first_name
                   value: "Пользователь"
               - column:
-                  name: lastName
+                  name: last_name
                   value: ""
               - column:
-                  name: regTime
+                  name: reg_date
                   value: 1610985124
               - column:
-                  name: birthTime
+                  name: birth_date
                   value: 627407524
               - column:
                   name: email
@@ -154,16 +154,16 @@ databaseChangeLog:
                   name: code
                   value: ""
               - column:
-                  name: isApproved
+                  name: is_approved
                   value: false
               - column:
-                  name: messagePermission
+                  name: message_permission
                   value: ALL
               - column:
-                  name: lastOnlineTime
+                  name: last_online_time
                   value: 1629301924
               - column:
-                  name: blocked
+                  name: is_blocked
                   value: 0
   - changeSet:
       id: add_data_persons2
@@ -174,16 +174,16 @@ databaseChangeLog:
             tableName: person
             columns:
               - column:
-                  name: firstName
+                  name: first_name
                   value: "Профессор"
               - column:
-                  name: lastName
+                  name: last_name
                   value: ""
               - column:
-                  name: regTime
+                  name: reg_date
                   value: 1626623524
               - column:
-                  name: birthTime
+                  name: birth_date
                   value: -14371676
               - column:
                   name: email
@@ -207,16 +207,16 @@ databaseChangeLog:
                   name: code
                   value: ""
               - column:
-                  name: isApproved
+                  name: is_approved
                   value: true
               - column:
-                  name: messagePermission
+                  name: message_permission
                   value: ALL
               - column:
-                  name: lastOnlineTime
+                  name: last_online_time
                   value: 1627012720
               - column:
-                  name: blocked
+                  name: is_blocked
                   value: 0
   - changeSet:
       id: add_data_persons3
@@ -227,16 +227,16 @@ databaseChangeLog:
             tableName: person
             columns:
               - column:
-                  name: firstName
+                  name: first_name
                   value: "Bill"
               - column:
-                  name: lastName
+                  name: last_name
                   value: "Gates"
               - column:
-                  name: regTime
+                  name: reg_date
                   value: 504201124
               - column:
-                  name: birthTime
+                  name: birth_date
                   value: 495906724
               - column:
                   name: email
@@ -260,16 +260,16 @@ databaseChangeLog:
                   name: code
                   value: ""
               - column:
-                  name: isApproved
+                  name: is_approved
                   value: true
               - column:
-                  name: messagePermission
+                  name: message_permission
                   value: ALL
               - column:
-                  name: lastOnlineTime
+                  name: last_online_time
                   value: 1631289124
               - column:
-                  name: blocked
+                  name: is_blocked
                   value: 0
   - changeSet:
       id: add_data_persons4
@@ -280,16 +280,16 @@ databaseChangeLog:
             tableName: person
             columns:
               - column:
-                  name: firstName
+                  name: first_name
                   value: "Стив"
               - column:
-                  name: lastName
+                  name: last_name
                   value: "Джобс"
               - column:
-                  name: regTime
+                  name: reg_date
                   value: 1565090769
               - column:
-                  name: birthTime
+                  name: birth_date
                   value: -468662876
               - column:
                   name: email
@@ -313,14 +313,14 @@ databaseChangeLog:
                   name: code
                   value: ""
               - column:
-                  name: isApproved
+                  name: is_approved
                   value: false
               - column:
-                  name: messagePermission
+                  name: message_permission
                   value: ALL
               - column:
-                  name: lastOnlineTime
+                  name: last_online_time
                   value: 1227212720
               - column:
-                  name: blocked
+                  name: is_blocked
                   value: 1

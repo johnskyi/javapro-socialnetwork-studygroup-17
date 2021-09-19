@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class PostComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private long time;
 
@@ -30,5 +30,5 @@ public class PostComment {
     private String text;
 
     @Column(name = "is_blocked")
-    private byte blocked;
+    private boolean isBlocked;
 }
