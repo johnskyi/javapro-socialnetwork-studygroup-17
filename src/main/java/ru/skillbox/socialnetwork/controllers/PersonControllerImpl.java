@@ -23,15 +23,22 @@ public class PersonControllerImpl implements PersonController {
     @GetMapping("/me")
     //   @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
-        logger.info("Вызов GET");
+        logger.info("Вызов GET /api/v1/users/me");
         return ResponseEntity.ok(userService.getPersonDetail(principal));
     }
 
     @Override
     @PutMapping("/me")
     public ResponseEntity<PersonResponse> putPersonDetail(@Valid @RequestBody PersonRequest personRequest, Principal principal) {
-        logger.info("Вызов PUT");
+        logger.info("Вызов PUT /api/v1/users/me");
         return ResponseEntity.ok(userService.putPersonDetail(personRequest, principal));
+    }
+
+    @Override
+    @DeleteMapping("/me")
+    public ResponseEntity<PersonResponse> deletePerson(Principal principal) {
+        logger.info("Вызов DELETE /api/v1/users/me");
+        return ResponseEntity.ok(userService.deletePerson(principal));
     }
 
 }

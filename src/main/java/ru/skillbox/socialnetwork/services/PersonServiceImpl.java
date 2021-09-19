@@ -22,14 +22,31 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonResponse getPersonDetail(Principal principal) {
-        return createPersonResponse(findPerson(principal));
+        return createFullPersonResponse(findPerson(principal));
     }
 
     @Override
     public PersonResponse putPersonDetail(PersonRequest personRequest, Principal principal) {
         Person person = findPerson(principal);
         updatePersonDetail(personRequest, person);
-        return createPersonResponse(person);
+        return createFullPersonResponse(person);
+    }
+
+    @Override
+    public PersonResponse deletePerson(Principal principal) {
+        Person person = findPerson(principal);
+        personRepository.delete(person);
+        return createSmallPersonResponse();
+    }
+
+    private PersonResponse createSmallPersonResponse() {
+        return PersonResponse.builder()
+                .error("string")
+                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                .data(Data.builder()
+                        .message("ok")
+                        .build())
+                .build();
     }
 
     private void updatePersonDetail(PersonRequest request, Person person) {
@@ -80,9 +97,10 @@ public class PersonServiceImpl implements PersonService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    private PersonResponse createPersonResponse(Person person) {
+    private PersonResponse createFullPersonResponse(Person person) {
         String[] location = person.getTown().split("\u2588");
         return PersonResponse.builder()
+                .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
                 .data(Data.builder()
                         .id(person.getId())
@@ -98,7 +116,7 @@ public class PersonServiceImpl implements PersonService {
                         .city(location[1].trim())
                         .messagePermission(person.getMessagePermission())
                         .lastOnlineTime(person.getLastOnlineTime())
-                        .isBlocked(person.getBlocked())
+                        .isBlocked(person.isBlocked())
                         .build())
                 .build();
     }

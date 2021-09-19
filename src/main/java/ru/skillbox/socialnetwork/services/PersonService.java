@@ -10,4 +10,6 @@ public interface PersonService {
     PersonResponse getPersonDetail(Principal principal);
 
     PersonResponse putPersonDetail(PersonRequest personRequest, Principal principal);
+
+    PersonResponse deletePerson(Principal principal);
 }

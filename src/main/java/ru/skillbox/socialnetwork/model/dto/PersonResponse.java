@@ -1,11 +1,14 @@
 package ru.skillbox.socialnetwork.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.model.entities.MessagePermission;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @Builder
@@ -20,8 +23,9 @@ public class PersonResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(NON_NULL)
     public static class Data {
-        Integer id;
+        Long id;
 
         @JsonProperty("first_name")
         String firstName;
@@ -49,6 +53,8 @@ public class PersonResponse {
         Long lastOnlineTime;
 
         @JsonProperty("is_blocked")
-        Byte isBlocked;
+        Boolean isBlocked;
+
+        String message;
     }
 }

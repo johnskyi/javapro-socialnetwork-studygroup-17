@@ -10,4 +10,6 @@ public interface PersonController {
     ResponseEntity<PersonResponse> getPersonDetail(Principal principal);
 
     ResponseEntity<PersonResponse> putPersonDetail(PersonRequest personRequest, Principal principal);
+
+    ResponseEntity<PersonResponse> deletePerson(Principal principal);
 }
