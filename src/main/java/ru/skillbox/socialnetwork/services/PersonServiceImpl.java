@@ -6,8 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.model.dto.PersonRequest;
 import ru.skillbox.socialnetwork.model.dto.PersonResponse;
 import ru.skillbox.socialnetwork.model.dto.PersonResponse.Data;
+import ru.skillbox.socialnetwork.model.dto.ResidencyRequest;
+import ru.skillbox.socialnetwork.model.dto.ResidencyResponse;
 import ru.skillbox.socialnetwork.model.entities.Person;
+import ru.skillbox.socialnetwork.model.repositories.CityRepository;
+import ru.skillbox.socialnetwork.model.repositories.CountryRepository;
 import ru.skillbox.socialnetwork.model.repositories.PersonRepository;
+import ru.skillbox.socialnetwork.model.repositories.RegionRepository;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -19,6 +24,9 @@ import java.util.Objects;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
+    private final CountryRepository countryRepository;
+    private final RegionRepository regionRepository;
+    private final CityRepository cityRepository;
 
     @Override
     public PersonResponse getPersonDetail(Principal principal) {
@@ -37,6 +45,21 @@ public class PersonServiceImpl implements PersonService {
         Person person = findPerson(principal);
         personRepository.delete(person);
         return createSmallPersonResponse();
+    }
+
+    @Override
+    public ResidencyResponse getPersonResidency(ResidencyRequest request) {
+        ResidencyResponse response = new ResidencyResponse();
+        response.setCountry(countryRepository.findAll());
+
+        if (Objects.nonNull(request.getCountry())) {
+            response.setRegion(regionRepository.findAllRegionByCountry(request.getCountry()));
+        }
+
+        if (Objects.nonNull((request.getRegion()))) {
+            response.setCity(cityRepository.findCitiesByRegion(request.getRegion()));
+        }
+        return response;
     }
 
     private PersonResponse createSmallPersonResponse() {
@@ -78,8 +101,16 @@ public class PersonServiceImpl implements PersonService {
             person.setMessagePermission(request.getMessagePermission());
         }
 
-        if (Objects.nonNull(request.getTownId()) && Objects.nonNull(request.getCountryId())) {
-            person.setTown(request.getCountryId().concat(" \u2588 ").concat(request.getTownId()));
+        if (Objects.nonNull(request.getCountry())) {
+            person.setCountry(request.getCountry());
+        }
+
+        if (Objects.nonNull(request.getRegion())) {
+            person.setRegion(request.getRegion());
+        }
+
+        if (Objects.nonNull(request.getCity())) {
+            person.setCity(request.getCity());
         }
 
         personRepository.flush();
@@ -98,7 +129,6 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private PersonResponse createFullPersonResponse(Person person) {
-        String[] location = person.getTown().split("\u2588");
         return PersonResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
@@ -112,8 +142,9 @@ public class PersonServiceImpl implements PersonService {
                         .phone(person.getPhone())
                         .photo(person.getPhoto())
                         .about(person.getAbout())
-                        .country(location[0].trim())
-                        .city(location[1].trim())
+                        .country(person.getCountry())
+                        .region(person.getRegion())
+                        .city(person.getCity())
                         .messagePermission(person.getMessagePermission())
                         .lastOnlineTime(person.getLastOnlineTime())
                         .isBlocked(person.isBlocked())

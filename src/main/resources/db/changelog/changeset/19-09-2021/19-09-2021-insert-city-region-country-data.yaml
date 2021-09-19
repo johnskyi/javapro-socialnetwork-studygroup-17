@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+    id: 19-09-2021-insert-city-region-country-data
+    author: Yury Platonov
+    changes:
+      sqlFile:
+        dbms: mysql
+        encoding: utf8
+        relativeToChangelogFile: true
+        path: "scripts/19-09-2021-insert-city-region-country-data.sql"
+    rollback:
+      sqlFile:
+        dbms: mysql
+        encoding: utf8
+        relativeToChangelogFile: true
+        path: "scripts/19-09-2021-delete-city-region-country-data.sql"

@@ -3,37 +3,38 @@ package ru.skillbox.socialnetwork.model.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import ru.skillbox.socialnetwork.annotations.NullOrPattern;
+import ru.skillbox.socialnetwork.model.entities.City;
+import ru.skillbox.socialnetwork.model.entities.Country;
 import ru.skillbox.socialnetwork.model.entities.MessagePermission;
+import ru.skillbox.socialnetwork.model.entities.Region;
 
 @Data
 public class PersonRequest {
     @JsonProperty("first_name")
     @NullOrPattern(pattern = "\\w{2,30}",
             message = "Имя указано неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
-    String firstName;
+    private String firstName;
 
     @JsonProperty("last_name")
     @NullOrPattern(pattern = "\\w{2,30}",
             message = "амилия указана неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
-    String lastName;
+    private String lastName;
 
     @JsonProperty("birth_date")
-    Long birthDate;
+    private Long birthDate;
 
     @NullOrPattern(pattern = "^\\+?[78]?[-\\(]?\\d{3}\\)?-?\\d{3}-?\\d{2}-?\\d{2}$",
             message = "Неверный формат телефона")
-    String phone;
+    private String phone;
 
     @JsonProperty("photo_id")
-    String photoId;
-    String about;
+    private String photoId;
 
-    @JsonProperty("town_id")
-    String townId;
-
-    @JsonProperty("country_id")
-    String countryId;
+    private String about;
+    private Country country;
+    private Region region;
+    private City city;
 
     @JsonProperty("messages_permission")
-    MessagePermission messagePermission;
+    private MessagePermission messagePermission;
 }

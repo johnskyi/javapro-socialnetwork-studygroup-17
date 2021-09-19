@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+    id: 19-09-2021-create-city-table
+    author: Yury Platonov
+    changes:
+      sqlFile:
+        dbms: mysql
+        encoding: utf8
+        relativeToChangelogFile: true
+        path: "scripts/19-09-2021-create-city-table.sql"
+    rollback:
+      sqlFile:
+        dbms: mysql
+        encoding: utf8
+        relativeToChangelogFile: true
+        path: "scripts/19-09-2021-drop-city-table.sql"

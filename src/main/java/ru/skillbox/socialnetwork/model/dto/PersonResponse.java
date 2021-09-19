@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skillbox.socialnetwork.model.entities.City;
+import ru.skillbox.socialnetwork.model.entities.Country;
 import ru.skillbox.socialnetwork.model.entities.MessagePermission;
+import ru.skillbox.socialnetwork.model.entities.Region;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -25,36 +28,37 @@ public class PersonResponse {
     @AllArgsConstructor
     @JsonInclude(NON_NULL)
     public static class Data {
-        Long id;
+        private Long id;
 
         @JsonProperty("first_name")
-        String firstName;
+        private String firstName;
 
         @JsonProperty("last_name")
-        String lastName;
+        private String lastName;
 
         @JsonProperty("reg_date")
-        Long regDate;
+        private Long regDate;
 
         @JsonProperty("birth_date")
-        Long birthDate;
+        private Long birthDate;
 
-        String email;
-        String phone;
-        String photo;
-        String about;
-        String city;
-        String country;
+        private String email;
+        private String phone;
+        private String photo;
+        private String about;
+        private Country country;
+        private Region region;
+        private City city;
 
         @JsonProperty("messages_permission")
-        MessagePermission messagePermission;
+        private MessagePermission messagePermission;
 
         @JsonProperty("last_online_time")
-        Long lastOnlineTime;
+        private Long lastOnlineTime;
 
         @JsonProperty("is_blocked")
-        Boolean isBlocked;
+        private Boolean isBlocked;
 
-        String message;
+        private String message;
     }
 }
