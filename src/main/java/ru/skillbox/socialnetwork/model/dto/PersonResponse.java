@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skillbox.socialnetwork.model.entities.MessagePermission;
 
 @Data
 @Builder
@@ -20,7 +21,7 @@ public class PersonResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Data {
-        Long id;
+        Integer id;
 
         @JsonProperty("first_name")
         String firstName;
@@ -48,6 +49,6 @@ public class PersonResponse {
         Long lastOnlineTime;
 
         @JsonProperty("is_blocked")
-        Boolean isBlocked;
+        Byte isBlocked;
     }
 }
