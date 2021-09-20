@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-notification_type-table
+      comment: "Create table notification_type"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: INT
+              - column:
+                  name: name
+                  type: varchar(32)
+  - changeSet:
+      id: add_data_notification_type_table
+      comment: "Add data to table notification_type"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: 1
+              - column:
+                  name: name
+                  value: "POST"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: 2
+              - column:
+                  name: name
+                  value: "POST_COMMENT"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: 3
+              - column:
+                  name: name
+                  value: "COMMENT_COMMENT"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: 4
+              - column:
+                  name: name
+                  value: "FRIEND_REQUEST"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: 5
+              - column:
+                  name: name
+                  value: "MESSAGE"
+
+
+

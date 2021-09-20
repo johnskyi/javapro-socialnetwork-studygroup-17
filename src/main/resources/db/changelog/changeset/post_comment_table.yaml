@@ -1,0 +1,180 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-post_comment-table
+      comment: "Create table post_comment"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: BIGINT
+              - column:
+                  name: post_id
+                  type: BIGINT
+              - column:
+                  name: parent_id
+                  type: BIGINT
+              - column:
+                  name: author_id
+                  type: BIGINT
+              - column:
+                  name: comment_text
+                  type: varchar(1024)
+              - column:
+                  name: is_blocked
+                  type: BOOLEAN
+  - changeSet:
+      id: add_data_post_comment
+      comment: "Add data to table post_comment"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: 1632955012
+              - column:
+                  name: post_id
+                  value: 9
+              - column:
+                  name: author_id
+                  value: 5
+              - column:
+                  name: comment_text
+                  value: "ну а чья же еще интересно? Может скажешь, что моя?"
+              - column:
+                  name: is_blocked
+                  value: 0
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: 1632956012
+              - column:
+                  name: post_id
+                  value: 9
+              - column:
+                  name: parent_id
+                  value: 1
+              - column:
+                  name: author_id
+                  value: 4
+              - column:
+                  name: comment_text
+                  value: "Стив, почему сразу твоя? Если кто-то сказал очень мудрую фразу, то совсем не обязательно ее приписывать мне"
+              - column:
+                  name: is_blocked
+                  value: 0
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: 1632957012
+              - column:
+                  name: post_id
+                  value: 9
+              - column:
+                  name: parent_id
+                  value: 2
+              - column:
+                  name: author_id
+                  value: 5
+              - column:
+                  name: comment_text
+                  value: "А, ну ладно, Билли. Так и быть. Видать и правда не твоя фраза. Но надо разобраться, чья."
+              - column:
+                  name: is_blocked
+                  value: 0
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: 1632958012
+              - column:
+                  name: post_id
+                  value: 9
+              - column:
+                  name: parent_id
+                  value: 3
+              - column:
+                  name: author_id
+                  value: 3
+              - column:
+                  name: comment_text
+                  value: "По-моему вас обоих стоит забаннить навсегда. \"Твоя фраза, моя фраза...\" Какая уже разница!"
+              - column:
+                  name: is_blocked
+                  value: 0
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: 1634958012
+              - column:
+                  name: post_id
+                  value: 15
+              - column:
+                  name: author_id
+                  value: 3
+              - column:
+                  name: comment_text
+                  value: "Что-то я сейчас подумал... Похоже отзыв сфабрикованный."
+              - column:
+                  name: is_blocked
+                  value: 0
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: 1634958112
+              - column:
+                  name: post_id
+                  value: 15
+              - column:
+                  name: parent_id
+                  value: 5
+              - column:
+                  name: author_id
+                  value: 4
+              - column:
+                  name: comment_text
+                  value: "Сам ты сфабрикованный! Я миллионером стал на этих отзывах. На форточках-то много не заработаешь."
+              - column:
+                  name: is_blocked
+                  value: 0
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: 1633958012
+              - column:
+                  name: post_id
+                  value: 9
+              - column:
+                  name: parent_id
+                  value: 4
+              - column:
+                  name: author_id
+                  value: 2
+              - column:
+                  name: comment_text
+                  value: "да моя это фраза, моя. Все довольны?"
+              - column:
+                  name: is_blocked
+                  value: 1

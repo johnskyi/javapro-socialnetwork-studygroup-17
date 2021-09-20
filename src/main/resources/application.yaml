@@ -1,1 +1,18 @@
-
+debug: true
+spring:
+  liquibase:
+    enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: test
+    url: jdbc:postgresql://45.134.255.54:22
+    platform: postgres
+    initialization-mode: always
+    continue-on-error: true
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    database: javapro

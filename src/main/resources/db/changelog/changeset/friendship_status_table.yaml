@@ -1,0 +1,114 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-friendship_status-table
+      comment: "Create table friendship_status"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: code
+                  type: varchar(16)
+  - changeSet:
+      id: add_data_friendship_status
+      comment: "Add data to table friendship_status"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: time
+                  value: 1631996398
+              - column:
+                  name: name
+                  value: "Friendship name1"
+              - column:
+                  name: code
+                  value: REQUEST
+        - insert:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: time
+                  value: 1631986398
+              - column:
+                  name: name
+                  value: "Friendship name2"
+              - column:
+                  name: code
+                  value: DECLINED
+        - insert:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: time
+                  value: 1631986398
+              - column:
+                  name: name
+                  value: "Friendship name2"
+              - column:
+                  name: code
+                  value: FRIEND
+        - insert:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: time
+                  value: 1631976398
+              - column:
+                  name: name
+                  value: "Friendship name3"
+              - column:
+                  name: code
+                  value: SUBSCRIBED
+        - insert:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: time
+                  value: 1631975398
+              - column:
+                  name: name
+                  value: "Friendship name4"
+              - column:
+                  name: code
+                  value: FRIEND
+        - insert:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: time
+                  value: 1631974398
+              - column:
+                  name: name
+                  value: "Friendship name5"
+              - column:
+                  name: code
+                  value: BLOCKED
+        - insert:
+            tableName: friendship_status
+            columns:
+              - column:
+                  name: time
+                  value: 1630974398
+              - column:
+                  name: name
+                  value: "Friendship name6"
+              - column:
+                  name: code
+                  value: FRIEND
