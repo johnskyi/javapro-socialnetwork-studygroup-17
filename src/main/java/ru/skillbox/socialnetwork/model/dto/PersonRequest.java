@@ -23,7 +23,7 @@ public class PersonRequest {
     @JsonProperty("birth_date")
     private Long birthDate;
 
-    @NullOrPattern(pattern = "^\\+?[78]?[-\\(]?\\d{3}\\)?-?\\d{3}-?\\d{2}-?\\d{2}$",
+    @NullOrPattern(pattern = "^\\+?[78]?-?\\s?\\(?\\d{3}\\)?-?\\s?\\d{3}-?\\s?\\d{2}-?\\s?\\d{2}$",
             message = "Неверный формат телефона")
     private String phone;
 

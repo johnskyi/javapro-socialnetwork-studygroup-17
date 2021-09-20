@@ -1,6 +1,8 @@
 package ru.skillbox.socialnetwork.services;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.model.dto.PersonRequest;
@@ -22,6 +24,8 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
+
+    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private final PersonRepository personRepository;
     private final CountryRepository countryRepository;
@@ -97,7 +101,7 @@ public class PersonServiceImpl implements PersonService {
             person.setAbout(request.getAbout());
         }
 
-        if (Objects.isNull(request.getMessagePermission())) {
+        if (Objects.nonNull(request.getMessagePermission())) {
             person.setMessagePermission(request.getMessagePermission());
         }
 
@@ -118,8 +122,8 @@ public class PersonServiceImpl implements PersonService {
 
     private String getFormattedPhone(String phone) {
         phone = phone.replaceAll("\\D", "");
-        return String.format("+7%s", phone.matches("7|8\\d{10}")
-                ? phone.substring(1, 10)
+        return String.format("+7%s", phone.matches("[78]\\d{10}")
+                ? phone.substring(1)
                 : phone);
     }
 

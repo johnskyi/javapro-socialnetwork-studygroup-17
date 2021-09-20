@@ -32,7 +32,7 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     @GetMapping("/me/residency")
-    public ResponseEntity<ResidencyResponse> getPersonResidency(ResidencyRequest request) {
+    public ResponseEntity<ResidencyResponse> getPersonResidency(@RequestBody ResidencyRequest request) {
         logger.info("Call GET /api/v1/users/me/residency");
         return ResponseEntity.ok(userService.getPersonResidency(request));
     }
