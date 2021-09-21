@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetwork.model.User;
-import ru.skillbox.socialnetwork.repository.UserRepo;
+import ru.skillbox.socialnetwork.model.Person;
+import ru.skillbox.socialnetwork.repository.PersonRepo;
 
 import java.util.Map;
 import java.util.Optional;
@@ -25,34 +25,47 @@ public class PasswordRecoveryService {
     private JavaMailSender javaMailSender;
 
     @Autowired
-    private UserRepo userRepo;
+    private PersonRepo personRepo;
 
     @Value("${spring.mail.username}")
     private String userName;
 
     public ResponseEntity send(String email) {
-        Optional<User> userOptional = userRepo.findByEmail(email); // Проверяем есть ли пользователь с таким email
-        if (userOptional.isPresent()) {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom(userName);
-            mailMessage.setTo(email);
-            mailMessage.setSubject("Password Recovery");
-            mailMessage.setText("text message"); // Здесь текст сообщения, который отправляется на почту пользователя. Вопрос где взять ссылку
-            javaMailSender.send(mailMessage);
-            return ResponseEntity.ok(Message.builder()
-                    .error("string")
-                    .timestamp(System.currentTimeMillis())
-                    .data(Map.of("message", "ok"))
+        Optional<Person> personOptional = personRepo.findByEmail(email); // Проверяем есть ли пользователь с таким email
+        if (personOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Message.builder()
+                    .error("invalid_request")
+                    .errorDescription("string")
                     .build());
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Message.builder()
-                .error("invalid_request")
-                .errorDescription("string")
-                .build());
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(userName);
+        mailMessage.setTo(email);
+        mailMessage.setSubject("Password Recovery");
+        mailMessage.setText("text message"); // Здесь текст сообщения, который отправляется на почту пользователя. Вопрос где взять ссылку
+        javaMailSender.send(mailMessage);
+        return ResponseEntity.status(HttpStatus.OK).body((Message.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(Map.of("message", "ok"))
+                .build()));
     }
 
-    public void setPassword(String password, String token) {
-
+    public ResponseEntity setPassword(String password, String token) {
+        Optional<Person> personOptional = personRepo.findByToken(token);
+        if (personOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Message.builder()
+                    .error("invalid_request")
+                    .errorDescription("string")
+                    .build());
+        }
+        personOptional.get().setPassword(password);
+        personRepo.save(personOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body((Message.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(Map.of("message", "ok"))
+                .build()));
     }
 
     @Builder

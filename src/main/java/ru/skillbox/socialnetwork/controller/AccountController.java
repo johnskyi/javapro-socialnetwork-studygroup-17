@@ -19,6 +19,7 @@ public class AccountController {
     {
         passwordRecoveryService.send(email);
     }
+
     @PutMapping("/api/v1/account/password/set")
     public void setPassword(@RequestParam("email") String password, @RequestParam("token") String token)
     {
