@@ -23,4 +23,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 16)
     private UserType type;
+
+    public Role getRole(){
+        return type.equals(UserType.ADMIN) ? Role.ADMIN : Role.MODERATOR;
+    }
 }

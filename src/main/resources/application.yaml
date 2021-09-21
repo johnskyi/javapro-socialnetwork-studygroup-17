@@ -1,18 +1,26 @@
 debug: true
 spring:
-  liquibase:
-    enabled: true
   datasource:
+    url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: test
-    url: jdbc:postgresql://45.134.255.54:22
-    platform: postgres
-    initialization-mode: always
-    continue-on-error: true
+    username: javapro
+#    platform: postgres
+#    initialization-mode: always
+#    continue-on-error: true
   jpa:
-    show-sql: true
-    generate-ddl: false
+    database-platform: org.hibernate.dialect.PostgreSQL92Dialect
+    show-sql: false
     hibernate:
       ddl-auto: none
-    database: javapro
+    generate-ddl: false
+  liquibase:
+    url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
+    user: postgres
+    enabled: true
+    contexts: dev
+
+  security:
+        jwt:
+          tokenValidTimeInMinutes: 30
+          tokenSecretKey: javapro
+          authHeader: Authorization
