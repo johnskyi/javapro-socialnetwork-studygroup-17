@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ru.skillbox.socialnetwork.model.dto.PersonRequest;
-import ru.skillbox.socialnetwork.model.dto.PersonResponse;
-import ru.skillbox.socialnetwork.model.entities.*;
-import ru.skillbox.socialnetwork.model.repositories.CityRepository;
-import ru.skillbox.socialnetwork.model.repositories.CountryRepository;
-import ru.skillbox.socialnetwork.model.repositories.PersonRepository;
-import ru.skillbox.socialnetwork.model.repositories.RegionRepository;
-import ru.skillbox.socialnetwork.services.PersonServiceImpl;
+import ru.skillbox.socialnetwork.controller.PersonController;
+import ru.skillbox.socialnetwork.controller.impl.PersonControllerImpl;
+import ru.skillbox.socialnetwork.data.dto.PersonRequest;
+import ru.skillbox.socialnetwork.data.dto.PersonResponse;
+import ru.skillbox.socialnetwork.data.entity.MessagePermission;
+import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.service.impl.PersonServiceImpl;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -34,24 +34,12 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(properties = "application.yaml", classes = {PersonServiceImpl.class, PersonControllerImpl.class})
 class PersonControllerTest {
     @MockBean
-    private PersonRepository personRepository;
-    @MockBean
-    private CountryRepository countryRepository;
-    @MockBean
-    private RegionRepository regionRepository;
-    @MockBean
-    private CityRepository cityRepository;
+    private PersonRepo personRepository;
 
     @Autowired
     private PersonController personController;
     @Mock
     private Principal principal;
-    @Mock
-    private static Country country;
-    @Mock
-    private static Region region;
-    @Mock
-    private static City city;
 
     private static Validator validator;
 
@@ -74,9 +62,7 @@ class PersonControllerTest {
         person.setPhoto("http://1.jpg");
         person.setPassword("12345678");
         person.setAbout("Grand Gatsby");
-        person.setCountry(country);
-        person.setRegion(region);
-        person.setCity(city);
+        person.setTown("Russia \u2588 Moscow");
         person.setCode("code");
         person.setApproved(true);
         person.setLastOnlineTime(1L);
@@ -98,9 +84,8 @@ class PersonControllerTest {
                         .phone("+71002003040")
                         .photo("http://1.jpg")
                         .about("Grand Gatsby")
-                        .country(country)
-                        .region(region)
-                        .city(city)
+                        .country("Russia")
+                        .city("Moscow")
                         .messagePermission(MessagePermission.ALL)
                         .lastOnlineTime(1L)
                         .isBlocked(false)
@@ -117,9 +102,8 @@ class PersonControllerTest {
         personRequest.setPhone("+72002002020");
         personRequest.setPhotoId("http://2.jpg");
         personRequest.setAbout("No.. I'm teapot");
-        personRequest.setCountry(country);
-        personRequest.setRegion(region);
-        personRequest.setCity(city);
+        personRequest.setCountryId("Russia");
+        personRequest.setTownId("Moscow");
         personRequest.setMessagePermission(MessagePermission.FRIENDS);
     }
 
@@ -138,9 +122,8 @@ class PersonControllerTest {
                         .phone("+72002002020")
                         .photo("http://2.jpg")
                         .about("No.. I'm teapot")
-                        .country(country)
-                        .region(region)
-                        .city(city)
+                        .country("Russia")
+                        .city("Moscow")
                         .messagePermission(MessagePermission.FRIENDS)
                         .lastOnlineTime(1L)
                         .isBlocked(false)

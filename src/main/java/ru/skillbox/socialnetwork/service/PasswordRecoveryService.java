@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetwork.model.Person;
-import ru.skillbox.socialnetwork.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 
 import java.util.Map;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class PasswordRecoveryService {
     }
 
     public ResponseEntity setPassword(String password, String token) {
-        Optional<Person> personOptional = personRepo.findByToken(token);
+        Optional<Person> personOptional = personRepo.findPersonByCode(token);
         if (personOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Message.builder()
                     .error("invalid_request")
