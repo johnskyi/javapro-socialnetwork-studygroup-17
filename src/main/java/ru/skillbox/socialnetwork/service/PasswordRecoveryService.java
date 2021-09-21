@@ -1,6 +1,8 @@
 package ru.skillbox.socialnetwork.service;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class PasswordRecoveryService {
 
     @Autowired
@@ -26,10 +30,9 @@ public class PasswordRecoveryService {
     @Value("${spring.mail.username}")
     private String userName;
 
-    public ResponseEntity send(String email)
-    {
+    public ResponseEntity send(String email) {
         Optional<User> userOptional = userRepo.findByEmail(email); // Проверяем есть ли пользователь с таким email
-        if(userOptional.isPresent()) {
+        if (userOptional.isPresent()) {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(userName);
             mailMessage.setTo(email);
@@ -39,21 +42,25 @@ public class PasswordRecoveryService {
             return ResponseEntity.ok(Message.builder()
                     .error("string")
                     .timestamp(System.currentTimeMillis())
-                    .data(Map.of("message","ok"))
+                    .data(Map.of("message", "ok"))
                     .build());
         }
-        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Message.builder()
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Message.builder()
                 .error("invalid_request")
                 .errorDescription("string")
                 .build());
     }
+
+    public void setPassword(String password, String token) {
+
+    }
+
     @Builder
-    private static class Message
-    {
+    private static class Message {
         private String error;
         private String errorDescription;
         private long timestamp;
-        private Map<String,String> data;
+        private Map<String, String> data;
     }
 
 }
