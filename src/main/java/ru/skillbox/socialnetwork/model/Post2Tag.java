@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.model.entities;
+package ru.skillbox.socialnetwork.model;
 
 import lombok.Data;
 
@@ -6,8 +6,8 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "post_file")
-public class PostFile {
+@Table(name = "post2tag")
+public class Post2Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -16,9 +16,7 @@ public class PostFile {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    private String name;
-
-    private String path;
-
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    private Tag tag;
 }
