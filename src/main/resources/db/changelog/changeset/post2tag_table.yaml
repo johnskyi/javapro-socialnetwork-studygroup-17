@@ -1,0 +1,234 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-post2tag-table
+      comment: "Create table post2tag"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: BIGINT
+              - column:
+                  name: tag_id
+                  type: BIGINT
+  - changeSet:
+      id: add_data_post2tag
+      comment: "Add data to table post2tag"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 2
+              - column:
+                  name: tag_id
+                  value: 4
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 2
+              - column:
+                  name: tag_id
+                  value: 10
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 3
+              - column:
+                  name: tag_id
+                  value: 5
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 3
+              - column:
+                  name: tag_id
+                  value: 10
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 4
+              - column:
+                  name: tag_id
+                  value: 4
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 4
+              - column:
+                  name: tag_id
+                  value: 10
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 5
+              - column:
+                  name: tag_id
+                  value: 10
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 6
+              - column:
+                  name: tag_id
+                  value: 10
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 7
+              - column:
+                  name: tag_id
+                  value: 10
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 8
+              - column:
+                  name: tag_id
+                  value: 7
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 9
+              - column:
+                  name: tag_id
+                  value: 5
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 10
+              - column:
+                  name: tag_id
+                  value: 5
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 11
+              - column:
+                  name: tag_id
+                  value: 1
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 12
+              - column:
+                  name: tag_id
+                  value: 1
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 13
+              - column:
+                  name: tag_id
+                  value: 1
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 13
+              - column:
+                  name: tag_id
+                  value: 2
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 13
+              - column:
+                  name: tag_id
+                  value: 4
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 14
+              - column:
+                  name: tag_id
+                  value: 5
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 15
+              - column:
+                  name: tag_id
+                  value: 1
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 15
+              - column:
+                  name: tag_id
+                  value: 4
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 15
+              - column:
+                  name: tag_id
+                  value: 5
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 15
+              - column:
+                  name: tag_id
+                  value: 10
+        - insert:
+            tableName: post2tag
+            columns:
+              - column:
+                  name: post_id
+                  value: 16
+              - column:
+                  name: tag_id
+                  value: 10

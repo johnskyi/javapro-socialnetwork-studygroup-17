@@ -1,0 +1,108 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-message-table
+      comment: "Create table message"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: message
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: BIGINT
+              - column:
+                  name: author_id
+                  type: BIGINT
+              - column:
+                  name: recipient_id
+                  type: BIGINT
+              - column:
+                  name: message_text
+                  type: varchar(1023)
+              - column:
+                  name: read_status
+                  type: varchar(8)
+  - changeSet:
+      id: add_data_messages
+      comment: "Add data to table message"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: 1616186434
+              - column:
+                  name: author_id
+                  value: 4
+              - column:
+                  name: recipient_id
+                  value: 5
+              - column:
+                  name: message_text
+                  value: "Привет! А помнишь, как все начиналось?"
+              - column:
+                  name: read_status
+                  value: READ
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: 1618186434
+              - column:
+                  name: author_id
+                  value: 5
+              - column:
+                  name: recipient_id
+                  value: 4
+              - column:
+                  name: message_text
+                  value: "Ничего не помню. Мальчик, ты кто?"
+              - column:
+                  name: read_status
+                  value: SENT
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: 1618185434
+              - column:
+                  name: author_id
+                  value: 4
+              - column:
+                  name: recipient_id
+                  value: 5
+              - column:
+                  name: message_text
+                  value: "Может тебе память освежить?"
+              - column:
+                  name: read_status
+                  value: SENT
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: 1618486434
+              - column:
+                  name: author_id
+                  value: 2
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "Привет! Как дела?"
+              - column:
+                  name: read_status
+                  value: SENT

@@ -1,0 +1,326 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-person-table
+      comment: "Create table person"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: person
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(255)
+              - column:
+                  name: last_name
+                  type: varchar(255)
+              - column:
+                  name: reg_date
+                  type: BIGINT
+              - column:
+                  name: birth_date
+                  type: BIGINT
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: phone
+                  type: varchar(255)
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: photo
+                  type: varchar(255)
+              - column:
+                  name: about
+                  type: varchar(255)
+              - column:
+                  name: town
+                  type: varchar(255)
+              - column:
+                  name: code
+                  type: varchar(255)
+              - column:
+                  name: is_approved
+                  type: BOOLEAN
+              - column:
+                  name: message_permission
+                  type: VARCHAR(8)
+              - column:
+                  name: last_online_time
+                  type: BIGINT
+              - column:
+                  name: is_blocked
+                  type: BOOLEAN
+
+  - changeSet:
+      id: add_data_persons
+      comment: "Add data to table person"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: first_name
+                  value: "имя"
+              - column:
+                  name: last_name
+                  value: "фамилия"
+              - column:
+                  name: reg_date
+                  value: 1565000769
+              - column:
+                  name: birth_date
+                  value: 495906724
+              - column:
+                  name: email
+                  value: "email"
+              - column:
+                  name: phone
+                  value: "phone"
+              - column:
+                  name: password
+                  value: "password"
+              - column:
+                  name: photo
+                  value: "ссылка на изображение"
+              - column:
+                  name: about
+                  value: "текст о себе"
+              - column:
+                  name: town
+                  value: "страна и город проживания"
+              - column:
+                  name: code
+                  value: "код восстановления пароля / подтверждения регистрации"
+              - column:
+                  name: is_approved
+                  value: false
+              - column:
+                  name: message_permission
+                  value: ALL
+              - column:
+                  name: last_online_time
+                  value: 1627212720
+              - column:
+                  name: is_blocked
+                  value: 0
+  - changeSet:
+      id: add_data_persons1
+      comment: "Add data to table person User"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: first_name
+                  value: "Пользователь"
+              - column:
+                  name: last_name
+                  value: ""
+              - column:
+                  name: reg_date
+                  value: 1610985124
+              - column:
+                  name: birth_date
+                  value: 627407524
+              - column:
+                  name: email
+                  value: "user@server.com"
+              - column:
+                  name: phone
+                  value: "+7988-777-88-99"
+              - column:
+                  name: password
+                  value: "password"
+              - column:
+                  name: photo
+                  value: "https://proprikol.ru/wp-content/uploads/2021/09/uprazhneniya-dlya-spiny-krasivye-kartinki-21.jpg"
+              - column:
+                  name: about
+                  value: "о себе данный пользователь сказать может мало, даже фамилию не указал."
+              - column:
+                  name: town
+                  value: "Россия, Магадан"
+              - column:
+                  name: code
+                  value: ""
+              - column:
+                  name: is_approved
+                  value: false
+              - column:
+                  name: message_permission
+                  value: ALL
+              - column:
+                  name: last_online_time
+                  value: 1629301924
+              - column:
+                  name: is_blocked
+                  value: 0
+  - changeSet:
+      id: add_data_persons2
+      comment: "Add data to table person professor"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: first_name
+                  value: "Профессор"
+              - column:
+                  name: last_name
+                  value: ""
+              - column:
+                  name: reg_date
+                  value: 1626623524
+              - column:
+                  name: birth_date
+                  value: -14371676
+              - column:
+                  name: email
+                  value: "professor@server.com"
+              - column:
+                  name: phone
+                  value: ""
+              - column:
+                  name: password
+                  value: "password"
+              - column:
+                  name: photo
+                  value: ""
+              - column:
+                  name: about
+                  value: "Преподаю Java ангольским студентам. Иногда это дается легко, а иногда и не очень. Главное синтаксис освоить, а там уже как пойдет."
+              - column:
+                  name: town
+                  value: "Angola, Capanda"
+              - column:
+                  name: code
+                  value: ""
+              - column:
+                  name: is_approved
+                  value: true
+              - column:
+                  name: message_permission
+                  value: ALL
+              - column:
+                  name: last_online_time
+                  value: 1627012720
+              - column:
+                  name: is_blocked
+                  value: 0
+  - changeSet:
+      id: add_data_persons3
+      comment: "Add data to table person Alexey"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: first_name
+                  value: "Bill"
+              - column:
+                  name: last_name
+                  value: "Gates"
+              - column:
+                  name: reg_date
+                  value: 504201124
+              - column:
+                  name: birth_date
+                  value: 495906724
+              - column:
+                  name: email
+                  value: "gates@apple.com"
+              - column:
+                  name: phone
+                  value: "+7977-77-77"
+              - column:
+                  name: password
+                  value: "password"
+              - column:
+                  name: photo
+                  value: "https://uznayvse.ru/person/geyts/177059497.jpg"
+              - column:
+                  name: about
+                  value: "Работаю... Стоп, а где же я работаю? Ах, да я же рабоt$#%@#%G.ваофукащшотсята8угфка"
+              - column:
+                  name: town
+                  value: "США, Альбукерке"
+              - column:
+                  name: code
+                  value: ""
+              - column:
+                  name: is_approved
+                  value: true
+              - column:
+                  name: message_permission
+                  value: ALL
+              - column:
+                  name: last_online_time
+                  value: 1631289124
+              - column:
+                  name: is_blocked
+                  value: 0
+  - changeSet:
+      id: add_data_persons4
+      comment: "Add data to table person blocked"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: first_name
+                  value: "Стив"
+              - column:
+                  name: last_name
+                  value: "Джобс"
+              - column:
+                  name: reg_date
+                  value: 1565090769
+              - column:
+                  name: birth_date
+                  value: -468662876
+              - column:
+                  name: email
+                  value: "jobs@hh.ru"
+              - column:
+                  name: phone
+                  value: ""
+              - column:
+                  name: password
+                  value: "password"
+              - column:
+                  name: photo
+                  value: ""
+              - column:
+                  name: about
+                  value: "Как же без данного персонажа. Никто читать не будет"
+              - column:
+                  name: town
+                  value: "США, Калиформия"
+              - column:
+                  name: code
+                  value: ""
+              - column:
+                  name: is_approved
+                  value: false
+              - column:
+                  name: message_permission
+                  value: ALL
+              - column:
+                  name: last_online_time
+                  value: 1227212720
+              - column:
+                  name: is_blocked
+                  value: 1

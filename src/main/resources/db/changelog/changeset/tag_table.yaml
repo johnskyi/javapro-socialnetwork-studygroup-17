@@ -1,0 +1,143 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tag-table
+      comment: "Create table tag"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: tag
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tag
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: add_data_tag1
+      comment: "Add data to table tag Java"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Java"
+  - changeSet:
+      id: add_data_tag2
+      comment: "Add data to table tag Hadoop"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Hadoop"
+  - changeSet:
+      id: add_data_tag3
+      comment: "Add data to table tag C++"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "C++"
+  - changeSet:
+      id: add_data_tag4
+      comment: "Add data to table tag Programming"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Programming"
+  - changeSet:
+      id: add_data_tag5
+      comment: "Add data to table tag разговоры ни о чем"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Разговоры ни о чем"
+  - changeSet:
+      id: add_data_tag6
+      comment: "Add data to table tag Liquibase"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Liquibase"
+  - changeSet:
+      id: add_data_tag7
+      comment: "Add data to table tag Hardware"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Hardware"
+  - changeSet:
+      id: add_data_tag8
+      comment: "Add data to table tag Java embedded"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Java embedded"
+  - changeSet:
+      id: add_data_tag9
+      comment: "Add data to table tag Java for Stm32"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Java for Stm32"
+  - changeSet:
+      id: add_data_tag10
+      comment: "Add data to table tag Education"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Education"
+  - changeSet:
+      id: add_data_tag11
+      comment: "Add data to table tag Engineering"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: tag
+            columns:
+              - column:
+                  name: tag
+                  value: "Engineering"
