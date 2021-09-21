@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.model;
+package ru.skillbox.socialnetwork.data.entity;
 
 public enum FriendshipStatusType {
     REQUEST,   // Запрос на добавление в друзья
