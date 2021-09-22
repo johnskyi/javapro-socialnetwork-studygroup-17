@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.model.entities;
+package ru.skillbox.socialnetwork.data.entity;
 
 public enum UserType {
     ADMIN,
