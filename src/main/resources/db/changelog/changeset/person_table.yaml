@@ -26,7 +26,7 @@ databaseChangeLog:
                   name: birth_date
                   type: BIGINT
               - column:
-                  name: email
+                  name: e_mail
                   type: varchar(255)
               - column:
                   name: phone
@@ -44,7 +44,7 @@ databaseChangeLog:
                   name: town
                   type: varchar(255)
               - column:
-                  name: code
+                  name: confirmation_code
                   type: varchar(255)
               - column:
                   name: is_approved
@@ -80,7 +80,7 @@ databaseChangeLog:
                   name: birth_date
                   value: 495906724
               - column:
-                  name: email
+                  name: e_mail
                   value: "email"
               - column:
                   name: phone
@@ -98,7 +98,7 @@ databaseChangeLog:
                   name: town
                   value: "страна и город проживания"
               - column:
-                  name: code
+                  name: confirmation_code
                   value: "код восстановления пароля / подтверждения регистрации"
               - column:
                   name: is_approved
@@ -133,7 +133,7 @@ databaseChangeLog:
                   name: birth_date
                   value: 627407524
               - column:
-                  name: email
+                  name: e_mail
                   value: "user@server.com"
               - column:
                   name: phone
@@ -151,7 +151,7 @@ databaseChangeLog:
                   name: town
                   value: "Россия, Магадан"
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
@@ -186,7 +186,7 @@ databaseChangeLog:
                   name: birth_date
                   value: -14371676
               - column:
-                  name: email
+                  name: e_mail
                   value: "professor@server.com"
               - column:
                   name: phone
@@ -204,7 +204,7 @@ databaseChangeLog:
                   name: town
                   value: "Angola, Capanda"
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
@@ -239,7 +239,7 @@ databaseChangeLog:
                   name: birth_date
                   value: 495906724
               - column:
-                  name: email
+                  name: e_mail
                   value: "gates@apple.com"
               - column:
                   name: phone
@@ -257,7 +257,7 @@ databaseChangeLog:
                   name: town
                   value: "США, Альбукерке"
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
@@ -292,7 +292,7 @@ databaseChangeLog:
                   name: birth_date
                   value: -468662876
               - column:
-                  name: email
+                  name: e_mail
                   value: "jobs@hh.ru"
               - column:
                   name: phone
@@ -310,7 +310,7 @@ databaseChangeLog:
                   name: town
                   value: "США, Калиформия"
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
