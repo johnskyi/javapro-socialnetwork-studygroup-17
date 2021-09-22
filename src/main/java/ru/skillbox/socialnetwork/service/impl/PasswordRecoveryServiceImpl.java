@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
@@ -30,13 +31,13 @@ public class PasswordRecoveryServiceImpl {
     private String userName;
 
     public PasswordRecoveryResponse send(String email) {
-        findPersonByEmail(email);
+        Person person = findPersonByEmail(email);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(userName);
         mailMessage.setTo(email);
         mailMessage.setSubject("Password Recovery");
         mailMessage.setText("Для смены пароля пожалуйста пройдите по ссылке \n" +
-                "");
+                "http://45.134.255.54:5000/change-password?token=" + person.getCode());
         javaMailSender.send(mailMessage);
         return PasswordRecoveryResponse.builder()
                 .error("string")
