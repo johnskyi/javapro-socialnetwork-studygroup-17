@@ -1,26 +1,25 @@
-debug: true
 spring:
-  datasource:
+  mail.host: smtp.gmail.com
+  mail.port: 587
+  mail.username: javapro.social
+  mail.password: JavaproIDDQD
+  mail.properties.mail.smtp.auth: true
+  mail.properties.mail.smtp.starttls.enable: true
+  liquibase:
+    enabled: true
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
+  datasource:
     driver-class-name: org.postgresql.Driver
-    username: javapro
-#    platform: postgres
-#    initialization-mode: always
-#    continue-on-error: true
+    username: postgres
+    url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
+    platform: postgres
+    initialization-mode: always
+    continue-on-error: true
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL92Dialect
     show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    generate-ddl: false
     hibernate:
       ddl-auto: none
-    generate-ddl: false
-  liquibase:
-    url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
-    user: postgres
-    enabled: true
-    contexts: dev
 
-  security:
-        jwt:
-          tokenValidTimeInMinutes: 30
-          tokenSecretKey: javapro
-          authHeader: Authorization
+
