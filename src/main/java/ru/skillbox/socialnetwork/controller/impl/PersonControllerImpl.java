@@ -18,7 +18,7 @@ import java.security.Principal;
 @RequestMapping("/api/v1/users")
 public class PersonControllerImpl implements PersonController {
 
-    private final PersonService userService;
+    private final PersonService personService;
     private final Logger logger = LoggerFactory.getLogger(PersonControllerImpl.class);
 
     @Override
@@ -26,21 +26,21 @@ public class PersonControllerImpl implements PersonController {
     //   @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");
-        return ResponseEntity.ok(userService.getPersonDetail(principal));
+        return ResponseEntity.ok(personService.getPersonDetail(principal));
     }
 
     @Override
     @PutMapping("/me")
     public ResponseEntity<PersonResponse> putPersonDetail(@Valid @RequestBody PersonRequest personRequest, Principal principal) {
         logger.info("Call PUT /api/v1/users/me");
-        return ResponseEntity.ok(userService.putPersonDetail(personRequest, principal));
+        return ResponseEntity.ok(personService.putPersonDetail(personRequest, principal));
     }
 
     @Override
     @DeleteMapping("/me")
     public ResponseEntity<PersonResponse> deletePerson(Principal principal) {
         logger.info("Call DELETE /api/v1/users/me");
-        return ResponseEntity.ok(userService.deletePerson(principal));
+        return ResponseEntity.ok(personService.deletePerson(principal));
     }
 
 }
