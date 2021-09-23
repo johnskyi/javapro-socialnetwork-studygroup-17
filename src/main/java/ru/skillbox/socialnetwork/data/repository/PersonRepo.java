@@ -14,5 +14,5 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
     @Transactional
     Optional<Person> findByEmail(@Param("e_mail") String email);
 
-    Optional<Person> findPersonByCode(@Param("confirmation_code") String code);
+    Optional<Person> findByCode(@Param("confirmation_code") String code);
 }
