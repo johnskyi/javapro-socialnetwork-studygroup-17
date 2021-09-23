@@ -26,7 +26,7 @@ databaseChangeLog:
                   name: birth_date
                   type: BIGINT
               - column:
-                  name: e_mail
+                  name: email
                   type: varchar(255)
               - column:
                   name: phone
@@ -44,7 +44,7 @@ databaseChangeLog:
                   name: town
                   type: varchar(255)
               - column:
-                  name: confirmation_code
+                  name: code
                   type: varchar(255)
               - column:
                   name: is_approved
@@ -58,6 +58,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   type: BOOLEAN
+              - column:
+                  name: role
+                  type: varchar(16)
 
   - changeSet:
       id: add_data_persons
@@ -80,7 +83,7 @@ databaseChangeLog:
                   name: birth_date
                   value: 495906724
               - column:
-                  name: e_mail
+                  name: email
                   value: "email"
               - column:
                   name: phone
@@ -98,7 +101,7 @@ databaseChangeLog:
                   name: town
                   value: "страна и город проживания"
               - column:
-                  name: confirmation_code
+                  name: code
                   value: "код восстановления пароля / подтверждения регистрации"
               - column:
                   name: is_approved
@@ -112,6 +115,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: 0
+              - column:
+                  name: role
+                  value: USER
   - changeSet:
       id: add_data_persons1
       comment: "Add data to table person User"
@@ -122,7 +128,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: first_name
-                  value: "Пользователь"
+                  value: "Модератор"
               - column:
                   name: last_name
                   value: ""
@@ -133,7 +139,7 @@ databaseChangeLog:
                   name: birth_date
                   value: 627407524
               - column:
-                  name: e_mail
+                  name: email
                   value: "user@server.com"
               - column:
                   name: phone
@@ -151,7 +157,7 @@ databaseChangeLog:
                   name: town
                   value: "Россия, Магадан"
               - column:
-                  name: confirmation_code
+                  name: code
                   value: ""
               - column:
                   name: is_approved
@@ -165,6 +171,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: 0
+              - column:
+                  name: role
+                  value: MODERATOR
   - changeSet:
       id: add_data_persons2
       comment: "Add data to table person professor"
@@ -186,7 +195,7 @@ databaseChangeLog:
                   name: birth_date
                   value: -14371676
               - column:
-                  name: e_mail
+                  name: email
                   value: "professor@server.com"
               - column:
                   name: phone
@@ -204,7 +213,7 @@ databaseChangeLog:
                   name: town
                   value: "Angola, Capanda"
               - column:
-                  name: confirmation_code
+                  name: code
                   value: ""
               - column:
                   name: is_approved
@@ -218,6 +227,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: 0
+              - column:
+                  name: role
+                  value: ADMIN
   - changeSet:
       id: add_data_persons3
       comment: "Add data to table person Alexey"
@@ -239,7 +251,7 @@ databaseChangeLog:
                   name: birth_date
                   value: 495906724
               - column:
-                  name: e_mail
+                  name: email
                   value: "gates@apple.com"
               - column:
                   name: phone
@@ -257,7 +269,7 @@ databaseChangeLog:
                   name: town
                   value: "США, Альбукерке"
               - column:
-                  name: confirmation_code
+                  name: code
                   value: ""
               - column:
                   name: is_approved
@@ -271,6 +283,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: 0
+              - column:
+                  name: role
+                  value: USER
   - changeSet:
       id: add_data_persons4
       comment: "Add data to table person blocked"
@@ -292,7 +307,7 @@ databaseChangeLog:
                   name: birth_date
                   value: -468662876
               - column:
-                  name: e_mail
+                  name: email
                   value: "jobs@hh.ru"
               - column:
                   name: phone
@@ -310,7 +325,7 @@ databaseChangeLog:
                   name: town
                   value: "США, Калиформия"
               - column:
-                  name: confirmation_code
+                  name: code
                   value: ""
               - column:
                   name: is_approved
@@ -324,3 +339,6 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: 1
+              - column:
+                  name: role
+                  value: USER
