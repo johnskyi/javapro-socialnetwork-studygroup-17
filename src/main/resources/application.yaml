@@ -1,3 +1,5 @@
+server:
+  port: 8086
 debug: true
 spring:
   mail.host: smtp.gmail.com

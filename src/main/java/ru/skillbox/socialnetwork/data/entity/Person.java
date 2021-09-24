@@ -52,4 +52,8 @@ public class Person {
 
     @Column(name = "is_blocked")
     private boolean isBlocked;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", length = 16)
+    private UserType type;
 }
