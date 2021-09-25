@@ -22,7 +22,7 @@ public class PersonControllerImpl implements PersonController {
     private final Logger logger = LoggerFactory.getLogger(PersonControllerImpl.class);
 
     @Override
-    @GetMapping("/me")
+    //@GetMapping("/me")
     //   @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");

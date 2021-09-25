@@ -24,7 +24,7 @@ public class Person {
     @Column(name = "birth_date")
     private long birthTime;
 
-    @Column(name = "e_mail")
+    @Column(name = "email")
     private String email;
 
     private String phone;
@@ -37,14 +37,14 @@ public class Person {
 
     private String town;
 
-    @Column(name = "confirmation_code")
+    @Column(name = "code")
     private String code;
 
     @Column(name = "is_approved")
     private boolean isApproved;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "messages_permission", length = 8, nullable = false)
+    @Column(name = "message_permission", length = 8, nullable = false)
     private MessagePermission messagePermission = MessagePermission.ALL;
 
     @Column(name = "last_online_time")
@@ -54,6 +54,13 @@ public class Person {
     private boolean isBlocked;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = 16)
+    @Column(name = "role", length = 16)
     private UserType type;
+
+    public Role getRole(){
+        if(type.name().equals("USER")){
+            return Role.USER;
+        }
+        return type.name().equals("MODERATOR") ? Role.MODERATOR : Role.ADMIN;
+    }
 }

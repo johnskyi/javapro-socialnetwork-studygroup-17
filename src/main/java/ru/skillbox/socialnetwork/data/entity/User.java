@@ -1,6 +1,7 @@
 package ru.skillbox.socialnetwork.data.entity;
 
 import lombok.Data;
+import ru.skillbox.socialnetwork.data.entity.*;
 
 import javax.persistence.*;
 
@@ -23,8 +24,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 16)
     private UserType type;
-
-    public Role getRole(){
-        return type.equals(UserType.ADMIN) ? Role.ADMIN : Role.MODERATOR;
-    }
 }

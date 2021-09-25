@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.model.entities;
+package ru.skillbox.socialnetwork.data.entity;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 public enum Role {
     USER(Set.of(Permission.PERSON)),
-    MODERATOR(Set.of(Permission.USER_MODERATE)),
-    ADMIN(Set.of(Permission.USER_MODERATE, Permission.USER_ADMINISTRATION));
+    MODERATOR(Set.of(Permission.USER_MODERATE, Permission.PERSON)),
+    ADMIN(Set.of(Permission.USER_MODERATE, Permission.USER_ADMINISTRATION, Permission.PERSON));
 
     private final Set<Permission> permissions;
 

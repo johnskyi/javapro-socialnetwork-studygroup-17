@@ -4,7 +4,8 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.skillbox.socialnetwork.model.entities.User;
+import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.entity.User;
 
 import java.util.Collection;
 import java.util.List;
@@ -51,10 +52,10 @@ public class SecurityUser implements UserDetails {
         return true;
     }
 
-    public static UserDetails fromUser(User user){
+    public static UserDetails fromPerson(Person person){
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), true, true, true, true,
-                user.getRole().getAuthority()
+                person.getEmail(), person.getPassword(), true, true, true, true,
+                person.getRole().getAuthority()
         );
     }
 }

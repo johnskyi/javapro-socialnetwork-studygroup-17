@@ -1,6 +1,5 @@
 server:
   port: 8086
-debug: true
 spring:
   mail.host: smtp.gmail.com
   mail.port: 587
@@ -13,16 +12,18 @@ spring:
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: javapro
-    password: iddqd
-    url: jdbc:postgresql://45.134.255.54:5432/javapro
+    username: postgres
+    url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
     platform: postgres
     initialization-mode: always
     continue-on-error: true
   jpa:
-    show-sql: false
+    show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     generate-ddl: false
     hibernate:
       ddl-auto: none
-    database: POSTGRESQL
+  session:
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
