@@ -25,15 +25,15 @@ public class PersonRequest {
     private String phone;
 
     @JsonProperty("photo_id")
-    private String photoId;
+    private Long photoId;
 
     private String about;
 
     @JsonProperty("town_id")
-    private String townId;
+    private Long townId;
 
     @JsonProperty("country_id")
-    private String countryId;
+    private Long countryId;
 
     @JsonProperty("messages_permission")
     private MessagePermission messagePermission;
