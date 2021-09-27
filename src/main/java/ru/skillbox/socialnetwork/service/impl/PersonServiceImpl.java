@@ -69,7 +69,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (Objects.nonNull(request.getBirthDate())) {
-            person.setBirthTime(request.getBirthDate());
+            person.setBirthTime(LocalDateTime.ofEpochSecond(request.getBirthDate(), 0, ZoneOffset.UTC));
         }
 
         if (Objects.nonNull(request.getPhone())) {
@@ -116,8 +116,8 @@ public class PersonServiceImpl implements PersonService {
                         .id(person.getId())
                         .firstName(person.getFirstName())
                         .lastName(person.getLastName())
-                        .regDate(person.getRegTime())
-                        .birthDate(person.getBirthTime())
+                        .regDate(person.getRegTime().toEpochSecond(ZoneOffset.UTC))
+                        .birthDate(person.getBirthTime().toEpochSecond(ZoneOffset.UTC))
                         .email(person.getEmail())
                         .phone(person.getPhone())
                         .photo(person.getPhoto())
@@ -125,7 +125,7 @@ public class PersonServiceImpl implements PersonService {
                         .town(person.getTown())
                         .country(person.getTown().getCountry())
                         .messagePermission(person.getMessagePermission())
-                        .lastOnlineTime(person.getLastOnlineTime())
+                        .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
                         .isBlocked(person.isBlocked())
                         .build())
                 .build();
