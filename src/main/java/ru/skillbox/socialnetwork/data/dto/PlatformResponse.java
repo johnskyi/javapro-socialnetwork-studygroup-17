@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class LanguageResponse {
+public class PlatformResponse {
     public String error;
     public long timestamp;
     public int total;
@@ -18,7 +18,7 @@ public class LanguageResponse {
     @Data
     @Builder
     public static class Datum{
-        public int id;
+        public Long id;
         public String title;
     }
 }

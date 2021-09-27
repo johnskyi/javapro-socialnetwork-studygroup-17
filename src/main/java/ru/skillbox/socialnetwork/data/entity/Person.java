@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -21,10 +22,10 @@ public class Person {
     private String lastName;
 
     @Column(name = "reg_date")
-    private long regTime;
+    private LocalDateTime regTime;
 
     @Column(name = "birth_date")
-    private long birthTime;
+    private LocalDateTime birthTime;
 
     @Column(name = "email")
     private String email;
@@ -51,7 +52,7 @@ public class Person {
     private MessagePermission messagePermission = MessagePermission.ALL;
 
     @Column(name = "last_online_time")
-    private long lastOnlineTime;
+    private LocalDateTime lastOnlineTime;
 
     @Column(name = "is_blocked")
     private boolean isBlocked;
