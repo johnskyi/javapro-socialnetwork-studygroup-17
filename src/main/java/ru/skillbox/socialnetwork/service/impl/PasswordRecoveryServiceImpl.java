@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
@@ -26,6 +26,7 @@ public class PasswordRecoveryServiceImpl {
 
     @Autowired
     private PersonRepo personRepo;
+
 
     @Value("${spring.mail.username}")
     private String userName;
@@ -50,6 +51,17 @@ public class PasswordRecoveryServiceImpl {
         Person person = findPersonByCode(token);
         person.setPassword(new BCryptPasswordEncoder(12).encode(password));
         personRepo.save(person);
+        return PasswordRecoveryResponse.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(Map.of("message", "ok"))
+                .build();
+    }
+    public PasswordRecoveryResponse setEmail(String newEmail)
+    {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Person person = findPersonByEmail(email);
+        person.setEmail(newEmail);
         return PasswordRecoveryResponse.builder()
                 .error("string")
                 .timestamp(System.currentTimeMillis())
