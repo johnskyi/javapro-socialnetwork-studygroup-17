@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_data_cities_table
+      comment: "Add data to table cities"
+      author: Yury Platonov
+
+      changes:
+        - sqlFile:
+            dbms: 'h2,  oracle,  mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: db/changelog/changeset/26.09.2021/insert-data-cities.sql
+            stripComments: true
+
+

@@ -1,10 +1,12 @@
 package ru.skillbox.socialnetwork.data.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "person")
 public class Person {
@@ -24,7 +26,7 @@ public class Person {
     @Column(name = "birth_date")
     private long birthTime;
 
-    @Column(name = "e_mail")
+    @Column(name = "email")
     private String email;
 
     private String phone;
@@ -35,16 +37,17 @@ public class Person {
 
     private String about;
 
-    private String town;
+    @ManyToOne
+    private Town town;
 
-    @Column(name = "confirmation_code")
+    @Column(name = "code")
     private String code;
 
     @Column(name = "is_approved")
     private boolean isApproved;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "messages_permission", length = 8, nullable = false)
+    @Column(name = "message_permission", length = 8, nullable = false)
     private MessagePermission messagePermission = MessagePermission.ALL;
 
     @Column(name = "last_online_time")
@@ -54,6 +57,6 @@ public class Person {
     private boolean isBlocked;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = 16)
+    @Column(name = "role", length = 16)
     private UserType type;
 }

@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-file-table
+      comment: "Create table file"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: file
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: BIGINT
+              - column:
+                  name: relative_file_path
+                  type: varchar(1023)
+              - column:
+                  name: raw_file_url
+                  type: varchar(1023)
+              - column:
+                  name: file_format
+                  type: varchar(255)
+              - column:
+                  name: bytes
+                  type: BIGINT
+              - column:
+                  name: file_type
+                  type: varchar(255)
+              - column:
+                  name: post_id
+                  type: BIGINT
+              - column:
+                  name: file_name
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: datetime(6)
+
+
+#  - changeSet:
+#      id: add_data_post_file
+#      comment: "Add data to table post_file"
+#      author: Alexey Kochenyuk
+#      changes:
+#        - insert:
+#            tableName: post_file
+#            columns:
+#              - column:
+#                  name: owner_id
+#                  value: 1
+#              - column:
+#                  name: name
+#                  value: "hadoop-3.3.1.tar.gz"
+#              - column:
+#                  name: path
+#                  value: "https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz"
+#
