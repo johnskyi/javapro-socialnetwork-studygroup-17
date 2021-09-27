@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
+import ru.skillbox.socialnetwork.data.entity.File;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.repository.FileRepository;
+import ru.skillbox.socialnetwork.data.repository.TownRepository;
 import ru.skillbox.socialnetwork.service.PersonService;
 
 import java.security.Principal;
@@ -24,6 +27,8 @@ public class PersonServiceImpl implements PersonService {
     private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private final PersonRepo personRepository;
+    private final TownRepository townRepository;
+    private final FileRepository fileRepository;
 
     @Override
     public PersonResponse getPersonDetail(Principal principal) {
@@ -64,7 +69,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (Objects.nonNull(request.getBirthDate())) {
-            person.setBirthTime(request.getBirthDate());
+            person.setBirthTime(LocalDateTime.ofEpochSecond(request.getBirthDate(), 0, ZoneOffset.UTC));
         }
 
         if (Objects.nonNull(request.getPhone())) {
@@ -72,7 +77,8 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (Objects.nonNull(request.getPhotoId())) {
-            person.setPhoto(request.getPhotoId());
+            File file = fileRepository.getById(request.getPhotoId());
+            person.setPhoto(file.getRelativeFilePath());
         }
 
         if (Objects.nonNull(request.getAbout())) {
@@ -83,11 +89,8 @@ public class PersonServiceImpl implements PersonService {
             person.setMessagePermission(request.getMessagePermission());
         }
 
-        if (Objects.nonNull(request.getTownId()) || Objects.nonNull(request.getCountryId())) {
-            String town;
-            town = Objects.nonNull(request.getCountryId()) ? request.getCountryId().concat(" \u2588 ") : " \u2588 ";
-            town = Objects.nonNull(request.getTownId()) ? town.concat(request.getTownId()) : town;
-            person.setTown(town);
+        if (Objects.nonNull(request.getTownId())) {
+            person.setTown(townRepository.getById(request.getTownId()));
         }
 
         personRepository.flush();
@@ -106,7 +109,6 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private PersonResponse createFullPersonResponse(Person person) {
-        String[] location = person.getTown().split("\u2588");
         return PersonResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
@@ -114,16 +116,16 @@ public class PersonServiceImpl implements PersonService {
                         .id(person.getId())
                         .firstName(person.getFirstName())
                         .lastName(person.getLastName())
-                        .regDate(person.getRegTime())
-                        .birthDate(person.getBirthTime())
+                        .regDate(person.getRegTime().toEpochSecond(ZoneOffset.UTC))
+                        .birthDate(person.getBirthTime().toEpochSecond(ZoneOffset.UTC))
                         .email(person.getEmail())
                         .phone(person.getPhone())
                         .photo(person.getPhoto())
                         .about(person.getAbout())
-                        .country(location[0].trim())
-                        .city(location[1].trim())
+                        .town(person.getTown())
+                        .country(person.getTown().getCountry())
                         .messagePermission(person.getMessagePermission())
-                        .lastOnlineTime(person.getLastOnlineTime())
+                        .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
                         .isBlocked(person.isBlocked())
                         .build())
                 .build();
