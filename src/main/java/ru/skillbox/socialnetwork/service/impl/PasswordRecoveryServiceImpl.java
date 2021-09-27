@@ -33,13 +33,8 @@ public class PasswordRecoveryServiceImpl {
 
     public PasswordRecoveryResponse send(String email) {
         Person person = findPersonByEmail(email);
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(userName);
-        mailMessage.setTo(email);
-        mailMessage.setSubject("Password Recovery");
-        mailMessage.setText("Для смены пароля пожалуйста пройдите по ссылке \n" +
-                "http://45.134.255.54:5000/change-password?token=" + person.getCode());
-        javaMailSender.send(mailMessage);
+        String message = person.getEmail();
+        sendEmail(email, message);
         return PasswordRecoveryResponse.builder()
                 .error("string")
                 .timestamp(System.currentTimeMillis())
@@ -57,8 +52,8 @@ public class PasswordRecoveryServiceImpl {
                 .data(Map.of("message", "ok"))
                 .build();
     }
-    public PasswordRecoveryResponse setEmail(String newEmail)
-    {
+
+    public PasswordRecoveryResponse setEmail(String newEmail) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Person person = findPersonByEmail(email);
         person.setEmail(newEmail);
@@ -78,6 +73,16 @@ public class PasswordRecoveryServiceImpl {
     private Person findPersonByCode(String token) {
         return personRepo.findByCode(token)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    private void sendEmail(String email, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(userName);
+        mailMessage.setTo(email);
+        mailMessage.setSubject("Password Recovery");
+        mailMessage.setText("Для смены пароля пожалуйста пройдите по ссылке \n" +
+                "http://45.134.255.54:5000/change-password?token=" + message);
+        javaMailSender.send(mailMessage);
     }
 
 }
