@@ -31,4 +31,10 @@ public class PasswordRecoveryControllerImpl {
         logger.info("Person {} requested the password change", token);
         return ResponseEntity.ok(passwordRecoveryService.setPassword(password, token));
     }
+    @PutMapping("/api/v1/account/email")
+    public ResponseEntity<PasswordRecoveryResponse> setEmail(@RequestParam("email") String newEmail)
+    {
+        logger.info("Person {} requested the email change", newEmail);
+        return ResponseEntity.ok(passwordRecoveryService.setEmail(newEmail));
+    }
 }
