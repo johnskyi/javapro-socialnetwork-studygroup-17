@@ -1,10 +1,12 @@
 package ru.skillbox.socialnetwork.data.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "person")
 public class Person {
@@ -35,7 +37,8 @@ public class Person {
 
     private String about;
 
-    private String town;
+    @ManyToOne
+    private Town town;
 
     @Column(name = "code")
     private String code;
