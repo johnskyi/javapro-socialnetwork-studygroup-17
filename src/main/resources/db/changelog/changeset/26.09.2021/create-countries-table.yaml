@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 26-09-2021-create-countries-table
+      comment: "Create table countries"
+      author: Yury Platonov
+      changes:
+        - createTable:
+            tableName: countries
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)

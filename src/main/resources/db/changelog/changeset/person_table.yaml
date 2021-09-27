@@ -41,8 +41,8 @@ databaseChangeLog:
                   name: about
                   type: varchar(255)
               - column:
-                  name: town
-                  type: varchar(255)
+                  name: town_id
+                  type: BIGINT
               - column:
                   name: code
                   type: varchar(255)
@@ -98,8 +98,8 @@ databaseChangeLog:
                   name: about
                   value: "текст о себе"
               - column:
-                  name: town
-                  value: "страна и город проживания"
+                  name: town_id
+                  value: 3355
               - column:
                   name: code
                   value: "код восстановления пароля / подтверждения регистрации"
@@ -154,8 +154,8 @@ databaseChangeLog:
                   name: about
                   value: "о себе данный пользователь сказать может мало, даже фамилию не указал."
               - column:
-                  name: town
-                  value: "Россия, Магадан"
+                  name: town_id
+                  value: 3356
               - column:
                   name: code
                   value: ""
@@ -210,8 +210,8 @@ databaseChangeLog:
                   name: about
                   value: "Преподаю Java ангольским студентам. Иногда это дается легко, а иногда и не очень. Главное синтаксис освоить, а там уже как пойдет."
               - column:
-                  name: town
-                  value: "Angola, Capanda"
+                  name: town_id
+                  value: 3357
               - column:
                   name: code
                   value: ""
@@ -266,8 +266,8 @@ databaseChangeLog:
                   name: about
                   value: "Работаю... Стоп, а где же я работаю? Ах, да я же рабоt$#%@#%G.ваофукащшотсята8угфка"
               - column:
-                  name: town
-                  value: "США, Альбукерке"
+                  name: town_id
+                  value: 3358
               - column:
                   name: code
                   value: ""
@@ -322,8 +322,8 @@ databaseChangeLog:
                   name: about
                   value: "Как же без данного персонажа. Никто читать не будет"
               - column:
-                  name: town
-                  value: "США, Калиформия"
+                  name: town_id
+                  value: 3360
               - column:
                   name: code
                   value: ""
