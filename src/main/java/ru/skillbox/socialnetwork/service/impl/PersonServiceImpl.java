@@ -13,6 +13,7 @@ import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.service.PersonService;
 
 import java.security.Principal;
@@ -104,6 +105,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private Person findPerson(Principal principal) {
+        if (Objects.isNull(principal)) {
+            throw new PersonNotAuthorized("The Person not authorized");
+        }
         return personRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
