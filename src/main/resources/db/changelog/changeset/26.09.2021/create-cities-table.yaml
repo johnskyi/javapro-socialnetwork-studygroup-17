@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 26-09-2021-create-cities-table
+      comment: "Create table cities"
+      author: Yury Platonov
+      changes:
+        - createTable:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: country_id
+                  type: BIGINT
