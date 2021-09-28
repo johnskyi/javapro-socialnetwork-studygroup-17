@@ -5,7 +5,7 @@ databaseChangeLog:
       author: Yury Platonov
       changes:
         - createTable:
-            tableName: cities
+            tableName: city
             columns:
               - column:
                   name: id
