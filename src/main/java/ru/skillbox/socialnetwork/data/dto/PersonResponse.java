@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 import ru.skillbox.socialnetwork.data.entity.Town;
-import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 

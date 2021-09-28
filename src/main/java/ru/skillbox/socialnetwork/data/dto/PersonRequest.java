@@ -5,8 +5,6 @@ import lombok.Data;
 import ru.skillbox.socialnetwork.annotations.NullOrPattern;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 
-import java.time.LocalDateTime;
-
 @Data
 public class PersonRequest {
     @JsonProperty("first_name")
