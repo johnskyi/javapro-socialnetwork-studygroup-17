@@ -1,7 +1,6 @@
 databaseChangeLog:
   - includeAll:
         path: db/changelog/changeset/
-
   #- include:
   #    file: db/changelog/changeset/tag_table.yaml
       #- include:

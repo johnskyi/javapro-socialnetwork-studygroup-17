@@ -1,4 +1,4 @@
-INSERT INTO countries
+INSERT INTO country
 VALUES (4, 'Австралия'),
        (63, 'Австрия'),
        (81, 'Азербайджан'),

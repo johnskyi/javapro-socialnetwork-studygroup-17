@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: insert_data_cities_table
-      comment: "Add data to table cities"
+      comment: "Add data to table city"
       author: Yury Platonov
 
       changes:

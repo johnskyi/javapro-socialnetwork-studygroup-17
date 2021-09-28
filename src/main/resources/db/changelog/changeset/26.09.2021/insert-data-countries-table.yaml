@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: insert_data_countries_table
-      comment: "Add data to table countries"
+      comment: "Add data to table country"
       author: Yury Platonov
 
       changes:
