@@ -1,4 +1,4 @@
-INSERT INTO city(id, country_id, name)
+INSERT INTO cities(id, country_id, name)
 VALUES (6, 4, 'Балларат'),
        (7, 4, 'Бендиго'),
        (8, 4, 'Варрнамбул'),

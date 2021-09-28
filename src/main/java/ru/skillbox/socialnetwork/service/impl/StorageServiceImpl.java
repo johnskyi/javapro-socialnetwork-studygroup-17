@@ -13,6 +13,7 @@ import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.File;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.service.StorageService;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,7 @@ import java.io.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -96,6 +98,9 @@ public class StorageServiceImpl implements StorageService {
     }
 
     private Person findPerson(Principal principal) {
+        if (Objects.isNull(principal)) {
+            throw new PersonNotAuthorized("The Person not authorized");
+        }
         return personRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

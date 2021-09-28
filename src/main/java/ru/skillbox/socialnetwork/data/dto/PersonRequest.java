@@ -5,8 +5,6 @@ import lombok.Data;
 import ru.skillbox.socialnetwork.annotations.NullOrPattern;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 
-import java.time.LocalDateTime;
-
 @Data
 public class PersonRequest {
     @JsonProperty("first_name")
@@ -20,7 +18,7 @@ public class PersonRequest {
     private String lastName;
 
     @JsonProperty("birth_date")
-    private LocalDateTime birthDate;
+    private Long birthDate;
 
     @NullOrPattern(pattern = "^\\+?[78]?-?\\s?\\(?\\d{3}\\)?-?\\s?\\d{3}-?\\s?\\d{2}-?\\s?\\d{2}$",
             message = "Неверный формат телефона")

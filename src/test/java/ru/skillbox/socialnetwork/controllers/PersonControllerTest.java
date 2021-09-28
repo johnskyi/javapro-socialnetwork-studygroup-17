@@ -12,11 +12,10 @@ import ru.skillbox.socialnetwork.controller.PersonController;
 import ru.skillbox.socialnetwork.controller.impl.PersonControllerImpl;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
-import ru.skillbox.socialnetwork.data.entity.Country;
-import ru.skillbox.socialnetwork.data.entity.MessagePermission;
-import ru.skillbox.socialnetwork.data.entity.Person;
-import ru.skillbox.socialnetwork.data.entity.Town;
+import ru.skillbox.socialnetwork.data.entity.*;
+import ru.skillbox.socialnetwork.data.repository.FileRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.repository.TownRepository;
 import ru.skillbox.socialnetwork.service.impl.PersonServiceImpl;
 
 import javax.validation.ConstraintViolation;
@@ -31,12 +30,19 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(properties = "application.yaml", classes = {PersonServiceImpl.class, PersonControllerImpl.class})
 class PersonControllerTest {
     @MockBean
     private PersonRepo personRepository;
+
+    @MockBean
+    private TownRepository townRepository;
+
+    @MockBean
+    private FileRepository fileRepository;
 
     @Autowired
     private PersonController personController;
@@ -45,11 +51,24 @@ class PersonControllerTest {
 
     private static Validator validator;
 
-
+    private static final Country country;
+    private static final Town town;
     private static Person person;
     private static PersonResponse personResponseForGetDetail;
     private static PersonResponse personResponseForPutDetail;
     private static PersonRequest personRequest;
+
+    static {
+        country = new Country();
+        country.setId(1L);
+        country.setName("Россия");
+
+        town = new Town();
+        town.setId(1L);
+        town.setName("Воронеж");
+        town.setCountry(country);
+        System.out.println(1);
+    }
 
     @BeforeAll
     static void initPerson() {
@@ -57,17 +76,17 @@ class PersonControllerTest {
         person.setId(1L);
         person.setFirstName("firstName");
         person.setLastName("lastName");
-        person.setRegTime(LocalDateTime.now());
-        person.setBirthTime(LocalDateTime.now());
+        person.setRegTime(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
+        person.setBirthTime(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
         person.setEmail("test@test.com");
         person.setPhone("+71002003040");
         person.setPhoto("http://1.jpg");
         person.setPassword("12345678");
         person.setAbout("Grand Gatsby");
-//        person.setTown("Russia \u2588 Moscow");
+        person.setTown(town);
         person.setCode("code");
         person.setApproved(true);
-        person.setLastOnlineTime(LocalDateTime.now());
+        person.setLastOnlineTime(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));
         person.setBlocked(false);
     }
 
@@ -80,16 +99,16 @@ class PersonControllerTest {
                         .id(1L)
                         .firstName("firstName")
                         .lastName("lastName")
-                        .regDate(LocalDateTime.now())
-                        .birthDate(LocalDateTime.now())
+                        .regDate(1L)
+                        .birthDate(1L)
                         .email("test@test.com")
                         .phone("+71002003040")
                         .photo("http://1.jpg")
                         .about("Grand Gatsby")
-                        .country(new Country())
-                        .town(new Town())
+                        .country(country)
+                        .town(town)
                         .messagePermission(MessagePermission.ALL)
-                        .lastOnlineTime(LocalDateTime.now())
+                        .lastOnlineTime(1L)
                         .isBlocked(false)
                         .build())
                 .build();
@@ -100,9 +119,10 @@ class PersonControllerTest {
         personRequest = new PersonRequest();
         personRequest.setFirstName("new first name");
         personRequest.setLastName("new Last name");
-        personRequest.setBirthDate(LocalDateTime.now());
+        personRequest.setBirthDate(1L);
         personRequest.setPhone("+72002002020");
-        //personRequest.setPhotoId("http://2.jpg");
+
+        personRequest.setPhotoId(1L);
         personRequest.setAbout("No.. I'm teapot");
         personRequest.setCountryId(1L);
         personRequest.setTownId(1L);
@@ -118,16 +138,16 @@ class PersonControllerTest {
                         .id(1L)
                         .firstName("new first name")
                         .lastName("new Last name")
-                        .regDate(LocalDateTime.now())
-                        .birthDate(LocalDateTime.now())
+                        .regDate(1L)
+                        .birthDate(1L)
                         .email("test@test.com")
                         .phone("+72002002020")
                         .photo("http://2.jpg")
                         .about("No.. I'm teapot")
-                        .country(new Country())
-                        .town(new Town())
+                        .country(country)
+                        .town(town)
                         .messagePermission(MessagePermission.FRIENDS)
-                        .lastOnlineTime(LocalDateTime.now())
+                        .lastOnlineTime(1L)
                         .isBlocked(false)
                         .build())
                 .build();
@@ -143,7 +163,8 @@ class PersonControllerTest {
     @DisplayName("Get person details is successful")
     public void getPersonDetailTest() {
         when(principal.getName()).thenReturn("test@test.com");
-        when(personRepository.findByEmail("test@test.com")).thenReturn(Optional.of(person));
+        when(personRepository.findByEmail(any())).thenReturn(Optional.of(person));
+        when(townRepository.getById(any())).thenReturn(town);
         assertEquals(Objects.requireNonNull(personController.getPersonDetail(principal).getBody(),
                 "getPersonDetail method turned out to be null").getData(), personResponseForGetDetail.getData());
     }
@@ -159,6 +180,10 @@ class PersonControllerTest {
     public void putPersonDetail() {
         when(principal.getName()).thenReturn("test@test.com");
         when(personRepository.findByEmail("test@test.com")).thenReturn(Optional.of(person));
+        File file = new File();
+        file.setRelativeFilePath("http://2.jpg");
+        when(townRepository.getById(any())).thenReturn(town);
+        when(fileRepository.getById(any())).thenReturn(file);
         assertEquals(Objects.requireNonNull(personController.putPersonDetail(personRequest, principal).getBody(),
                 "putPersonDetail method turned out to be null").getData(), personResponseForPutDetail.getData());
     }
