@@ -36,10 +36,10 @@ public class PersonResponse {
         private String lastName;
 
         @JsonProperty("reg_date")
-        private LocalDateTime regDate;
+        private Long regDate;
 
         @JsonProperty("birth_date")
-        private LocalDateTime birthDate;
+        private Long birthDate;
 
         private String email;
         private String phone;
@@ -52,7 +52,7 @@ public class PersonResponse {
         private MessagePermission messagePermission;
 
         @JsonProperty("last_online_time")
-        private LocalDateTime lastOnlineTime;
+        private Long lastOnlineTime;
 
         @JsonProperty("is_blocked")
         private Boolean isBlocked;

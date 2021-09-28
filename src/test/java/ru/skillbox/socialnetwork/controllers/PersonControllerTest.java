@@ -99,8 +99,8 @@ class PersonControllerTest {
                         .id(1L)
                         .firstName("firstName")
                         .lastName("lastName")
-                        .regDate(LocalDateTime.now())
-                        .birthDate(LocalDateTime.now())
+                        .regDate(1L)
+                        .birthDate(1L)
                         .email("test@test.com")
                         .phone("+71002003040")
                         .photo("http://1.jpg")
@@ -108,7 +108,7 @@ class PersonControllerTest {
                         .country(country)
                         .town(town)
                         .messagePermission(MessagePermission.ALL)
-                        .lastOnlineTime(LocalDateTime.now())
+                        .lastOnlineTime(1L)
                         .isBlocked(false)
                         .build())
                 .build();
@@ -119,9 +119,9 @@ class PersonControllerTest {
         personRequest = new PersonRequest();
         personRequest.setFirstName("new first name");
         personRequest.setLastName("new Last name");
-        personRequest.setBirthDate(LocalDateTime.now());
+        personRequest.setBirthDate(1L);
         personRequest.setPhone("+72002002020");
-        //personRequest.setPhotoId("http://2.jpg");
+
         personRequest.setPhotoId(1L);
         personRequest.setAbout("No.. I'm teapot");
         personRequest.setCountryId(1L);
@@ -138,8 +138,8 @@ class PersonControllerTest {
                         .id(1L)
                         .firstName("new first name")
                         .lastName("new Last name")
-                        .regDate(LocalDateTime.now())
-                        .birthDate(LocalDateTime.now())
+                        .regDate(1L)
+                        .birthDate(1L)
                         .email("test@test.com")
                         .phone("+72002002020")
                         .photo("http://2.jpg")
@@ -147,7 +147,7 @@ class PersonControllerTest {
                         .country(country)
                         .town(town)
                         .messagePermission(MessagePermission.FRIENDS)
-                        .lastOnlineTime(LocalDateTime.now())
+                        .lastOnlineTime(1L)
                         .isBlocked(false)
                         .build())
                 .build();
