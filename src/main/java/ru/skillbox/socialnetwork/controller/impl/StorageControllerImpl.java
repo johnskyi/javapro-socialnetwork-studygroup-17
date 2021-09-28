@@ -1,6 +1,5 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +15,6 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/storage")
-@Tag(name = "Работа с хранилищем сервера")
 public class StorageControllerImpl implements StorageController {
 
     private final StorageService storageService;
