@@ -3,14 +3,22 @@ package ru.skillbox.socialnetwork.controller.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.controller.PersonController;
 import ru.skillbox.socialnetwork.data.dto.*;
+import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.service.PersonService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,9 +31,9 @@ public class PersonControllerImpl implements PersonController {
     @Override
     @GetMapping("/me")
     @CrossOrigin(allowCredentials = "true", origins = {"http://localhost:8080", "http://127.0.0.1:8080", "http://45.134.255.54:5000/"})
-    public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
+    public ResponseEntity<?> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");
-        return ResponseEntity.ok(personService.getPersonDetail(principal));
+        return personService.getPersonDetail(principal);
     }
 
     @Override

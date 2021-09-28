@@ -9,7 +9,7 @@ import ru.skillbox.socialnetwork.data.dto.RegisterResponse;
 import java.security.Principal;
 
 public interface PersonController {
-    ResponseEntity<PersonResponse> getPersonDetail(Principal principal);
+    ResponseEntity<?> getPersonDetail(Principal principal);
 
     ResponseEntity<PersonResponse> putPersonDetail(PersonRequest request, Principal principal);
 

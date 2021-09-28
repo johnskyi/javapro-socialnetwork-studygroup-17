@@ -1,6 +1,7 @@
 package ru.skillbox.socialnetwork.data.entity;
 
 import lombok.Data;
+import ru.skillbox.socialnetwork.data.entity.*;
 
 import javax.persistence.*;
 
