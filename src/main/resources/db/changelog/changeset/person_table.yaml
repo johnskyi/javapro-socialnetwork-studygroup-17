@@ -21,12 +21,12 @@ databaseChangeLog:
                   type: varchar(255)
               - column:
                   name: reg_date
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
                   name: birth_date
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
-                  name: email
+                  name: e_mail
                   type: varchar(255)
               - column:
                   name: phone
@@ -41,10 +41,10 @@ databaseChangeLog:
                   name: about
                   type: varchar(255)
               - column:
-                  name: town
-                  type: varchar(255)
+                  name: town_id
+                  type: BIGINT
               - column:
-                  name: code
+                  name: confirmation_code
                   type: varchar(255)
               - column:
                   name: is_approved
@@ -54,7 +54,7 @@ databaseChangeLog:
                   type: VARCHAR(8)
               - column:
                   name: last_online_time
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
                   name: is_blocked
                   type: BOOLEAN
@@ -78,12 +78,12 @@ databaseChangeLog:
                   value: "фамилия"
               - column:
                   name: reg_date
-                  value: 1565000769
+                  value: 2021-09-01 00:00:00
               - column:
                   name: birth_date
-                  value: 495906724
+                  value: 2021-09-01 00:00:00
               - column:
-                  name: email
+                  name: e_mail
                   value: "email"
               - column:
                   name: phone
@@ -98,10 +98,10 @@ databaseChangeLog:
                   name: about
                   value: "текст о себе"
               - column:
-                  name: town
-                  value: "страна и город проживания"
+                  name: town_id
+                  value: 3355
               - column:
-                  name: code
+                  name: confirmation_code
                   value: "код восстановления пароля / подтверждения регистрации"
               - column:
                   name: is_approved
@@ -111,7 +111,7 @@ databaseChangeLog:
                   value: ALL
               - column:
                   name: last_online_time
-                  value: 1627212720
+                  value: 2021-09-01 00:00:00
               - column:
                   name: is_blocked
                   value: 0
@@ -134,12 +134,12 @@ databaseChangeLog:
                   value: ""
               - column:
                   name: reg_date
-                  value: 1610985124
+                  value: 2021-09-01 00:00:00
               - column:
                   name: birth_date
-                  value: 627407524
+                  value: 2021-09-01 00:00:00
               - column:
-                  name: email
+                  name: e_mail
                   value: "user@server.com"
               - column:
                   name: phone
@@ -154,10 +154,10 @@ databaseChangeLog:
                   name: about
                   value: "о себе данный пользователь сказать может мало, даже фамилию не указал."
               - column:
-                  name: town
-                  value: "Россия, Магадан"
+                  name: town_id
+                  value: 3356
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
@@ -167,7 +167,7 @@ databaseChangeLog:
                   value: ALL
               - column:
                   name: last_online_time
-                  value: 1629301924
+                  value: 2021-09-01 00:00:00
               - column:
                   name: is_blocked
                   value: 0
@@ -190,12 +190,12 @@ databaseChangeLog:
                   value: ""
               - column:
                   name: reg_date
-                  value: 1626623524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: birth_date
-                  value: -14371676
+                  value: 2021-09-01 00:00:00
               - column:
-                  name: email
+                  name: e_mail
                   value: "professor@server.com"
               - column:
                   name: phone
@@ -210,10 +210,10 @@ databaseChangeLog:
                   name: about
                   value: "Преподаю Java ангольским студентам. Иногда это дается легко, а иногда и не очень. Главное синтаксис освоить, а там уже как пойдет."
               - column:
-                  name: town
-                  value: "Angola, Capanda"
+                  name: town_id
+                  value: 3357
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
@@ -223,7 +223,7 @@ databaseChangeLog:
                   value: ALL
               - column:
                   name: last_online_time
-                  value: 1627012720
+                  value: 2021-09-01 00:00:00
               - column:
                   name: is_blocked
                   value: 0
@@ -246,12 +246,12 @@ databaseChangeLog:
                   value: "Gates"
               - column:
                   name: reg_date
-                  value: 504201124
+                  value: 2021-09-01 00:00:00
               - column:
                   name: birth_date
-                  value: 495906724
+                  value: 2021-09-01 00:00:00
               - column:
-                  name: email
+                  name: e_mail
                   value: "gates@apple.com"
               - column:
                   name: phone
@@ -266,10 +266,10 @@ databaseChangeLog:
                   name: about
                   value: "Работаю... Стоп, а где же я работаю? Ах, да я же рабоt$#%@#%G.ваофукащшотсята8угфка"
               - column:
-                  name: town
-                  value: "США, Альбукерке"
+                  name: town_id
+                  value: 3358
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
@@ -279,7 +279,7 @@ databaseChangeLog:
                   value: ALL
               - column:
                   name: last_online_time
-                  value: 1631289124
+                  value: 2021-09-01 00:00:00
               - column:
                   name: is_blocked
                   value: 0
@@ -302,12 +302,12 @@ databaseChangeLog:
                   value: "Джобс"
               - column:
                   name: reg_date
-                  value: 1565090769
+                  value: 2021-09-01 00:00:00
               - column:
                   name: birth_date
-                  value: -468662876
+                  value: 2021-09-01 00:00:00
               - column:
-                  name: email
+                  name: e_mail
                   value: "jobs@hh.ru"
               - column:
                   name: phone
@@ -322,10 +322,10 @@ databaseChangeLog:
                   name: about
                   value: "Как же без данного персонажа. Никто читать не будет"
               - column:
-                  name: town
-                  value: "США, Калиформия"
+                  name: town_id
+                  value: 3360
               - column:
-                  name: code
+                  name: confirmation_code
                   value: ""
               - column:
                   name: is_approved
@@ -335,7 +335,7 @@ databaseChangeLog:
                   value: ALL
               - column:
                   name: last_online_time
-                  value: 1227212720
+                  value: 2021-09-01 00:00:00
               - column:
                   name: is_blocked
                   value: 1

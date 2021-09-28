@@ -12,8 +12,10 @@ import ru.skillbox.socialnetwork.controller.PersonController;
 import ru.skillbox.socialnetwork.controller.impl.PersonControllerImpl;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
+import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.service.impl.PersonServiceImpl;
 
@@ -55,17 +57,17 @@ class PersonControllerTest {
         person.setId(1L);
         person.setFirstName("firstName");
         person.setLastName("lastName");
-        person.setRegTime(1L);
-        person.setBirthTime(1L);
+        person.setRegTime(LocalDateTime.now());
+        person.setBirthTime(LocalDateTime.now());
         person.setEmail("test@test.com");
         person.setPhone("+71002003040");
         person.setPhoto("http://1.jpg");
         person.setPassword("12345678");
         person.setAbout("Grand Gatsby");
-        person.setTown("Russia \u2588 Moscow");
+//        person.setTown("Russia \u2588 Moscow");
         person.setCode("code");
         person.setApproved(true);
-        person.setLastOnlineTime(1L);
+        person.setLastOnlineTime(LocalDateTime.now());
         person.setBlocked(false);
     }
 
@@ -78,16 +80,16 @@ class PersonControllerTest {
                         .id(1L)
                         .firstName("firstName")
                         .lastName("lastName")
-                        .regDate(1L)
-                        .birthDate(1L)
+                        .regDate(LocalDateTime.now())
+                        .birthDate(LocalDateTime.now())
                         .email("test@test.com")
                         .phone("+71002003040")
                         .photo("http://1.jpg")
                         .about("Grand Gatsby")
-                        .country("Russia")
-                        .city("Moscow")
+                        .country(new Country())
+                        .town(new Town())
                         .messagePermission(MessagePermission.ALL)
-                        .lastOnlineTime(1L)
+                        .lastOnlineTime(LocalDateTime.now())
                         .isBlocked(false)
                         .build())
                 .build();
@@ -98,12 +100,12 @@ class PersonControllerTest {
         personRequest = new PersonRequest();
         personRequest.setFirstName("new first name");
         personRequest.setLastName("new Last name");
-        personRequest.setBirthDate(2L);
+        personRequest.setBirthDate(LocalDateTime.now());
         personRequest.setPhone("+72002002020");
-        personRequest.setPhotoId("http://2.jpg");
+        //personRequest.setPhotoId("http://2.jpg");
         personRequest.setAbout("No.. I'm teapot");
-        personRequest.setCountryId("Russia");
-        personRequest.setTownId("Moscow");
+        personRequest.setCountryId(1L);
+        personRequest.setTownId(1L);
         personRequest.setMessagePermission(MessagePermission.FRIENDS);
     }
 
@@ -116,16 +118,16 @@ class PersonControllerTest {
                         .id(1L)
                         .firstName("new first name")
                         .lastName("new Last name")
-                        .regDate(1L)
-                        .birthDate(2L)
+                        .regDate(LocalDateTime.now())
+                        .birthDate(LocalDateTime.now())
                         .email("test@test.com")
                         .phone("+72002002020")
                         .photo("http://2.jpg")
                         .about("No.. I'm teapot")
-                        .country("Russia")
-                        .city("Moscow")
+                        .country(new Country())
+                        .town(new Town())
                         .messagePermission(MessagePermission.FRIENDS)
-                        .lastOnlineTime(1L)
+                        .lastOnlineTime(LocalDateTime.now())
                         .isBlocked(false)
                         .build())
                 .build();

@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.data.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -19,10 +20,10 @@ public class Person {
     private String lastName;
 
     @Column(name = "reg_date")
-    private long regTime;
+    private LocalDateTime regTime;
 
     @Column(name = "birth_date")
-    private long birthTime;
+    private LocalDateTime birthTime;
 
     @Column(name = "e_mail")
     private String email;
@@ -35,7 +36,8 @@ public class Person {
 
     private String about;
 
-    private String town;
+    @ManyToOne
+    private Town town;
 
     @Column(name = "confirmation_code")
     private String code;
@@ -43,17 +45,19 @@ public class Person {
     @Column(name = "is_approved")
     private boolean isApproved;
 
+
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "messages_permission", length = 8, nullable = false)
+    @Column(name = "message_permission", length = 8, nullable = false)
     private MessagePermission messagePermission = MessagePermission.ALL;
 
     @Column(name = "last_online_time")
-    private long lastOnlineTime;
+    private LocalDateTime lastOnlineTime;
 
     @Column(name = "is_blocked")
     private boolean isBlocked;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = 16)
+    @Column(name = "role", length = 16)
     private UserType type;
 }

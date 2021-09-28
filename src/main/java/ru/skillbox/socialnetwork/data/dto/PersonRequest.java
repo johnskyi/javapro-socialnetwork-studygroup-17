@@ -5,6 +5,8 @@ import lombok.Data;
 import ru.skillbox.socialnetwork.annotations.NullOrPattern;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 
+import java.time.LocalDateTime;
+
 @Data
 public class PersonRequest {
     @JsonProperty("first_name")
@@ -18,22 +20,22 @@ public class PersonRequest {
     private String lastName;
 
     @JsonProperty("birth_date")
-    private Long birthDate;
+    private LocalDateTime birthDate;
 
     @NullOrPattern(pattern = "^\\+?[78]?-?\\s?\\(?\\d{3}\\)?-?\\s?\\d{3}-?\\s?\\d{2}-?\\s?\\d{2}$",
             message = "Неверный формат телефона")
     private String phone;
 
     @JsonProperty("photo_id")
-    private String photoId;
+    private Long photoId;
 
     private String about;
 
     @JsonProperty("town_id")
-    private String townId;
+    private Long townId;
 
     @JsonProperty("country_id")
-    private String countryId;
+    private Long countryId;
 
     @JsonProperty("messages_permission")
     private MessagePermission messagePermission;

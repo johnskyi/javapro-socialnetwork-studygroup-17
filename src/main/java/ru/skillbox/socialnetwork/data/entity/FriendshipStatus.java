@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.data.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -12,7 +13,7 @@ public class FriendshipStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long time;
+    private LocalDateTime time;
 
     private String name;
 
