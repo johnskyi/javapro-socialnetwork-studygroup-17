@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "country")
+@Table(name = "countries")
 public class Country implements Platform {
 
     @Id

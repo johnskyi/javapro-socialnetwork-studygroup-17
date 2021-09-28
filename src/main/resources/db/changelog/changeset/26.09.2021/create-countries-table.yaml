@@ -5,7 +5,7 @@ databaseChangeLog:
       author: Yury Platonov
       changes:
         - createTable:
-            tableName: country
+            tableName: countries
             columns:
               - column:
                   name: id

@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "city")
+@Table(name = "cities")
 public class Town implements Platform {
 
     @Id
@@ -18,6 +18,5 @@ public class Town implements Platform {
     String name;
 
     @ManyToOne
-    //  @JoinColumn(name ="country_id", columnDefinition= "id", insertable = false, updatable = false)
     Country country;
 }

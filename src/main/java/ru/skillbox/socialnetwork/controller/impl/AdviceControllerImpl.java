@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.skillbox.socialnetwork.controller.AdviceController;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 
 import java.util.Objects;
 
@@ -17,6 +18,12 @@ public class AdviceControllerImpl implements AdviceController {
     @Override
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse> userNotFoundExceptionHandler(UsernameNotFoundException exception) {
+        return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PersonNotAuthorized.class)
+    public ResponseEntity<ErrorResponse> PersonNotAuthorizedExceptionHandler(PersonNotAuthorized exception) {
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
