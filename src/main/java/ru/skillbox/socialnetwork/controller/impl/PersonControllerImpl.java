@@ -1,28 +1,26 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.controller.PersonController;
-import ru.skillbox.socialnetwork.data.dto.*;
-import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.dto.PersonRequest;
+import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.service.PersonService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
+@Tag(name = "Работа с профилем")
 public class PersonControllerImpl implements PersonController {
 
     private final PersonService personService;
