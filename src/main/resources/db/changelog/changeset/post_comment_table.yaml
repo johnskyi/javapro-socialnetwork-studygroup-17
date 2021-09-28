@@ -16,7 +16,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: time
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
                   name: post_id
                   type: BIGINT
@@ -42,7 +42,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1632955012
+                  value: 2021-09-01 00:00:00
               - column:
                   name: post_id
                   value: 9
@@ -60,7 +60,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1632956012
+                  value: 2021-09-01 00:00:00
               - column:
                   name: post_id
                   value: 9
@@ -81,7 +81,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1632957012
+                  value: 2021-09-01 00:00:00
               - column:
                   name: post_id
                   value: 9
@@ -102,7 +102,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1632958012
+                  value: 2021-09-01 00:00:00
               - column:
                   name: post_id
                   value: 9
@@ -123,7 +123,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1634958012
+                  value: 2021-09-01 00:00:00
               - column:
                   name: post_id
                   value: 15
@@ -141,7 +141,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1634958112
+                  value: 2021-09-01 00:00:00
               - column:
                   name: post_id
                   value: 15
@@ -162,7 +162,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1633958012
+                  value: 2021-09-01 00:00:00
               - column:
                   name: post_id
                   value: 9

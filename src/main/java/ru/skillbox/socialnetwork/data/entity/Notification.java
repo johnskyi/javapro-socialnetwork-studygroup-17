@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.data.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,7 +18,7 @@ public class Notification {
     private NotificationType type;
 
     @Column(name = "sent_time")
-    private long time;
+    private LocalDateTime time;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "id")

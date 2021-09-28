@@ -8,7 +8,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+<<<<<<< HEAD
 @Table(name = "countries")
+=======
+@Table(name = "country")
+>>>>>>> s1/t6v2
 public class Country implements Platform {
 
     @Id
@@ -16,3 +20,7 @@ public class Country implements Platform {
     Long id;
     String name;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> s1/t6v2

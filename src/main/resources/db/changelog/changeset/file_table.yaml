@@ -60,4 +60,8 @@ databaseChangeLog:
 #              - column:
 #                  name: path
 #                  value: "https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz"
+<<<<<<< HEAD
 #
+=======
+#
+>>>>>>> s1/t6v2

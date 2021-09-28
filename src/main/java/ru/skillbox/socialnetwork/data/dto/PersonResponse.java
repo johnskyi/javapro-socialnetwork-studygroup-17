@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 import ru.skillbox.socialnetwork.data.entity.Town;
+import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -36,10 +37,10 @@ public class PersonResponse {
         private String lastName;
 
         @JsonProperty("reg_date")
-        private Long regDate;
+        private LocalDateTime regDate;
 
         @JsonProperty("birth_date")
-        private Long birthDate;
+        private LocalDateTime birthDate;
 
         private String email;
         private String phone;
@@ -52,7 +53,7 @@ public class PersonResponse {
         private MessagePermission messagePermission;
 
         @JsonProperty("last_online_time")
-        private Long lastOnlineTime;
+        private LocalDateTime lastOnlineTime;
 
         @JsonProperty("is_blocked")
         private Boolean isBlocked;

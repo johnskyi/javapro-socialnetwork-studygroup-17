@@ -16,7 +16,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: time
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
                   name: name
                   type: varchar(255)
@@ -33,7 +33,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1631996398
+                  value: 2021-09-01 00:00:00
               - column:
                   name: name
                   value: "Friendship name1"
@@ -45,7 +45,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1631986398
+                  value: 2021-09-01 00:00:00
               - column:
                   name: name
                   value: "Friendship name2"
@@ -57,7 +57,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1631986398
+                  value: 2021-09-01 00:00:00
               - column:
                   name: name
                   value: "Friendship name2"
@@ -69,7 +69,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1631976398
+                  value: 2021-09-01 00:00:00
               - column:
                   name: name
                   value: "Friendship name3"
@@ -81,7 +81,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1631975398
+                  value: 2021-09-01 00:00:00
               - column:
                   name: name
                   value: "Friendship name4"
@@ -93,7 +93,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1631974398
+                  value: 2021-09-01 00:00:00
               - column:
                   name: name
                   value: "Friendship name5"
@@ -105,7 +105,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1630974398
+                  value: 2021-09-01 00:00:00
               - column:
                   name: name
                   value: "Friendship name6"
