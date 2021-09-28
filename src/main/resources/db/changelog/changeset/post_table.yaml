@@ -15,7 +15,7 @@ databaseChangeLog:
                     primaryKey: true
               - column:
                   name: time
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
                   name: author_id
                   type: BIGINT
@@ -39,7 +39,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1582559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 3
@@ -57,7 +57,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1592559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 5
@@ -75,7 +75,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1592559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 5
@@ -93,7 +93,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1612559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 5
@@ -111,7 +111,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1632559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 5
@@ -129,7 +129,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1652559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 4
@@ -147,7 +147,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1662559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 4
@@ -165,7 +165,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1672559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 4
@@ -183,7 +183,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1682559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 4
@@ -202,7 +202,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1613559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 2
@@ -220,7 +220,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1615559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 2
@@ -238,7 +238,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1617559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 2
@@ -256,7 +256,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1619559524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 2
@@ -274,7 +274,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1619759624
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 2
@@ -292,7 +292,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1620259524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 3
@@ -310,7 +310,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1620459524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 3
@@ -328,7 +328,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1621759524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 3
@@ -346,7 +346,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1621289524
+                  value: 2021-09-01 00:00:00
               - column:
                   name: author_id
                   value: 3

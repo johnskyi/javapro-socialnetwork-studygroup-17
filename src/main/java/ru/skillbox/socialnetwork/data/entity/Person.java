@@ -47,6 +47,8 @@ public class Person {
     @Column(name = "is_approved")
     private boolean isApproved;
 
+
+
     @Enumerated(EnumType.STRING)
     @Column(name = "message_permission", length = 8, nullable = false)
     private MessagePermission messagePermission = MessagePermission.ALL;

@@ -19,7 +19,7 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: sent_time
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
                   name: person_id
                   type: BIGINT
@@ -42,7 +42,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: sent_time
-                  value: 1615196434
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 4
@@ -60,7 +60,7 @@ databaseChangeLog:
                   value: 2
               - column:
                   name: sent_time
-                  value: 1625196434
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 3
@@ -78,7 +78,7 @@ databaseChangeLog:
                   value: 4
               - column:
                   name: sent_time
-                  value: 1605196434
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 2
