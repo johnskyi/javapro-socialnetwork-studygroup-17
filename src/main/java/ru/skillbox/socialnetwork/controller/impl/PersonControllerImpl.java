@@ -31,9 +31,9 @@ public class PersonControllerImpl implements PersonController {
     @Override
     @GetMapping("/me")
     @CrossOrigin(allowCredentials = "true", origins = {"http://localhost:8080", "http://127.0.0.1:8080", "http://45.134.255.54:5000/"})
-    public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
+    public ResponseEntity<?> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");
-        return ResponseEntity.ok(personService.getPersonDetail(principal));
+        return personService.getPersonDetail(principal);
     }
 
     @Override

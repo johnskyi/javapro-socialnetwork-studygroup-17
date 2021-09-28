@@ -3,8 +3,12 @@ package ru.skillbox.socialnetwork.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
@@ -18,7 +22,9 @@ import ru.skillbox.socialnetwork.service.PersonService;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Service
@@ -32,8 +38,13 @@ public class PersonServiceImpl implements PersonService {
     private final FileRepository fileRepository;
 
     @Override
-    public PersonResponse getPersonDetail(Principal principal) {
-        return createFullPersonResponse(findPerson(principal));
+    public ResponseEntity<?> getPersonDetail(Principal principal) {
+        if(SecurityContextHolder.getContext().getAuthentication().getName() == null){
+            return new ResponseEntity<>(new ErrorResponse("invalid_request", "User unauthorized"), HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(createFullPersonResponse(personRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+        ), HttpStatus.OK);
     }
 
     @Override
@@ -70,8 +81,10 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (Objects.nonNull(request.getBirthDate())) {
-            person.setBirthTime(LocalDateTime.ofEpochSecond(request.getBirthDate(), 0, ZoneOffset.UTC));
+            //person.setBirthTime(request.getBirthDate());
+            //person.setBirthTime(LocalDateTime.ofEpochSecond(request.getBirthDate(), 0, ZoneOffset.UTC));
         }
+
 
         if (Objects.nonNull(request.getPhone())) {
             person.setPhone(getFormattedPhone(request.getPhone()));
@@ -120,8 +133,8 @@ public class PersonServiceImpl implements PersonService {
                         .id(person.getId())
                         .firstName(person.getFirstName())
                         .lastName(person.getLastName())
-                        .regDate(person.getRegTime().toEpochSecond(ZoneOffset.UTC))
-                        .birthDate(person.getBirthTime().toEpochSecond(ZoneOffset.UTC))
+                        .regDate(ZonedDateTime.of(person.getRegTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
+                        .birthDate(ZonedDateTime.of(person.getBirthTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
                         .email(person.getEmail())
                         .phone(person.getPhone())
                         .photo(person.getPhoto())
@@ -129,7 +142,7 @@ public class PersonServiceImpl implements PersonService {
                         .town(person.getTown())
                         .country(person.getTown().getCountry())
                         .messagePermission(person.getMessagePermission())
-                        .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
+                        .lastOnlineTime(ZonedDateTime.of(person.getLastOnlineTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
                         .isBlocked(person.isBlocked())
                         .build())
                 .build();

@@ -23,12 +23,6 @@ public class AuthController {
         return authService.login(request);
     }
 
-    @GetMapping("/api/v1/users/me")
-    @CrossOrigin(allowCredentials = "true", origins = "http://localhost:8080")
-    public ResponseEntity<?> getPersonDetail(Principal principal){
-        return authService.me(principal);
-    }
-
     @PostMapping("/api/v1/auth/logout")
     @CrossOrigin(allowCredentials = "true", origins = "http://localhost:8080")
     @PreAuthorize("hasAuthority('user:write')")

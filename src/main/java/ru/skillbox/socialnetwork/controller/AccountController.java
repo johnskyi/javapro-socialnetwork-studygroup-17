@@ -13,7 +13,9 @@ import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.UserType;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
 

@@ -27,7 +27,7 @@ public class Person {
     @Column(name = "birth_date")
     private LocalDateTime birthTime;
 
-    @Column(name = "email")
+    @Column(name = "e_mail")
     private String email;
 
     private String phone;
@@ -41,7 +41,7 @@ public class Person {
     @ManyToOne
     private Town town;
 
-    @Column(name = "code")
+    @Column(name = "confirmation_code")
     private String code;
 
     @Column(name = "is_approved")

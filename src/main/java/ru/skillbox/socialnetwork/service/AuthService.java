@@ -18,7 +18,9 @@ import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 @Service
 public class AuthService {
@@ -46,15 +48,6 @@ public class AuthService {
 
     }
 
-    public ResponseEntity<?> me(Principal principal){
-        if(SecurityContextHolder.getContext().getAuthentication().getName() == null){
-            return new ResponseEntity<>(new ErrorResponse("invalid_request", "User unauthorized"), HttpStatus.UNAUTHORIZED);
-        }
-        return new ResponseEntity<>(createFullPersonResponse(personRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
-        ), HttpStatus.OK);
-    }
-
     public ResponseEntity<?> logout(){
         SecurityContextHolder.clearContext();
         if(SecurityContextHolder.getContext().getAuthentication() != null){
@@ -70,7 +63,6 @@ public class AuthService {
 
 
     private PersonResponse createFullPersonResponse(Person person) {
-        String[] location = person.getTown().split(",");
         return PersonResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
@@ -78,16 +70,15 @@ public class AuthService {
                         .id(person.getId())
                         .firstName(person.getFirstName())
                         .lastName(person.getLastName())
-                        .regDate(person.getRegTime())
-                        .birthDate(person.getBirthTime())
+                        .regDate(ZonedDateTime.of(person.getRegTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
+                        .birthDate(ZonedDateTime.of(person.getBirthTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
                         .email(person.getEmail())
                         .phone(person.getPhone())
                         .photo(person.getPhoto())
                         .about(person.getAbout())
-                        .country(location[0].trim())
-                        .city(location[1].trim())
+                        .country(person.getTown().getCountry())
                         .messagePermission(person.getMessagePermission())
-                        .lastOnlineTime(person.getLastOnlineTime())
+                        .lastOnlineTime(ZonedDateTime.of(person.getLastOnlineTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
                         .isBlocked(person.isBlocked())
                         .build())
                 .build();
