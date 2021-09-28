@@ -1,7 +1,5 @@
 package ru.skillbox.socialnetwork.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import java.util.Optional;
 import java.util.Random;
 
 @RestController
-@Tag(name = "Регистрация пользователя")
 public class AccountController {
 
     @Autowired
@@ -38,7 +35,6 @@ public class AccountController {
 
     @CrossOrigin(allowCredentials = "true", origins = "http://127.0.0.1:8080")
     @PostMapping("/api/v1/account/register")
-    @Operation(summary = "Регистрация")
     public ResponseEntity regPerson(@RequestBody RegisterRequest registerRequest) {
         if(!registerRequest.getPasswd1().equals(registerRequest.getPasswd2())){
             return new ResponseEntity<>(new ErrorResponse("invalid_request", "Пароли не совпадают"),
@@ -73,7 +69,6 @@ public class AccountController {
 
     @CrossOrigin(allowCredentials = "true", origins = "http://127.0.0.1:8080")
     @PostMapping("/api/v1/account/register/confirm")
-    @Operation(summary = "Подтверждение регистрации")
     public ResponseEntity confirmPerson(@RequestBody ConfirmUserRequest confirmUserRequest) {
         Person person = personRepo.findByIdAndCode(confirmUserRequest.getUserId(), confirmUserRequest.getToken()).get();
         if(person != null){
