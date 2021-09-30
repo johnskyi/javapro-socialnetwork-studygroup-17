@@ -8,7 +8,7 @@ import java.security.Principal;
 
 public interface PersonService {
 
-    ResponseEntity<?> getPersonDetail(Principal principal);
+    PersonResponse getPersonDetail(Principal principal);
 
     PersonResponse putPersonDetail(PersonRequest personRequest, Principal principal);
 
