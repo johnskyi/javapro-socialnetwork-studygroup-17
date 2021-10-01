@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers("/api/v1/account/register/confirm").permitAll()
                 .antMatchers("/api/v1/platform/languages").permitAll()
                 .antMatchers("/api/v1/auth/logout").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .rememberMe()
                 .and()

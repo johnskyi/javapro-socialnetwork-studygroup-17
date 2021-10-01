@@ -10,8 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.data.dto.*;
 import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.entity.UserType;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.repository.TownRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -23,6 +25,9 @@ import java.util.Random;
 public class AccountController {
 
     @Autowired
+    private final TownRepository townRepository;
+
+    @Autowired
     private final PersonRepo personRepo;
 
     @Autowired
@@ -31,14 +36,15 @@ public class AccountController {
     @Value("${spring.mail.username}")
     private String userName;
 
-    public AccountController(PersonRepo personRepo) {
+    public AccountController(PersonRepo personRepo, TownRepository townRepository) {
         this.personRepo = personRepo;
+        this.townRepository = townRepository;
     }
 
     @CrossOrigin(allowCredentials = "true", origins = "http://127.0.0.1:8080")
     @PostMapping("/api/v1/account/register")
     public ResponseEntity regPerson(@RequestBody RegisterRequest registerRequest) {
-        if(!registerRequest.getPasswd1().equals(registerRequest.getPasswd2())){
+        if (!registerRequest.getPasswd1().equals(registerRequest.getPasswd2())) {
             return new ResponseEntity<>(new ErrorResponse("invalid_request", "Пароли не совпадают"),
                     HttpStatus.BAD_REQUEST);
         }
@@ -51,6 +57,8 @@ public class AccountController {
         Person person = new Person();
         person.setFirstName(registerRequest.getFirstName());
         person.setLastName(registerRequest.getLastName());
+        person.setBirthTime(LocalDateTime.now());
+        person.setTown(townRepository.getById(1L));
         person.setEmail(registerRequest.getEmail());
         person.setCode(Integer.toString(new Random().nextInt(9999 - 1000) + 1000));
         person.setPassword(new BCryptPasswordEncoder().encode(registerRequest.getPasswd1()));
@@ -58,27 +66,26 @@ public class AccountController {
         person.setLastOnlineTime(LocalDateTime.now());
         person.setType(UserType.USER);
         personRepo.save(person);
-        RegisterResponse registerResponse = new RegisterResponse("",LocalDateTime.now(),new RegisterResponse.Data("ok"));
+        RegisterResponse registerResponse = new RegisterResponse("", LocalDateTime.now(), new RegisterResponse.Data("ok"));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(userName);
         mailMessage.setTo(email);
         mailMessage.setSubject("Подтверждение учетной записи");
         mailMessage.setText("Для подтверждение учетной записи, пожалуйста, пройдите по ссылке \n" +
-                "http://45.134.255.54:5000/registration/complete?userId="+ person.getId()+"&token=" + person.getCode());
+                "http://45.134.255.54:5000/registration/complete?userId=" + person.getId() + "&token=" + person.getCode());
         javaMailSender.send(mailMessage);
-        return new ResponseEntity<>(registerResponse,HttpStatus.OK);
+        return new ResponseEntity<>(registerResponse, HttpStatus.OK);
     }
 
     @CrossOrigin(allowCredentials = "true", origins = "http://127.0.0.1:8080")
     @PostMapping("/api/v1/account/register/confirm")
     public ResponseEntity confirmPerson(@RequestBody ConfirmUserRequest confirmUserRequest) {
         Person person = personRepo.findByIdAndCode(confirmUserRequest.getUserId(), confirmUserRequest.getToken()).get();
-        if(person != null){
+        if (person != null) {
             person.setApproved(true);
             personRepo.save(person);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

@@ -10,7 +10,7 @@ public interface PlatformController {
     ResponseEntity<PlatformResponse> getLanguages();
 
     @GetMapping("/countries")
-    ResponseEntity<PlatformResponse> getCountries(String country, int offset, int itemPerPage);
+    ResponseEntity<PlatformResponse> getCountries(String country, Integer offset, Integer itemPerPage);
 
     @GetMapping("/cities")
     ResponseEntity<PlatformResponse> getCities(Long countryId, String city, int offset, int itemPerPage);
