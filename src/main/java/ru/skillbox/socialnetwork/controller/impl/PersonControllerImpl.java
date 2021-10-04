@@ -30,7 +30,6 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     @GetMapping("/me")
-    @CrossOrigin(allowCredentials = "true", origins = {"http://localhost:8080", "http://127.0.0.1:8080", "http://45.134.255.54:5000/"})
     public ResponseEntity<?> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");
         return personService.getPersonDetail(principal);
@@ -38,7 +37,6 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     @PutMapping("/me")
-    @CrossOrigin(allowCredentials = "true", origins = {"http://localhost:8080", "http://127.0.0.1:8080", "http://45.134.255.54:5000/"})
     public ResponseEntity<PersonResponse> putPersonDetail(@Valid @RequestBody PersonRequest personRequest, Principal principal) {
         logger.info("Call PUT /api/v1/users/me");
         return ResponseEntity.ok(personService.putPersonDetail(personRequest, principal));
@@ -46,7 +44,6 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     @DeleteMapping("/me")
-    @CrossOrigin(allowCredentials = "true", origins = {"http://localhost:8080", "http://127.0.0.1:8080", "http://45.134.255.54:5000/"})
     public ResponseEntity<PersonResponse> deletePerson(Principal principal) {
         logger.info("Call DELETE /api/v1/users/me");
         return ResponseEntity.ok(personService.deletePerson(principal));

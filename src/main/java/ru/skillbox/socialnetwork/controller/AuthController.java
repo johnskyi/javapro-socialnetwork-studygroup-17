@@ -18,13 +18,11 @@ public class AuthController {
     }
 
     @PostMapping("/api/v1/auth/login")
-    @CrossOrigin(allowCredentials = "true", origins = "http://localhost:8080")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         return authService.login(request);
     }
 
     @PostMapping("/api/v1/auth/logout")
-    @CrossOrigin(allowCredentials = "true", origins = "http://localhost:8080")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> logout(){
         return authService.logout();
