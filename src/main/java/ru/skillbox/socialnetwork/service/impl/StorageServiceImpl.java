@@ -1,38 +1,35 @@
 package ru.skillbox.socialnetwork.service.impl;
 
-import com.dropbox.core.v2.files.FileMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skillbox.socialnetwork.config.DropBoxConfig;
+import ru.skillbox.socialnetwork.config.CloudinaryConfig;
 import ru.skillbox.socialnetwork.data.dto.StorageResponse;
-import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.File;
-import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
+import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.service.StorageService;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class StorageServiceImpl implements StorageService {
 
-    private final DropBoxConfig dropBoxConfig;
+    private final CloudinaryConfig cloudinaryConfig;
     private final FileRepository postFileRepository;
     private final PersonRepo personRepository;
-    //  private final Logger logger = LoggerFactory.getLogger(StorageServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(StorageServiceImpl.class);
 
 
     @Override
@@ -45,38 +42,26 @@ public class StorageServiceImpl implements StorageService {
     @SneakyThrows
     private File saveToBD(Person person, MultipartFile multipartFile) {
 
-        FileMetadata metadata = dropBoxConfig.getClient().files().uploadBuilder("/".concat(multipartFile.getName()))
-                .uploadAndFinish(multipartFile.getInputStream());
+        Map<String, Object> uploadFileMetaData = cloudinaryConfig.uploadFileWithParam(multipartFile, Map.of());
+        logger.info("upload file url:\n {}", uploadFileMetaData.get("url"));
 
-        Set<String> mimeType = Set.of("image/gif", "image/jpeg", "image/tiff", "image/png");
+        String smallImageUrl = "";
+        if (uploadFileMetaData.get("resource_type").equals("image")) {
+            smallImageUrl = cloudinaryConfig.scaleUploadedImage((String) uploadFileMetaData.get("public_id"), 200);
+            logger.info("scaled image url:\n {}", smallImageUrl);
+        }
 
         File file = new File();
         file.setOwner(person);
-        file.setRelativeFilePath(metadata.getPathLower());
-        if (mimeType.contains(multipartFile.getContentType())) {
-            file.setRawFileURL(getCompressedImageUrl(multipartFile));
-        }
-        file.setFileFormat(multipartFile.getName().replaceAll(".*\\.", ""));
+        file.setRelativeFilePath((String) uploadFileMetaData.get("url"));
+        file.setRawFileURL(smallImageUrl);
+        file.setFileFormat((String) uploadFileMetaData.get("format"));
         file.setBytes(multipartFile.getSize());
-        file.setFileType(multipartFile.getContentType());
+        file.setFileType((String) uploadFileMetaData.get("resource_type"));
         file.setFileName(multipartFile.getOriginalFilename());
         file.setCreatedAt(LocalDateTime.now());
 
         return postFileRepository.save(file);
-    }
-
-    @SneakyThrows
-    private String getCompressedImageUrl(MultipartFile multipartFile) {
-
-        BufferedImage bufferedImage = Scalr.resize(ImageIO.read(multipartFile.getInputStream()), 200);
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "jpeg", os);
-        InputStream is = new ByteArrayInputStream(os.toByteArray());
-
-        FileMetadata metadata = dropBoxConfig.getClient().files().uploadBuilder("/small-".concat(multipartFile.getName()))
-                .uploadAndFinish(is);
-        return metadata.getPathLower();
     }
 
     private StorageResponse createStorageResponse(File file) {

@@ -21,7 +21,6 @@ public class PersonControllerImpl implements PersonController {
     private final Logger logger = LoggerFactory.getLogger(PersonControllerImpl.class);
 
     @Override
-   // @CrossOrigin(allowCredentials = "true", origins = "http://localhost:8080/")
     public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");
         return ResponseEntity.ok(personService.getPersonDetail(principal));

@@ -5,13 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.controller.PlatformController;
 import ru.skillbox.socialnetwork.data.dto.PlatformResponse;
 import ru.skillbox.socialnetwork.service.PlatformService;
-import ru.skillbox.socialnetwork.service.impl.PlatformServiceImpl;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class PlatformControllerImpl implements PlatformController {
         logger.info("country {}, offset {}, itemPerPage {}", country, offset, itemPerPage);
         return ResponseEntity.ok(platformService.getCountries(country, offset, itemPerPage));
     }
-
+    ///api/v1/platform/getAllCountriesWithTowns
     @Override
     public ResponseEntity<PlatformResponse> getCities(Long countryId, String city, int offset, int itemPerPage) {
         return ResponseEntity.ok(platformService.getCities(countryId, city, offset, itemPerPage));

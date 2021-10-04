@@ -1,9 +1,6 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
@@ -19,6 +16,7 @@ import ru.skillbox.socialnetwork.service.PersonService;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
@@ -26,7 +24,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
-    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
+//    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private final PersonRepo personRepository;
     private final TownRepository townRepository;
@@ -71,7 +69,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (Objects.nonNull(request.getBirthDate())) {
-            person.setBirthTime(LocalDateTime.ofEpochSecond(request.getBirthDate(), 0, ZoneOffset.UTC));
+            person.setBirthTime(OffsetDateTime.parse( request.getBirthDate() ).toLocalDateTime());
         }
 
 
@@ -107,7 +105,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private Person findPerson(Principal principal) {
-        if (Objects.isNull(SecurityContextHolder.getContext().getAuthentication().getName())) {
+        if (Objects.isNull(principal.getName())) {
             throw new PersonNotAuthorized("The Person not authorized");
         }
         return personRepository.findByEmail(principal.getName())
