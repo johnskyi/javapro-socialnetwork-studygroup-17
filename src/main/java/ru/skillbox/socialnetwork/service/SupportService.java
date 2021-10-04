@@ -14,9 +14,8 @@ public class SupportService {
 
     public ResponseEntity<?> supportMessage(SupportMessageRequest request){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(request.getEmail());
-        mailMessage.setTo("bofoj50733@decorbuz.com");
-        mailMessage.setSubject("SupportMessage");
+        mailMessage.setTo("javapro.social@gmail.com");
+        mailMessage.setSubject("SupportMessage From " + request.getEmail());
         mailMessage.setText(request.getMessage());
         javaMailSender.send(mailMessage);
         return ResponseEntity.ok("ok");
