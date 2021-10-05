@@ -33,8 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("http://localhost:8080", "http://localhost:8086",
-                        "http://127.0.0.1:8080", "http://127.0.0.1:8086, http://127.0.0.1:8082",
-                        "http://127.0.0.1:8084")
+                        "http://127.0.0.1:8080", "http://127.0.0.1:8086",
+                        "http://127.0.0.1:8082", "http://127.0.0.1:8084",
+                        "http://45.134.255.54:5000")
                 .allowedMethods("GET", "PUT", "DELETE", "POST")
                 .allowCredentials(true);
     }
