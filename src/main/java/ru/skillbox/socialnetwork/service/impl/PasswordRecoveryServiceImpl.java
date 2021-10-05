@@ -14,6 +14,7 @@ import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Service
@@ -33,8 +34,8 @@ public class PasswordRecoveryServiceImpl {
 
     public PasswordRecoveryResponse send(String email) {
         Person person = findPersonByEmail(email);
-        String message = person.getEmail();
-        sendEmail(email, message);
+        String token = person.getCode();
+        sendEmail(email, token);
         return PasswordRecoveryResponse.builder()
                 .error("string")
                 .timestamp(System.currentTimeMillis())
@@ -53,10 +54,11 @@ public class PasswordRecoveryServiceImpl {
                 .build();
     }
 
-    public PasswordRecoveryResponse setEmail(String newEmail) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    public PasswordRecoveryResponse setEmail(String newEmail, Principal principal) {
+        String email = principal.getName();
         Person person = findPersonByEmail(email);
         person.setEmail(newEmail);
+        personRepo.save(person);
         return PasswordRecoveryResponse.builder()
                 .error("string")
                 .timestamp(System.currentTimeMillis())
@@ -75,13 +77,13 @@ public class PasswordRecoveryServiceImpl {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    private void sendEmail(String email, String message) {
+    private void sendEmail(String email, String token) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(userName);
         mailMessage.setTo(email);
         mailMessage.setSubject("Password Recovery");
         mailMessage.setText("Для смены пароля пожалуйста пройдите по ссылке \n" +
-                "http://45.134.255.54:5000/change-password?token=" + message);
+                "http://45.134.255.54:5000/change-password?token=" + token);
         javaMailSender.send(mailMessage);
     }
 
