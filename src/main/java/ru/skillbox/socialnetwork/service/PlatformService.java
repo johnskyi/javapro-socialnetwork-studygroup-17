@@ -5,7 +5,7 @@ import ru.skillbox.socialnetwork.data.dto.PlatformResponse;
 public interface PlatformService {
     PlatformResponse getLanguage();
 
-    PlatformResponse getCountries(String country, int offset, int itemPerPage);
+    PlatformResponse getCountries(String country, Integer offset, Integer itemPerPage);
 
     PlatformResponse getCities(Long countryId, String city, int offset, int itemPerPage);
 }

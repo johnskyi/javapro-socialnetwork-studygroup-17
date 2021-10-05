@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,16 +15,29 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-   private final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("http://localhost:8080", "http://localhost:8086",
+                        "http://127.0.0.1:8080", "http://127.0.0.1:8086",
+                        "http://127.0.0.1:8082", "http://127.0.0.1:8084",
+                        "http://45.134.255.54:5000")
+                .allowedMethods("GET", "PUT", "DELETE", "POST")
+                .allowCredentials(true);
     }
 
     @Override
@@ -36,10 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .cors(Customizer.withDefaults())
                 .authorizeRequests()
-                    .antMatchers("/api/v1/auth/login").permitAll()
-                    .antMatchers("/api/v1/auth/register").permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers("/api/v1/auth/login").permitAll()
+                .antMatchers("/api/v1/account/register").permitAll()
+                .antMatchers("/api/v1/account/register/confirm").permitAll()
+                .antMatchers("/api/v1/platform/languages").permitAll()
+                .antMatchers("/api/v1/auth/logout").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .rememberMe()
                 .and()
@@ -68,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    protected PasswordEncoder passwordEncoder(){
+    protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 }

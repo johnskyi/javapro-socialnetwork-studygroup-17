@@ -1,14 +1,8 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
@@ -22,29 +16,23 @@ import ru.skillbox.socialnetwork.service.PersonService;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
-    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
+//    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private final PersonRepo personRepository;
     private final TownRepository townRepository;
     private final FileRepository fileRepository;
 
     @Override
-    public ResponseEntity<?> getPersonDetail(Principal principal) {
-        if(SecurityContextHolder.getContext().getAuthentication().getName() == null){
-            return new ResponseEntity<>(new ErrorResponse("invalid_request", "User unauthorized"), HttpStatus.UNAUTHORIZED);
-        }
-        return new ResponseEntity<>(createFullPersonResponse(personRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
-        ), HttpStatus.OK);
+    public PersonResponse getPersonDetail(Principal principal) {
+        return createFullPersonResponse(findPerson(principal));
     }
 
     @Override
@@ -81,8 +69,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (Objects.nonNull(request.getBirthDate())) {
-            //person.setBirthTime(request.getBirthDate());
-            //person.setBirthTime(LocalDateTime.ofEpochSecond(request.getBirthDate(), 0, ZoneOffset.UTC));
+            person.setBirthTime(OffsetDateTime.parse( request.getBirthDate() ).toLocalDateTime());
         }
 
 
@@ -118,7 +105,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private Person findPerson(Principal principal) {
-        if (Objects.isNull(principal)) {
+        if (Objects.isNull(principal.getName())) {
             throw new PersonNotAuthorized("The Person not authorized");
         }
         return personRepository.findByEmail(principal.getName())
@@ -133,8 +120,8 @@ public class PersonServiceImpl implements PersonService {
                         .id(person.getId())
                         .firstName(person.getFirstName())
                         .lastName(person.getLastName())
-                        .regDate(ZonedDateTime.of(person.getRegTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
-                        .birthDate(ZonedDateTime.of(person.getBirthTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
+                        .regDate(person.getRegTime().toEpochSecond(ZoneOffset.UTC))
+                        .birthDate(person.getBirthTime().toEpochSecond(ZoneOffset.UTC))
                         .email(person.getEmail())
                         .phone(person.getPhone())
                         .photo(person.getPhoto())
@@ -142,7 +129,7 @@ public class PersonServiceImpl implements PersonService {
                         .town(person.getTown())
                         .country(person.getTown().getCountry())
                         .messagePermission(person.getMessagePermission())
-                        .lastOnlineTime(ZonedDateTime.of(person.getLastOnlineTime(), ZoneId.systemDefault()).toInstant().toEpochMilli())
+                        .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
                         .isBlocked(person.isBlocked())
                         .build())
                 .build();

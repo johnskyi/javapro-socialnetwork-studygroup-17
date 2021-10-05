@@ -16,5 +16,5 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
 
     Optional<Person> findByCode(@Param("confirmation_code") String code);
 
-    Optional<Person> findByIdAndCode(Long id, @Param("confirmation_code") String code);
+    Optional<Person> findByIdAndCode(@Param("id") Long id, @Param("confirmation_code") String code);
 }

@@ -8,17 +8,17 @@ import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 @Data
 public class PersonRequest {
     @JsonProperty("first_name")
-    @NullOrPattern(pattern = "\\w{2,30}",
+    @NullOrPattern(pattern = "[\\wа-яёА-ЯЁ]{2,30}",
             message = "Имя указано неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
     private String firstName;
 
     @JsonProperty("last_name")
-    @NullOrPattern(pattern = "\\w{2,30}",
-            message = "амилия указана неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
+    @NullOrPattern(pattern = "[\\wа-яёА-ЯЁ]{2,30}",
+            message = "Фамилия указана неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
     private String lastName;
 
     @JsonProperty("birth_date")
-    private Long birthDate;
+    private String birthDate;
 
     @NullOrPattern(pattern = "^\\+?[78]?-?\\s?\\(?\\d{3}\\)?-?\\s?\\d{3}-?\\s?\\d{2}-?\\s?\\d{2}$",
             message = "Неверный формат телефона")

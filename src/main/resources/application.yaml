@@ -1,3 +1,4 @@
+#lol lol lol
 server:
   port: 8086
 spring:
@@ -12,7 +13,6 @@ spring:
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
     platform: postgres
     initialization-mode: always
