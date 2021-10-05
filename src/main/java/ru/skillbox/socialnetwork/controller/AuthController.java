@@ -4,10 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.data.dto.LoginRequest;
-import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.service.AuthService;
-
-import java.security.Principal;
 
 @RestController
 public class AuthController {

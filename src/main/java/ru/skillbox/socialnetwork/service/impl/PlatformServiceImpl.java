@@ -1,6 +1,8 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PlatformServiceImpl implements PlatformService {
+
+    private Logger logger = LoggerFactory.getLogger(PlatformServiceImpl.class);
 
     private final CountryRepository countryRepository;
     private final TownRepository townRepository;
@@ -47,10 +51,12 @@ public class PlatformServiceImpl implements PlatformService {
     }
 
     @Override
-    public PlatformResponse getCountries(String country, int offset, int itemPerPage) {
-        Pageable pageable = PageRequest.of(offset, itemPerPage);
-        Page<Country> pages = countryRepository.findCountriesByQuery(country, pageable);
-        return createPlatformResponse(pages, offset, itemPerPage);
+    public PlatformResponse getCountries(String country, Integer offset, Integer itemPerPage) {
+        logger.info("country {}, offset {}, itemPerPage {}", country, offset, itemPerPage);
+  //      Pageable pageable = PageRequest.of(offset, itemPerPage);
+ //       Page<Country> pages = countryRepository.findCountriesByQuery(country, pageable);
+        List<Country> pages = countryRepository.findAll();
+        return createPlatformResponse(pages);
     }
 
     @Override
@@ -58,6 +64,22 @@ public class PlatformServiceImpl implements PlatformService {
         Pageable pageable = PageRequest.of(offset, itemPerPage);
         Page<Town> pages = townRepository.findTownsByQuery(city, countryId, pageable);
         return createPlatformResponse(pages, offset, itemPerPage);
+    }
+
+    private PlatformResponse createPlatformResponse(List<Country> pages) {
+        return PlatformResponse.builder()
+                .error("string")
+                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                .total(0)
+                .offset(0)
+                .perPage(0)
+                .data(pages.stream()
+                        .map(c -> PlatformResponse.Datum.builder()
+                                .id(c.getId())
+                                .title(c.getName())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     private PlatformResponse createPlatformResponse(Page<? extends Platform> pages, int offset, int itemPerPage) {

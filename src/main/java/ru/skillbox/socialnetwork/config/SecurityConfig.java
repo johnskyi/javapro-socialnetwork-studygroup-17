@@ -23,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-   private final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -33,8 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("http://localhost:8080", "http://localhost:8086",
-                        "http://127.0.0.1:8080", "http://127.0.0.1:8086, http://127.0.0.1:8082",
-                        "http://127.0.0.1:8084")
+                        "http://127.0.0.1:8080", "http://127.0.0.1:8086",
+                        "http://127.0.0.1:8082", "http://127.0.0.1:8084",
+                        "http://45.134.255.54:5000")
                 .allowedMethods("GET", "PUT", "DELETE", "POST")
                 .allowCredentials(true);
     }
@@ -56,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers("/api/v1/account/register/confirm").permitAll()
                 .antMatchers("/api/v1/platform/languages").permitAll()
                 .antMatchers("/api/v1/auth/logout").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .rememberMe()
                 .and()
@@ -84,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     }
 
     @Bean
-    protected PasswordEncoder passwordEncoder(){
+    protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 }
