@@ -58,7 +58,7 @@ public class AccountController {
         person.setFirstName(registerRequest.getFirstName());
         person.setLastName(registerRequest.getLastName());
         person.setBirthTime(LocalDateTime.now());
-        person.setTown(townRepository.getById(1L));
+        person.setTown(townRepository.getById(6L));
         person.setEmail(registerRequest.getEmail());
         person.setCode(Integer.toString(new Random().nextInt(9999 - 1000) + 1000));
         person.setPassword(new BCryptPasswordEncoder().encode(registerRequest.getPasswd1()));
