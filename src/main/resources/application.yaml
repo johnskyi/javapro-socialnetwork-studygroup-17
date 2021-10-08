@@ -18,7 +18,7 @@ spring:
     initialization-mode: always
     continue-on-error: true
   jpa:
-    show-sql: true
+    show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     generate-ddl: false
     hibernate:
