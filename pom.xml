@@ -16,6 +16,46 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
+	<profiles>
+		<!-- Define variables in different scenarios for command line control to execute different tests -->
+		<!-- mvn clean install -P skipTests: skip all tests -->
+		<profile>
+			<id>skipTests</id>
+			<properties>
+				<skipIntTest>true</skipIntTest>
+				<skipUnitTest>true</skipUnitTest>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<!-- mvn clean install -P unit: execute unit test only -->
+		<profile>
+			<id>unit</id>
+			<properties>
+				<skipIntTest>true</skipIntTest>
+				<skipUnitTest>false</skipUnitTest>
+			</properties>
+		</profile>
+		<!-- mvn clean install -P int: Only perform integration tests -->
+		<profile>
+			<id>int</id>
+			<properties>
+				<skipIntTest>false</skipIntTest>
+				<skipUnitTest>true</skipUnitTest>
+			</properties>
+		</profile>
+		<!-- mvn clean install -P tests: execute all tests (unit test + integration test) -->
+		<profile>
+			<id>tests</id>
+			<properties>
+				<skipIntTest>false</skipIntTest>
+				<skipUnitTest>false</skipUnitTest>
+			</properties>
+		</profile>
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -100,7 +140,12 @@
 			<artifactId>cloudinary-http44</artifactId>
 			<version>1.9.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -126,6 +171,35 @@
 				<configuration>
 					<propertyFile>src/main/resources/liquibase.properties</propertyFile>
 					<changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<goals>
+					<goal>test</goal>
+				</goals>
+				<configuration>
+					<skipTests>${skipUnitTest}</skipTests>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/*IntTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<goals>
+					<goal>test</goal>
+				</goals>
+				<configuration>
+					<skipITs>${skipIntTest}</skipITs>
+					<includes>
+						<include>**/*IntTest.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 		</plugins>
