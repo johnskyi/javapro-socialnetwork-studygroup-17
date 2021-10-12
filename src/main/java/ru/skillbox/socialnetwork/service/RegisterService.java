@@ -1,7 +1,5 @@
 package ru.skillbox.socialnetwork.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +7,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.skillbox.socialnetwork.data.dto.ConfirmUserRequest;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.data.dto.RegisterRequest;
@@ -25,21 +22,21 @@ import java.util.Random;
 
 @Service
 public class RegisterService {
-    @Autowired
+
     private final TownRepository townRepository;
 
-    @Autowired
     private final PersonRepo personRepo;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")
     private String userName;
 
-    public RegisterService(PersonRepo personRepo, TownRepository townRepository) {
+    public RegisterService(PersonRepo personRepo, TownRepository townRepository, JavaMailSender javaMailSender) {
         this.personRepo = personRepo;
         this.townRepository = townRepository;
+        this.javaMailSender = javaMailSender;
+
     }
 
     public ResponseEntity regPerson(RegisterRequest registerRequest) {

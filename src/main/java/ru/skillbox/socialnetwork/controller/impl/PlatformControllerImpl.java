@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import ru.skillbox.socialnetwork.service.PlatformService;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Работа с платформой")
 @RequestMapping("/api/v1/platform")
 public class PlatformControllerImpl implements PlatformController {
 

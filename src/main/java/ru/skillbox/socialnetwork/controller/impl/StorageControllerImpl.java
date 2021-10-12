@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Работа с хранилищем")
 @RequestMapping("/api/v1/storage")
 public class StorageControllerImpl implements StorageController {
 

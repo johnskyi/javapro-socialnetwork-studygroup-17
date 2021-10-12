@@ -1,5 +1,7 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Работа с пользователями")
 @RequestMapping("/api/v1/users")
 public class PersonControllerImpl implements PersonController {
 
