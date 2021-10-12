@@ -1,12 +1,8 @@
 package ru.skillbox.socialnetwork.service.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,19 +14,20 @@ import java.security.Principal;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class PasswordRecoveryServiceImpl {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
-    @Autowired
-    private PersonRepo personRepo;
 
+    private final PersonRepo personRepo;
 
     @Value("${spring.mail.username}")
     private String userName;
+
+    public PasswordRecoveryServiceImpl(JavaMailSender javaMailSender, PersonRepo personRepo) {
+        this.javaMailSender = javaMailSender;
+        this.personRepo = personRepo;
+    }
 
     public PasswordRecoveryResponse send(String email) {
         Person person = findPersonByEmail(email);
