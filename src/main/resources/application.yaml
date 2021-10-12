@@ -9,7 +9,7 @@ spring:
   mail.properties.mail.smtp.auth: true
   mail.properties.mail.smtp.starttls.enable: true
   liquibase:
-    enabled: true
+    enabled: false
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
   datasource:
     driver-class-name: org.postgresql.Driver
