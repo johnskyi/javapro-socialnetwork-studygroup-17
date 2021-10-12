@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.skillbox.socialnetwork.controller.AdviceController;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Objects;
 
 @ControllerAdvice
+@ApiIgnore
 public class AdviceControllerImpl implements AdviceController {
 
     @Override

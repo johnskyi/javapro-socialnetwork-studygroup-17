@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: javaproPostgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=javapro
+      - POSTGRES_PASSWORD=iddqd
+      - POSTGRES_DB=javapro
