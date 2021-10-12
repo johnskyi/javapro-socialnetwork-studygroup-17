@@ -7,29 +7,31 @@ import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
 import ru.skillbox.socialnetwork.data.dto.PostResponse;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.Post;
+import ru.skillbox.socialnetwork.data.entity.Post2Tag;
+import ru.skillbox.socialnetwork.data.entity.Tag;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.repository.Post2TagRepository;
 import ru.skillbox.socialnetwork.data.repository.PostRepository;
-import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
+import ru.skillbox.socialnetwork.data.repository.TagRepository;
 import ru.skillbox.socialnetwork.service.PostService;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PersonRepo personRepository;
-
     private final PostRepository postRepository;
+    private final TagRepository tagRepository;
+    private final Post2TagRepository post2TagRepository;
 
     @Override
-    public PostResponse addNewPost(AddPostRequest addPostRequest, Principal principal, Long publicationTimestamp) {
+    public PostResponse addNewPost(Long authorId, AddPostRequest addPostRequest, Long publicationTimestamp) {
 
-        Person person = findPerson(principal);
+        Person person = personRepository.findById(authorId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         Post post = new Post();
         post.setAuthor(person);
@@ -39,7 +41,14 @@ public class PostServiceImpl implements PostService {
         post.setBlocked(false);
         postRepository.save(post);
 
-        //TODO Tags from addPostRequest
+        for (String tagString : addPostRequest.getTags()) {
+            Tag tag = tagRepository.findByTag(tagString);
+            if(tag == null){
+                tag = new Tag(tagString);
+                tagRepository.save(tag);
+            }
+            post2TagRepository.save(new Post2Tag(post, tag));
+        }
 
         return createFullPostResponse(person, post, 0, null);
     }
@@ -74,13 +83,5 @@ public class PostServiceImpl implements PostService {
                         .comments(comments)
                         .build())
                 .build();
-    }
-
-    private Person findPerson(Principal principal) {
-        if (Objects.isNull(principal.getName())) {
-            throw new PersonNotAuthorized("The Person not authorized");
-        }
-        return personRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

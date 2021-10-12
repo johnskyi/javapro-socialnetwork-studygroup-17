@@ -9,7 +9,7 @@ import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
 import ru.skillbox.socialnetwork.data.dto.PostResponse;
 import ru.skillbox.socialnetwork.service.PostService;
 
-import java.security.Principal;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,11 +19,12 @@ public class PostController {
     private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
         @PostMapping("/api/v1/users/{id}/wall")
-        public ResponseEntity<PostResponse> postNewPost(@PathVariable String id,
+        public ResponseEntity<PostResponse> postNewPost(@PathVariable Long id,
                                                         @RequestParam(name = "publish_date", required = false) Long publishDate,
-                                                        @RequestBody AddPostRequest addPostRequest, Principal principal) {
+                                                        @RequestBody @Valid AddPostRequest addPostRequest) {
 
-            return ResponseEntity.ok(postService.addNewPost(addPostRequest, principal, publishDate));
+
+            return ResponseEntity.ok(postService.addNewPost(id, addPostRequest, publishDate));
         }
 
 }
