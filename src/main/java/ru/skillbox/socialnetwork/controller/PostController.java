@@ -1,12 +1,11 @@
 package ru.skillbox.socialnetwork.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
-import ru.skillbox.socialnetwork.data.dto.PostResponse;
+import ru.skillbox.socialnetwork.data.dto.Posts.AddNewPostResponse;
+import ru.skillbox.socialnetwork.data.dto.Posts.GetUserPostsResponse;
 import ru.skillbox.socialnetwork.service.PostService;
 
 import javax.validation.Valid;
@@ -16,15 +15,22 @@ import javax.validation.Valid;
 public class PostController {
 
     private final PostService postService;
-    private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
-        @PostMapping("/api/v1/users/{id}/wall")
-        public ResponseEntity<PostResponse> postNewPost(@PathVariable Long id,
-                                                        @RequestParam(name = "publish_date", required = false) Long publishDate,
-                                                        @RequestBody @Valid AddPostRequest addPostRequest) {
+    @PostMapping("/api/v1/users/{id}/wall")
+    public ResponseEntity<AddNewPostResponse> postNewPost(
+            @PathVariable Long id,
+            @RequestParam(name = "publish_date", required = false) Long publishDate,
+            @RequestBody @Valid AddPostRequest addPostRequest) {
 
+        return ResponseEntity.ok(postService.addNewPost(id, addPostRequest, publishDate));
+    }
 
-            return ResponseEntity.ok(postService.addNewPost(id, addPostRequest, publishDate));
-        }
+    @GetMapping("/api/v1/users/{personId}/wall")
+    public ResponseEntity<GetUserPostsResponse> getUserPosts(
+            @PathVariable Long personId,
+            @RequestParam(name = "offset", required = false, defaultValue = "0") long offset,
+            @RequestParam(name = "itemPerPage", required = false, defaultValue = "10") long limit) {
 
+        return ResponseEntity.ok(postService.getUserPosts(personId, offset, limit));
+    }
 }
