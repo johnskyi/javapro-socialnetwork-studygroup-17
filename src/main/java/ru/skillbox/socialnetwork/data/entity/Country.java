@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,5 +15,7 @@ public class Country implements Platform {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    @JsonProperty("title")
     String name;
 }

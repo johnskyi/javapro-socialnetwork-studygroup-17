@@ -58,5 +58,7 @@ public class PersonResponse {
         private Boolean isBlocked;
 
         private String message;
+
+        private String token;
     }
 }

@@ -1,11 +1,13 @@
 package ru.skillbox.socialnetwork.data.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "tag")
 public class Tag {
 
@@ -15,4 +17,7 @@ public class Tag {
 
     private String tag;
 
+    public Tag(String tag) {
+        this.tag = tag;
+    }
 }
