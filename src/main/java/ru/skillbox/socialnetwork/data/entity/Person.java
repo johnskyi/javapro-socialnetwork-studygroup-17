@@ -47,8 +47,6 @@ public class Person {
     @Column(name = "is_approved")
     private boolean isApproved;
 
-
-
     @Enumerated(EnumType.STRING)
     @Column(name = "message_permission", length = 8, nullable = false)
     private MessagePermission messagePermission = MessagePermission.ALL;
@@ -63,8 +61,8 @@ public class Person {
     @Column(name = "role", length = 16)
     private UserType type;
 
-    public Role getRole(){
-        if(type.name().equals("USER")){
+    public Role getRole() {
+        if (type.name().equals("USER")) {
             return Role.USER;
         }
         return type.name().equals("MODERATOR") ? Role.MODERATOR : Role.ADMIN;

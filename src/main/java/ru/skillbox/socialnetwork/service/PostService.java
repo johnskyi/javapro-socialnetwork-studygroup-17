@@ -7,5 +7,5 @@ import ru.skillbox.socialnetwork.data.dto.Posts.GetUserPostsResponse;
 public interface PostService {
     AddNewPostResponse addNewPost(Long authorId, AddPostRequest addPostRequest, Long publicationTimestamp);
 
-    GetUserPostsResponse getUserPosts(Long personId, long offset, long limit);
+    GetUserPostsResponse getUserPosts(Long personId, int offset, int limit);
 }

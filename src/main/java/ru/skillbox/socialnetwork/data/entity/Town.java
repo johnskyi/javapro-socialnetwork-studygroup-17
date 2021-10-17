@@ -1,5 +1,7 @@
 package ru.skillbox.socialnetwork.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +17,10 @@ public class Town implements Platform {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     Long id;
+    @JsonProperty("title")
     String name;
 
+    @JsonIgnore
     @ManyToOne
     Country country;
 }
