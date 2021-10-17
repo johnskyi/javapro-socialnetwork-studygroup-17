@@ -18,14 +18,14 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonInclude(NON_NULL)
 public class CommentDto {
 
+    private Long id;
     @JsonProperty("parent_id")
     private Long parentId;
     @JsonProperty("comment_text")
     private String text;
-    private Long id;
 
     @JsonProperty("post_id")
-    private Long postId;
+    private String postId;
     private Long time;
 
     @JsonProperty("author_id")
@@ -35,12 +35,13 @@ public class CommentDto {
     private Boolean isBlocked;
 
     public CommentDto(PostComment postComment) {
+
         this.id = postComment.getId();
         if(postComment.getParent() != null) {
             this.parentId = postComment.getParent().getId();
         }
         this.text = postComment.getText();
-        this.postId = postComment.getPost().getId();
+        this.postId = String.valueOf(postComment.getPost().getId());
         this.time = postComment.getTime().toEpochSecond(ZoneOffset.UTC);
         this.authorId = postComment.getAuthor().getId();
         this.isBlocked = postComment.isBlocked();
