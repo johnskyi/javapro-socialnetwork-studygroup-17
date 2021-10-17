@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.data.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Builder
 @Table(name = "post_like")
 public class PostLike {
     @Id
