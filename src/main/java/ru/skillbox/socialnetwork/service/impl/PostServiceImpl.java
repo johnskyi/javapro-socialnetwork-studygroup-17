@@ -12,6 +12,7 @@ import ru.skillbox.socialnetwork.data.entity.*;
 import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.service.PostService;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class PostServiceImpl implements PostService {
             List<CommentDto> comments = new ArrayList<>();
             for (PostComment postComment : postCommentsRepository.findAllByPostId(post.getId())) {
                 //TODO
-                //comments.add(new CommentDto(postComment));
+                comments.add(new CommentDto(postComment));
             }
             posts.add(new PostDto(
                     post,
@@ -81,6 +82,58 @@ public class PostServiceImpl implements PostService {
                 .offset(offset)
                 .perPage(limit)
                 .posts(posts)
+                .build();
+    }
+
+    @Override
+    public AddCommentResponse addComment(Long postId, AddCommentRequest addCommentRequest, Principal principal) {
+
+        Person author = personRepository.findByEmail(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        PostComment newComment = PostComment.builder()
+                .time(LocalDateTime.now(ZoneOffset.UTC))
+                .post(postRepository.getById(postId))
+                .author(author)
+                .text(addCommentRequest.getText())
+                .isBlocked(false)
+                .build();
+        if(addCommentRequest.getParentId() != null) {
+            newComment.setParent(postCommentsRepository.getById(addCommentRequest.getParentId()));
+        }
+
+        postCommentsRepository.save(newComment);
+
+        return AddCommentResponse.builder()
+                .error("string")
+                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                .data(AddCommentResponse.Data.builder()
+                        .id(newComment.getId())
+                        .parentId(newComment.getParent() != null ? newComment.getParent().getId() : null)
+                        .postId(String.valueOf(newComment.getPost().getId()))
+                        .timestamp(newComment.getTime().toEpochSecond(ZoneOffset.UTC))
+                        .authorId(author.getId())
+                        .commentText(newComment.getText())
+                        .isBlocked(newComment.isBlocked())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public CommentsResponse commentsForPost(Long postId, int offset, int limit) {
+
+        List<CommentDto> comments = new ArrayList<>();
+
+        for (PostComment postComment : postCommentsRepository.findByPostId(postId, PageRequest.of(offset/limit, limit))) {
+            comments.add(new CommentDto(postComment));
+        }
+
+        return CommentsResponse.builder()
+                .error("string")
+                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                .total(comments.size())
+                .offset(offset)
+                .perPage(limit)
+                .comments(comments)
                 .build();
     }
 
