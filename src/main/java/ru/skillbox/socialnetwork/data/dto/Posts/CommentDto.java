@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import ru.skillbox.socialnetwork.data.entity.PostComment;
+
+import java.time.ZoneOffset;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -13,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
-public class Comment {
+public class CommentDto {
 
     @JsonProperty("parent_id")
     private Long parentId;
@@ -22,7 +25,7 @@ public class Comment {
     private Long id;
 
     @JsonProperty("post_id")
-    private String postId;
+    private Long postId;
     private Long time;
 
     @JsonProperty("author_id")
@@ -30,4 +33,16 @@ public class Comment {
 
     @JsonProperty("is_blocked")
     private Boolean isBlocked;
+
+    public CommentDto(PostComment postComment) {
+        this.id = postComment.getId();
+        if(postComment.getParent() != null) {
+            this.parentId = postComment.getParent().getId();
+        }
+        this.text = postComment.getText();
+        this.postId = postComment.getPost().getId();
+        this.time = postComment.getTime().toEpochSecond(ZoneOffset.UTC);
+        this.authorId = postComment.getAuthor().getId();
+        this.isBlocked = postComment.isBlocked();
+    }
 }

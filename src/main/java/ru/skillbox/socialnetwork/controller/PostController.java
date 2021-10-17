@@ -28,8 +28,8 @@ public class PostController {
     @GetMapping("/api/v1/users/{personId}/wall")
     public ResponseEntity<GetUserPostsResponse> getUserPosts(
             @PathVariable Long personId,
-            @RequestParam(name = "offset", required = false, defaultValue = "0") long offset,
-            @RequestParam(name = "itemPerPage", required = false, defaultValue = "10") long limit) {
+            @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+            @RequestParam(name = "itemPerPage", required = false, defaultValue = "10") int limit) {
 
         return ResponseEntity.ok(postService.getUserPosts(personId, offset, limit));
     }

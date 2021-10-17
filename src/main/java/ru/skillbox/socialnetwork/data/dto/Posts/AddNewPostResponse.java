@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.socialnetwork.data.entity.Country;
-import ru.skillbox.socialnetwork.data.entity.MessagePermission;
-import ru.skillbox.socialnetwork.data.entity.Town;
 
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class AddNewPostResponse {
         private Long id;
         private Long timestamp;
 
-        private Author author;
+        private AuthorDto author;
 
         private String title;
 
@@ -45,6 +42,6 @@ public class AddNewPostResponse {
 
         private int likes;
 
-        private List<Comment> comments;
+        private List<CommentDto> comments;
     }
 }

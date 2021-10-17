@@ -3,18 +3,13 @@ package ru.skillbox.socialnetwork.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
 import ru.skillbox.socialnetwork.data.dto.Posts.*;
-import ru.skillbox.socialnetwork.data.entity.Person;
-import ru.skillbox.socialnetwork.data.entity.Post;
-import ru.skillbox.socialnetwork.data.entity.Post2Tag;
-import ru.skillbox.socialnetwork.data.entity.Tag;
-import ru.skillbox.socialnetwork.data.repository.PersonRepo;
-import ru.skillbox.socialnetwork.data.repository.Post2TagRepository;
-import ru.skillbox.socialnetwork.data.repository.PostRepository;
-import ru.skillbox.socialnetwork.data.repository.TagRepository;
+import ru.skillbox.socialnetwork.data.entity.*;
+import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.service.PostService;
 
 import java.time.LocalDateTime;
@@ -30,6 +25,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final Post2TagRepository post2TagRepository;
+    private final PostCommentsRepository postCommentsRepository;
+    private final PostLikesRepository postLikesRepository;
 
     private final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
@@ -59,20 +56,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public GetUserPostsResponse getUserPosts(Long personId, long offset, long limit) {
+    public GetUserPostsResponse getUserPosts(Long personId, int offset, int limit) {
 
         Person person = personRepository.findById(personId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<PostDto> posts = new ArrayList<>();
 
-        posts.add(PostDto.builder()
-                .id(1L)
-                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
-                .author(createAuthor(person))
-                .title("Title1")
-                .text("Text String")
-                .isBlocked(false)
-                .likes(11)
-                .build());
+        for (Post post : postRepository.findPostsByAuthor(person, PageRequest.of(offset/limit, limit))) {
+            List<CommentDto> comments = new ArrayList<>();
+            for (PostComment postComment : postCommentsRepository.findAllByPostId(post.getId())) {
+                //TODO
+                //comments.add(new CommentDto(postComment));
+            }
+            posts.add(new PostDto(
+                    post,
+                    postLikesRepository.countByPost(post),
+                    comments
+            ));
+        }
 
         return GetUserPostsResponse.builder()
                 .error("string")
@@ -84,39 +84,20 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-    private AddNewPostResponse createFullPostResponse(Person person, Post post, int likesCount, ArrayList<Comment> comments) {
+    private AddNewPostResponse createFullPostResponse(Person person, Post post, int likesCount, ArrayList<CommentDto> comments) {
         return AddNewPostResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
                 .data(AddNewPostResponse.Data.builder()
                         .id(post.getId())
                         .timestamp(post.getTime().toEpochSecond(ZoneOffset.UTC))
-                        .author(createAuthor(person))
+                        .author(new AuthorDto(person))
                         .title(post.getTitle())
                         .text(post.getTextHtml())
                         .isBlocked(post.isBlocked())
                         .likes(likesCount)
                         .comments(comments)
                         .build())
-                .build();
-    }
-
-    private Author createAuthor(Person person){
-        return Author.builder()
-                .id(person.getId())
-                .firstName(person.getFirstName())
-                .lastName(person.getLastName())
-                .regDate(person.getRegTime().toEpochSecond(ZoneOffset.UTC))
-                .birthDate(person.getBirthTime().toEpochSecond(ZoneOffset.UTC))
-                .email(person.getEmail())
-                .phone(person.getPhone())
-                .photo(person.getPhoto())
-                .about(person.getAbout())
-                .town(person.getTown())
-                .country(person.getTown().getCountry())
-                .messagePermission(person.getMessagePermission())
-                .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
-                .isBlocked(person.isBlocked())
                 .build();
     }
 }

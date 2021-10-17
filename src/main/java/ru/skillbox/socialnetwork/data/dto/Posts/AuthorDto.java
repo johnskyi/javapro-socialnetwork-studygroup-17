@@ -7,7 +7,10 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
+import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.Town;
+
+import java.time.ZoneOffset;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -16,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
-public class Author {
+public class AuthorDto {
     private Long id;
 
     @JsonProperty("first_name")
@@ -37,6 +40,7 @@ public class Author {
     private String photo;
     private String about;
 
+    @JsonProperty("city")
     private Town town;
     private Country country;
 
@@ -49,4 +53,20 @@ public class Author {
     @JsonProperty("is_blocked")
     private Boolean isBlocked;
 
+    public AuthorDto(Person person) {
+        this.id = person.getId();
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.regDate = person.getRegTime().toEpochSecond(ZoneOffset.UTC);
+        this.birthDate = person.getBirthTime().toEpochSecond(ZoneOffset.UTC);
+        this.email = person.getEmail();
+        this.phone = person.getPhone();
+        this.photo = person.getPhoto();
+        this.about = person.getAbout();
+        this.town = person.getTown();
+        this.country = person.getTown().getCountry();
+        this.messagePermission = person.getMessagePermission();
+        this.lastOnlineTime = person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC);
+        this.isBlocked = person.isBlocked();
+    }
 }
