@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddNewPostResponse {
+public class PostResponse {
 
     String error;
     Long timestamp;

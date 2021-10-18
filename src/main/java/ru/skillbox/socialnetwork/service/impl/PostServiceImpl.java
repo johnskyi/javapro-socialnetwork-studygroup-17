@@ -10,6 +10,7 @@ import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
 import ru.skillbox.socialnetwork.data.dto.Posts.*;
 import ru.skillbox.socialnetwork.data.entity.*;
 import ru.skillbox.socialnetwork.data.repository.*;
+import ru.skillbox.socialnetwork.exception.PostNotFoundException;
 import ru.skillbox.socialnetwork.service.PostService;
 
 import java.security.Principal;
@@ -32,7 +33,7 @@ public class PostServiceImpl implements PostService {
     private final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     @Override
-    public AddNewPostResponse addNewPost(Long authorId, AddPostRequest addPostRequest, Long publicationTimestamp) {
+    public PostResponse addNewPost(Long authorId, AddPostRequest addPostRequest, Long publicationTimestamp) {
 
         Person person = personRepository.findById(authorId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -57,6 +58,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostResponse getPost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post " + postId + " not found"));
+        Person person = personRepository.findById(post.getAuthor().getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Integer likes = postLikesRepository.countByPost(post);
+        List<CommentDto> commentDtoList = new ArrayList<>();
+        for (PostComment postComment : postCommentsRepository.findAllByPostId(postId)) {
+            commentDtoList.add(new CommentDto(postComment));
+        }
+
+        return createFullPostResponse(person, post, likes, commentDtoList);
+    }
+
+    @Override
     public GetUserPostsResponse getUserPosts(Long personId, int offset, int limit) {
 
         Person person = personRepository.findById(personId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -65,7 +79,6 @@ public class PostServiceImpl implements PostService {
         for (Post post : postRepository.findPostsByAuthor(person, PageRequest.of(offset/limit, limit))) {
             List<CommentDto> comments = new ArrayList<>();
             for (PostComment postComment : postCommentsRepository.findAllByPostId(post.getId())) {
-                //TODO
                 comments.add(new CommentDto(postComment));
             }
             posts.add(new PostDto(
@@ -137,11 +150,11 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-    private AddNewPostResponse createFullPostResponse(Person person, Post post, int likesCount, ArrayList<CommentDto> comments) {
-        return AddNewPostResponse.builder()
+    private PostResponse createFullPostResponse(Person person, Post post, int likesCount, List<CommentDto> comments) {
+        return PostResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
-                .data(AddNewPostResponse.Data.builder()
+                .data(PostResponse.Data.builder()
                         .id(post.getId())
                         .timestamp(post.getTime().toEpochSecond(ZoneOffset.UTC))
                         .author(new AuthorDto(person))

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.skillbox.socialnetwork.controller.AdviceController;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
+import ru.skillbox.socialnetwork.exception.PostNotFoundException;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Objects;
@@ -35,6 +36,12 @@ public class AdviceControllerImpl implements AdviceController {
     public ResponseEntity<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
         return new ResponseEntity<>(new ErrorResponse("invalid_request", Objects.requireNonNull(
                 exception.getFieldError(), "exception.getFieldError() is null").getDefaultMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<ErrorResponse> postNotFoundExceptionHandler(PostNotFoundException exception) {
+        return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
 

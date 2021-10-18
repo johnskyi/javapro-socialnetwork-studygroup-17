@@ -17,20 +17,15 @@ import javax.swing.text.html.Option;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class LikesService {
-/*
 
-    private final PostRepository postRepository;
-    private final TagRepository tagRepository;
-    private final Post2TagRepository post2TagRepository;
-    private final PostCommentsRepository postCommentsRepository;
-
- */
     private final PersonRepo personRepository;
     private final PostLikesRepository postLikesRepository;
     private final PostRepository postRepository;
@@ -49,7 +44,8 @@ public class LikesService {
 
     public LikeUsersListResponse getLikeUsersList(Long itemId, String type) {
 
-        List<Long> likesUsersList = postLikesRepository.findAllPersonIdByPostId(itemId);
+        List<Long> likesUsersList = postLikesRepository.findAllByPostId(itemId).stream()
+                .map(postLike -> postLike.getPerson().getId()).collect(Collectors.toList());
 
         return LikeUsersListResponse.builder()
                 .error("string")
@@ -66,11 +62,13 @@ public class LikesService {
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Post post = postRepository.getById(itemId);
 
-        postLikesRepository.save(PostLike.builder()
-                .time(LocalDateTime.now(ZoneOffset.UTC))
-                .person(author)
-                .post(post)
-                .build());
+        if(postLikesRepository.findByPersonAndPost(author, post).isEmpty()) {
+            postLikesRepository.save(PostLike.builder()
+                    .time(LocalDateTime.now(ZoneOffset.UTC))
+                    .person(author)
+                    .post(post)
+                    .build());
+        }
 
         return getLikeUsersList(itemId, type);
     }
@@ -81,7 +79,7 @@ public class LikesService {
         Person author = personRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        postLikesRepository.findByPerson(author).ifPresent(postLikesRepository::delete);
+        postLikesRepository.findByPersonAndPost(author, post).ifPresent(postLikesRepository::delete);
 
         return LikesCountResponse.builder()
                 .error("string")

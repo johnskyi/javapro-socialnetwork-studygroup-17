@@ -1,7 +1,9 @@
 package ru.skillbox.socialnetwork.data.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "post_like")
 public class PostLike {
     @Id
@@ -17,11 +21,11 @@ public class PostLike {
 
     private LocalDateTime time;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
