@@ -17,7 +17,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/api/v1/users/{id}/wall")
-    public ResponseEntity<AddNewPostResponse> postNewPost(
+    public ResponseEntity<PostResponse> postNewPost(
             @PathVariable Long id,
             @RequestParam(name = "publish_date", required = false) Long publishDate,
             @RequestBody @Valid AddPostRequest addPostRequest) {
@@ -32,6 +32,13 @@ public class PostController {
             Principal principal) {
 
         return ResponseEntity.ok(postService.addComment(postId, addCommentRequest, principal));
+    }
+
+    @GetMapping("/api/v1/post/{postId}")
+    public ResponseEntity<PostResponse> getPostById(@PathVariable Long postId) {
+
+        return ResponseEntity.ok(postService.getPost(postId));
+
     }
 
     @GetMapping("/api/v1/post/{postId}/comments")

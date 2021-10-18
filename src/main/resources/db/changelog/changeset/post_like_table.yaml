@@ -16,7 +16,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: time
-                  type: BIGINT
+                  type: TIMESTAMP WITHOUT TIME ZONE
               - column:
                   name: person_id
                   type: BIGINT
@@ -33,7 +33,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1612894403
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 4
@@ -45,7 +45,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1612895403
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 4
@@ -57,7 +57,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1612896403
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 4
@@ -69,7 +69,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1612893403
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 5
@@ -81,7 +81,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: time
-                  value: 1612816403
+                  value: 2021-09-01 00:00:00
               - column:
                   name: person_id
                   value: 5

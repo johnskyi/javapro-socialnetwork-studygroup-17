@@ -21,8 +21,7 @@ public class LikesController {
     public ResponseEntity<LikedResponse> isLikedByPerson(
             @RequestParam(name = "user_id", required = false) Long personId,
             @RequestParam(name = "item_id") Long itemId,
-            @RequestParam(name = "type") String type
-    ){
+            @RequestParam(name = "type") String type){
 
         return ResponseEntity.ok(likesService.isLikedByPerson(personId, itemId, type));
 
@@ -31,16 +30,16 @@ public class LikesController {
     @GetMapping("/api/v1/likes")
     public ResponseEntity<LikeUsersListResponse> getLikeUsersList(
             @RequestParam(name = "item_id") Long itemId,
-            @RequestParam(name = "type") String type
-    ){
+            @RequestParam(name = "type") String type){
+
         return ResponseEntity.ok(likesService.getLikeUsersList(itemId, type));
+
     }
 
     @PutMapping("/api/v1/likes")
     public ResponseEntity<LikeUsersListResponse> putLike(
             @RequestBody PutLikeRequest putLikeRequest,
-            Principal principal
-    ){
+            Principal principal){
 
         return ResponseEntity.ok(likesService.putLike(putLikeRequest.getItemId(), putLikeRequest.getType(), principal));
 
@@ -50,17 +49,9 @@ public class LikesController {
     public ResponseEntity<LikesCountResponse> deleteLike(
             @RequestParam(name = "item_id") Long itemId,
             @RequestParam(name = "type") String type,
-            Principal principal
-    ){
-        return ResponseEntity.ok(likesService.deleteLike(itemId, type, principal));
-    }
-/*
-    public ResponseEntity<AddNewPostResponse> postNewPost(
-            @PathVariable Long id,
-            @RequestParam(name = "publish_date", required = false) Long publishDate,
-            @RequestBody @Valid AddPostRequest addPostRequest) {
+            Principal principal){
 
-        return ResponseEntity.ok(postService.addNewPost(id, addPostRequest, publishDate));
+        return ResponseEntity.ok(likesService.deleteLike(itemId, type, principal));
+
     }
-*/
 }
