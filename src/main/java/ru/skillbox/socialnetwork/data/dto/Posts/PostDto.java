@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonInclude(NON_NULL)
 public class PostDto {
     private Long id;
-    private Long timestamp;
+    private Long time;
 
     private AuthorDto author;
 
@@ -39,7 +39,7 @@ public class PostDto {
 
     public PostDto(Post post, int likes, List<CommentDto>comments) {
         this.id = post.getId();
-        this.timestamp = post.getTime().toEpochSecond(ZoneOffset.UTC);
+        this.time = post.getTime().toEpochSecond(ZoneOffset.UTC);
         this.author = new AuthorDto(post.getAuthor());
         this.title = post.getTitle();
         this.text = post.getTextHtml();
