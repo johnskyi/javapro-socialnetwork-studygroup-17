@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-postcomment_like-table
+      comment: "Create table postcomment_like"
+      author: Alexey Kochenyuk
+      changes:
+        - createTable:
+            tableName: postcomment_like
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: person_id
+                  type: BIGINT
+              - column:
+                  name: comment_id
+                  type: BIGINT
+  - changeSet:
+      id: add_data_post_like
+      comment: "Add data to table postcomment_like"
+      author: Alexey Kochenyuk
+      changes:
+        - insert:
+            tableName: postcomment_like
+            columns:
+              - column:
+                  name: time
+                  value: 2021-09-01 12:00:00
+              - column:
+                  name: person_id
+                  value: 4
+              - column:
+                  name: comment_id
+                  value: 4
+        - insert:
+            tableName: postcomment_like
+            columns:
+              - column:
+                  name: time
+                  value: 2021-09-01 00:40:00
+              - column:
+                  name: person_id
+                  value: 5
+              - column:
+                  name: comment_id
+                  value: 4
+        - insert:
+            tableName: postcomment_like
+            columns:
+              - column:
+                  name: time
+                  value: 2021-09-01 00:30:00
+              - column:
+                  name: person_id
+                  value: 3
+              - column:
+                  name: comment_id
+                  value: 4
+        - insert:
+            tableName: postcomment_like
+            columns:
+              - column:
+                  name: time
+                  value: 2021-09-01 03:00:00
+              - column:
+                  name: person_id
+                  value: 5
+              - column:
+                  name: comment_id
+                  value: 5
+        - insert:
+            tableName: postcomment_like
+            columns:
+              - column:
+                  name: time
+                  value: 2021-09-01 01:00:00
+              - column:
+                  name: person_id
+                  value: 3
+              - column:
+                  name: comment_id
+                  value: 4

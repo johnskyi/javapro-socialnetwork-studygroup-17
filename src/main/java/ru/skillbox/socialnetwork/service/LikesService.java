@@ -3,14 +3,15 @@ package ru.skillbox.socialnetwork.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.data.dto.Likes.LikedResponse;
 import ru.skillbox.socialnetwork.data.dto.Likes.LikeUsersListResponse;
 import ru.skillbox.socialnetwork.data.dto.Likes.LikesCountResponse;
-import ru.skillbox.socialnetwork.data.entity.Person;
-import ru.skillbox.socialnetwork.data.entity.Post;
-import ru.skillbox.socialnetwork.data.entity.PostLike;
+import ru.skillbox.socialnetwork.data.entity.*;
 import ru.skillbox.socialnetwork.data.repository.*;
 
 import javax.swing.text.html.Option;
@@ -26,26 +27,59 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LikesService {
 
+    private static final String TYPE_POST = "Post";
+    private static final String TYPE_COMMENT = "Comment";
+
     private final PersonRepo personRepository;
-    private final PostLikesRepository postLikesRepository;
+
     private final PostRepository postRepository;
+    private final PostCommentsRepository postCommentsRepository;
+
+    private final PostLikesRepository postLikesRepository;
+    private final PostCommentsLikesRepository postCommentsLikesRepository;
 
     private final Logger logger = LoggerFactory.getLogger(LikesService.class);
 
+
+
     public LikedResponse isLikedByPerson(Long personId, Long itemId, String type) {
+
+        boolean isLikedByPerson = false;
+
+        if (type.equals(TYPE_POST)) {
+
+            isLikedByPerson = postLikesRepository.findByPersonIdAndPostId(personId, itemId).isPresent();
+
+        } else if (type.equals(TYPE_COMMENT)) {
+
+            isLikedByPerson = postCommentsLikesRepository.findByPersonIdAndCommentId(personId, itemId).isPresent();
+
+        }
+
         return LikedResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
                 .data(LikedResponse.Data.builder()
-                        .likes(postLikesRepository.findByPersonIdAndPostId(personId, itemId).isPresent())
+                        .likes(isLikedByPerson)
                         .build())
                 .build();
     }
 
     public LikeUsersListResponse getLikeUsersList(Long itemId, String type) {
 
-        List<Long> likesUsersList = postLikesRepository.findAllByPostId(itemId).stream()
-                .map(postLike -> postLike.getPerson().getId()).collect(Collectors.toList());
+        List<Long> likesUsersList = new ArrayList<>();
+
+        if (type.equals(TYPE_POST)) {
+
+            likesUsersList = postLikesRepository.findAllByPostId(itemId).stream()
+                    .map(postLike -> postLike.getPerson().getId()).collect(Collectors.toList());
+
+        } else if (type.equals(TYPE_COMMENT)) {
+
+            likesUsersList = postCommentsLikesRepository.findAllByCommentId(itemId).stream()
+                    .map(postCommentLike -> postCommentLike.getPerson().getId()).collect(Collectors.toList());
+
+        }
 
         return LikeUsersListResponse.builder()
                 .error("string")
@@ -60,32 +94,71 @@ public class LikesService {
     public LikeUsersListResponse putLike(long itemId, String type, Principal principal) {
         Person author = personRepository.findByEmail(principal.getName())
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        Post post = postRepository.getById(itemId);
 
-        if(postLikesRepository.findByPersonAndPost(author, post).isEmpty()) {
-            postLikesRepository.save(PostLike.builder()
-                    .time(LocalDateTime.now(ZoneOffset.UTC))
-                    .person(author)
-                    .post(post)
-                    .build());
+
+        if (type.equals(TYPE_POST)) {
+
+            Post post = postRepository.getById(itemId);
+
+            if(postLikesRepository.findByPersonAndPost(author, post).isEmpty()) {
+                postLikesRepository.save(PostLike.builder()
+                        .time(LocalDateTime.now(ZoneOffset.UTC))
+                        .person(author)
+                        .post(post)
+                        .build());
+            }
+
+        } else if (type.equals(TYPE_COMMENT)) {
+
+            PostComment postComment = postCommentsRepository.getById(itemId);
+
+            if(postCommentsLikesRepository.findByPersonAndComment(author, postComment).isEmpty()) {
+                postCommentsLikesRepository.save(PostCommentLike.builder()
+                        .time(LocalDateTime.now(ZoneOffset.UTC))
+                        .person(author)
+                        .comment(postComment)
+                        .build());
+            }
         }
-
         return getLikeUsersList(itemId, type);
     }
 
     public LikesCountResponse deleteLike(Long itemId, String type, Principal principal) {
-        Post post = postRepository.getById(itemId);
 
         Person author = personRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        postLikesRepository.findByPersonAndPost(author, post).ifPresent(postLikesRepository::delete);
+        if (type.equals(TYPE_POST)) {
 
+            Post post = postRepository.getById(itemId);
+            postLikesRepository.findByPersonAndPost(author, post).ifPresent(postLikesRepository::delete);
+
+            return LikesCountResponse.builder()
+                    .error("string")
+                    .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                    .data(LikesCountResponse.Data.builder()
+                            .likes(postLikesRepository.countByPost(post))
+                            .build())
+                    .build();
+
+        } else if (type.equals(TYPE_COMMENT)) {
+
+            PostComment postComment = postCommentsRepository.getById(itemId);
+            postCommentsLikesRepository.findByPersonAndComment(author, postComment).ifPresent(postCommentsLikesRepository::delete);
+
+            return LikesCountResponse.builder()
+                    .error("string")
+                    .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                    .data(LikesCountResponse.Data.builder()
+                            .likes(postCommentsLikesRepository.countByComment(postComment))
+                            .build())
+                    .build();
+        }
         return LikesCountResponse.builder()
-                .error("string")
+                .error("wrong param type")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
                 .data(LikesCountResponse.Data.builder()
-                        .likes(postLikesRepository.countByPost(post))
+                        .likes(0)
                         .build())
                 .build();
     }
