@@ -1,11 +1,18 @@
 package ru.skillbox.socialnetwork.service;
 
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
-import ru.skillbox.socialnetwork.data.dto.Posts.AddNewPostResponse;
-import ru.skillbox.socialnetwork.data.dto.Posts.GetUserPostsResponse;
+import ru.skillbox.socialnetwork.data.dto.Posts.*;
+
+import java.security.Principal;
 
 public interface PostService {
-    AddNewPostResponse addNewPost(Long authorId, AddPostRequest addPostRequest, Long publicationTimestamp);
+    PostResponse addNewPost(Long authorId, AddPostRequest addPostRequest, Long publicationTimestamp);
 
-    GetUserPostsResponse getUserPosts(Long personId, long offset, long limit);
+    GetUserPostsResponse getUserPosts(Long personId, int offset, int limit);
+
+    AddCommentResponse addComment(Long postId, AddCommentRequest addCommentRequest, Principal principal);
+
+    CommentsResponse commentsForPost(Long postId, int offset, int limit);
+
+    PostResponse getPost(Long postId);
 }

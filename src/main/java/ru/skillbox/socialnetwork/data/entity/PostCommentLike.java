@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "post_like")
-public class PostLike {
+@Table(name = "postcomment_like")
+public class PostCommentLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,7 +26,7 @@ public class PostLike {
     private Person person;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private Post post;
+    @JoinColumn(name = "comment_id", referencedColumnName = "id")
+    private PostComment comment;
 
 }

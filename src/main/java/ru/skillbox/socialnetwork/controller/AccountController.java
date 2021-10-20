@@ -1,5 +1,7 @@
 package ru.skillbox.socialnetwork.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +9,7 @@ import ru.skillbox.socialnetwork.data.dto.*;
 import ru.skillbox.socialnetwork.service.RegisterService;
 
 @RestController
+@Api(tags = "Работа с аккаунтом")
 public class AccountController {
 
     @Autowired
@@ -18,12 +21,14 @@ public class AccountController {
 
     @CrossOrigin(allowCredentials = "true", origins = "http://127.0.0.1:8080")
     @PostMapping("/api/v1/account/register")
+    @ApiOperation(value="Регистрацияпользователя")
     public ResponseEntity regPerson(@RequestBody RegisterRequest registerRequest) {
         return registerService.regPerson(registerRequest);
     }
 
     @CrossOrigin(allowCredentials = "true", origins = "http://127.0.0.1:8080")
     @PostMapping("/api/v1/account/register/confirm")
+    @ApiOperation(value="Подтверждение регистрации")
     public ResponseEntity confirmPerson(@RequestBody ConfirmUserRequest confirmUserRequest) {
         return registerService.confirmPerson(confirmUserRequest);
     }
