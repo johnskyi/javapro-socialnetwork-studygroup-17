@@ -8,6 +8,7 @@ import ru.skillbox.socialnetwork.data.dto.Posts.*;
 import ru.skillbox.socialnetwork.service.PostService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 
 @RestController
@@ -59,4 +60,15 @@ public class PostController {
 
         return ResponseEntity.ok(postService.getUserPosts(personId, offset, limit));
     }
+
+    @GetMapping("/api/v1/post")
+    public ResponseEntity<GetUserPostsResponse> searchPosts(@RequestParam(value = "text", defaultValue = "") String text,
+                                                            @RequestParam(value = "date_from", defaultValue = "") String dateFrom,
+                                                            @RequestParam(value = "date_to", defaultValue = "") String dateTo,
+                                                            @RequestParam(value = "author", defaultValue = "") String author,
+                                                            @RequestParam(value = "offset", defaultValue = "0") String offset,
+                                                            @RequestParam(value = "itemPerPage", defaultValue = "20") String itemPerPage){
+        return ResponseEntity.ok(postService.searchPosts(text, dateFrom, dateTo, author, offset, itemPerPage));
+    }
+
 }
