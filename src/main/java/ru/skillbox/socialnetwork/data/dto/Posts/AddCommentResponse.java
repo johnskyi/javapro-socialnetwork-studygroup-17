@@ -6,11 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.socialnetwork.data.entity.Country;
-import ru.skillbox.socialnetwork.data.entity.MessagePermission;
-import ru.skillbox.socialnetwork.data.entity.Town;
-
-import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -18,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddNewPostResponse {
+public class AddCommentResponse {
 
     String error;
     Long timestamp;
@@ -31,20 +26,19 @@ public class AddNewPostResponse {
     @JsonInclude(NON_NULL)
     public static class Data {
         private Long id;
+        @JsonProperty("parent_id")
+        private Long parentId;
+        @JsonProperty("post_id")
+        private String postId;
         private Long timestamp;
 
-        private Author author;
+        @JsonProperty("author_id")
+        private Long authorId;
 
-        private String title;
-
-        @JsonProperty("post_text")
-        private String text;
+        @JsonProperty("comment_text")
+        private String commentText;
 
         @JsonProperty("is_blocked")
         private boolean isBlocked;
-
-        private int likes;
-
-        private List<Comment> comments;
     }
 }
