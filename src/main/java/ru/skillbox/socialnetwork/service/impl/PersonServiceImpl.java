@@ -1,11 +1,15 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
+import ru.skillbox.socialnetwork.data.dto.PersonSearchResponse;
 import ru.skillbox.socialnetwork.data.entity.File;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
@@ -18,6 +22,8 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -48,6 +54,38 @@ public class PersonServiceImpl implements PersonService {
         personRepository.delete(person);
         return createSmallPersonResponse();
     }
+
+    @Override
+    public PersonSearchResponse searchPerson(String firstName, String lastName, String ageFrom,
+                                             String ageTo, String country, String city, String offset, String itemPerPage){
+        Pageable pageable = PageRequest.of(Integer.parseInt(offset), Integer.parseInt(itemPerPage));
+        LocalDateTime dateFromBirth = LocalDateTime.now().minusYears(Integer.parseInt(ageTo));
+        LocalDateTime dateToBirth = LocalDateTime.now().minusYears(Integer.parseInt(ageFrom));
+        Page<Person> resultSearch = personRepository.findAllBySearchFilter(
+                firstName.equals("") ? null : firstName,
+                lastName.equals("") ? null : lastName,
+                dateFromBirth,
+                dateToBirth,
+                country.equals("") ? null : country,
+                city.equals("") ? null : city,
+                pageable);
+
+        List<Data> data = new ArrayList<>();
+        for (Person person : resultSearch) {
+            PersonResponse personResponse = createFullPersonResponse(person);
+            data.add(personResponse.getData());
+        }
+
+        return PersonSearchResponse.builder()
+                .error("ok")
+                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                .total(resultSearch.getTotalElements())
+                .offset(Integer.parseInt(offset))
+                .perPage(Integer.parseInt(itemPerPage))
+                .data(data).build();
+    }
+
+
 
     private PersonResponse createSmallPersonResponse() {
         return PersonResponse.builder()

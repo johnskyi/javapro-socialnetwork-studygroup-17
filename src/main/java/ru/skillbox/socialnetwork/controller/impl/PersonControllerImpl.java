@@ -41,4 +41,17 @@ public class PersonControllerImpl implements PersonController {
         return ResponseEntity.ok(personService.deletePerson(principal));
     }
 
+    @Override
+    public ResponseEntity<PersonSearchResponse> searchPerson(@RequestParam(value = "first_name", defaultValue = "")String firstName,
+                                                             @RequestParam(value = "last_name", defaultValue = "")String lastName,
+                                                             @RequestParam(value = "age_from", defaultValue = "0")String ageFrom,
+                                                             @RequestParam(value = "age_to", defaultValue = "120")String ageTo,
+                                                             @RequestParam(value = "country", defaultValue = "")String country,
+                                                             @RequestParam(value = "city", defaultValue = "")String city,
+                                                             @RequestParam(value = "offset", defaultValue = "0") String offset,
+                                                             @RequestParam(value = "itemPerPage", defaultValue = "20")String itemPerPage ){
+        logger.info("Call GET /api/v1/users/search");
+        return ResponseEntity.ok(personService.searchPerson(firstName, lastName, ageFrom, ageTo, country, city, offset, itemPerPage));
+    }
+
 }
