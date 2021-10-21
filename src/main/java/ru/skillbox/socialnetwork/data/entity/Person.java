@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -60,6 +61,9 @@ public class Person {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 16)
     private UserType type;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notifications;
 
     public Role getRole() {
         if (type.name().equals("USER")) {
