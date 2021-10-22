@@ -17,11 +17,9 @@ verify:
 build-deploy-docker:
   stage: deploy
   image: docker:latest
-  before_script:
-    - docker login -u johnskyi --password-stdin 89taman89 
   script:
-    - docker build --pull -t javapro-backend .
-    - docker push javapro-backend
+    - docker build -t javapro-backend .
+    - docker run -d -p 8080:8080 javapro-backend
   tags:
     - javapro
   only:
