@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.socialnetwork.data.entity.Person;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -37,4 +38,7 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
                                        @Param("country") String country,
                                        @Param("city") String city,
                                        Pageable pageable);
+
+    @Query(value = "select P from #{#entityName} P where P not in :known")
+    Page<Person> findRandomRecs(List<Person> known, Pageable paging);
 }
