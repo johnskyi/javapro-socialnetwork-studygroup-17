@@ -22,6 +22,7 @@ build-deploy-docker:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
+    - docker run -d -p 8080:8080 "$CI_IMAGE"
   tags:
     - javapro
   only:
