@@ -1,7 +1,7 @@
 image: maven:3-adoptopenjdk-11
 stages:          
   - build
-  - deploy
+  # - deploy
 
 verify:
   stage: build
@@ -14,21 +14,21 @@ verify:
 
 
 
-build-deploy-docker:
-  stage: deploy
-  image: docker:latest
-  before_script:
-      - docker login -u $CI_REGISTRY_LOGIN --password-stdin $CI_REGISTRY_PASSWORD $CI_REGISTRY
+# build-deploy-docker:
+#   stage: deploy
+#   image: docker:latest
+#   before_script:
+#       - docker login -u $CI_REGISTRY -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
-  script:
-    - docker build -t javapro-backend .
-    - docker run -d -p 8080:8080 javapro-backend
-  tags:
-    - javapro
-  only:
-    refs:
-      - main
-  except:
-    refs:
-      - merge_requests
+#   script:
+#     - docker build -t javapro-backend .
+#     - docker run -d -p 8080:8080 javapro-backend
+#   tags:
+#     - javapro
+#   only:
+#     refs:
+#       - main
+#   except:
+#     refs:
+#       - merge_requests
 
