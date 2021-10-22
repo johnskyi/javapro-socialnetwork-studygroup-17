@@ -15,7 +15,7 @@ verify:
 
 
 build-deploy-docker:
-  stage: dockerize
+  stage: deploy
   image: docker:latest
   before_script:
     - docker login -u johnskyi -p 89taman89 
