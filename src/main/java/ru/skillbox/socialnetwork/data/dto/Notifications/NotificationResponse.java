@@ -5,11 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.socialnetwork.data.dto.Posts.AuthorDto;
 import ru.skillbox.socialnetwork.data.entity.Notification;
 import ru.skillbox.socialnetwork.data.entity.Person;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class NotificationResponse {
         public Data(Notification notification, Person person){
             this.id = notification.getId();
             this.typeId = notification.getType().getId();
-            this.sentTime = notification.getTime().toEpochSecond(ZoneOffset.UTC);
+            this.sentTime = notification.getTime().toEpochSecond(OffsetDateTime.now().getOffset());
             this.entityId = notification.getEntityId();
             this.author = new Author(person);
 
