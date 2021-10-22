@@ -18,7 +18,7 @@ build-deploy-docker:
   stage: deploy
   image: docker:latest
   before_script:
-      - docker login johnskyi2@yandex.ru -p 89taman89 registry.gitlab.com
+      - docker login -u johnskyi2@yandex.ru -p 89taman89 registry.gitlab.com
 
   script:
     - docker build -t javapro-backend .
