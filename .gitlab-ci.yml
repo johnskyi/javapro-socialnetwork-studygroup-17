@@ -18,7 +18,7 @@ build-deploy-docker:
   stage: deploy
   image: docker:latest
   before_script:
-      - docker login -u "$CI_REGISTRY" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+      - docker login -u $CI_REGISTRY_LOGIN -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
   script:
     - docker build -t javapro-backend .
