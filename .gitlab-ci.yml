@@ -37,7 +37,7 @@ additional_testing:
 deploy:
   stage: deploy
   only:
-    - master
+    - main
   except:
     - tags
   script:
