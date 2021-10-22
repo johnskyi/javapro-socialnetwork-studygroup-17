@@ -15,14 +15,13 @@ verify:
 
 
 build-deploy-docker:
-  stage: deploy
+  stage: dockerize
   image: docker:latest
   before_script:
-      - docker login -u $CI_REGISTRY -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build -t javapro-backend .
-    - docker run -d -p 8080:8080 javapro-backend
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
   tags:
     - javapro
   only:
@@ -31,4 +30,5 @@ build-deploy-docker:
   except:
     refs:
       - merge_requests
+
 
