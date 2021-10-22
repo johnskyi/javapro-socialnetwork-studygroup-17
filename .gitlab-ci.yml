@@ -1,34 +1,45 @@
-image: maven:3-adoptopenjdk-11
-stages:          
+stages:
   - build
+  - test
   - deploy
 
-verify:
+build:
   stage: build
-  script:
-    - 'mvn  clean install'
-    - 'mvn package'
   only:
-    refs:
-      - merge_requests
-
-
-
-build-deploy-docker:
-  stage: deploy
-  image: docker:latest
-  before_script:
-      - docker login -u $CI_REGISTRY -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-
-  script:
-    - docker build -t javapro-backend .
-    - docker run -d -p 8080:8080 javapro-backend
-  tags:
-    - javapro
-  only:
-    refs:
-      - main
+    - main
   except:
-    refs:
-      - merge_requests
+    - tags
+  before_script:
+    - echo "cleaning old jars"
+    - mvn clean
+  script:
+    - echo "build new image"
+    - ./mvnw spring-boot:build-image -Dmaven.test.skip=true
 
+main_testing:
+  stage: test
+  only:
+    - master
+  except:
+    - tags
+  script:
+    - echo "do test"
+
+additional_testing:
+  stage: test
+  only:
+    - master
+  except:
+    - tags
+  script:
+    - echo "Do another parallel tests here.."
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  except:
+    - tags
+  script:
+    - echo "do deploy"
+    - cd /home/gitlab-runner/ && docker-compose up -d
