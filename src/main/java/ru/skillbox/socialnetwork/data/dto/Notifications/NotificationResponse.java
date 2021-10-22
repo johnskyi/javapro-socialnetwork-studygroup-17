@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skillbox.socialnetwork.data.dto.Posts.AuthorDto;
 import ru.skillbox.socialnetwork.data.entity.Notification;
+import ru.skillbox.socialnetwork.data.entity.Person;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -35,14 +37,40 @@ public class NotificationResponse {
         private Long sentTime;
         @JsonProperty("entity_id")
         private Long entityId;
+        private Author author;
         private String info;
 
-        public Data(Notification notification){
+        public Data(Notification notification, Person person){
             this.id = notification.getId();
             this.typeId = notification.getType().getId();
             this.sentTime = notification.getTime().toEpochSecond(ZoneOffset.UTC);
             this.entityId = notification.getEntityId();
-            this.info = "String";
+            this.author = new Author(person);
+
         }
+
+        @lombok.Data
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Author {
+            @JsonProperty("first_name")
+            private String firstName;
+
+            @JsonProperty("last_name")
+            private String lastName;
+            private String photo;
+            @JsonProperty("birth_date")
+            private Long birthDate;
+
+            public Author(Person person){
+                this.firstName = person.getFirstName();
+                this.lastName = person.getFirstName();
+                this.photo = person.getPhoto();
+                this.birthDate = person.getBirthTime().toEpochSecond(ZoneOffset.UTC);
+            }
+
+        }
+
     }
 }

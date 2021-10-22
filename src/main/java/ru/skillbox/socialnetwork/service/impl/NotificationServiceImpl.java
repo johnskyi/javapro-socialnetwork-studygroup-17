@@ -34,7 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<NotificationResponse.Data> data = new ArrayList<>();
         for (Notification notification : notifications) {
-            data.add(new NotificationResponse.Data(notification));
+            data.add(new NotificationResponse.Data(notification, personRepository.getById(notification.getEntityId())));
         }
 
         return NotificationResponse.builder()
@@ -59,7 +59,7 @@ public class NotificationServiceImpl implements NotificationService {
             List<Long> notificationsId = new ArrayList<>();
             List<NotificationResponse.Data> data = new ArrayList<>();
             for (Notification notification : notifications) {
-                data.add(new NotificationResponse.Data(notification));
+                data.add(new NotificationResponse.Data(notification, personRepository.getById(notification.getEntityId())));
                 notificationsId.add(notification.getId());
                 notificationRepository.deleteNotificationById(notification.getId());
             }
@@ -74,7 +74,7 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         Notification notification = notificationRepository.getById(id);
-        List<NotificationResponse.Data> data = List.of(new NotificationResponse.Data(notification));
+        List<NotificationResponse.Data> data = List.of(new NotificationResponse.Data(notification, personRepository.getById(notification.getEntityId())));
         notificationRepository.deleteNotificationById(notification.getId());
 
         return NotificationResponse.builder()
