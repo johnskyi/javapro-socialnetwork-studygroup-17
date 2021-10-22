@@ -64,7 +64,7 @@ public class NotificationResponse {
 
             public Author(Person person){
                 this.firstName = person.getFirstName();
-                this.lastName = person.getFirstName();
+                this.lastName = person.getLastName();
                 this.photo = person.getPhoto();
                 this.birthDate = person.getBirthTime().toEpochSecond(ZoneOffset.UTC);
             }
