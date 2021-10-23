@@ -12,7 +12,6 @@ build:
   script:
     - echo "package jar"
     - mvn install
-    - mvn package
 
 main_testing:
   stage: test
@@ -36,7 +35,7 @@ deploy-job:
   image: docker:latest
   stage: deploy 
   only:
-     - master
+     - main
   except:
      - tags
 
