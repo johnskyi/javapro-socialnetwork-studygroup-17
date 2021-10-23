@@ -11,7 +11,8 @@ build:
     - tags
   script:
     - echo "package jar"
-    - mvn clean install
+    - mvn clean
+    - ./mvnw spring-boot:build-image 
 
 main_testing:
   stage: test
