@@ -11,7 +11,7 @@ build:
     - tags
   before_script:
     - echo "cleaning old jars"
-    - mvn clean
+    - mvn install
   script:
     - echo "build new image"
     - ./mvnw spring-boot:build-image -Dmaven.test.skip=true
