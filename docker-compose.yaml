@@ -12,7 +12,7 @@ services:
   #   networks:
   #     - "infrastructure"
   social_network:
-    image: "social_network:0.1"
+    image: "social_network:latest"
     ports:
       - "8086:8086"
     networks:
