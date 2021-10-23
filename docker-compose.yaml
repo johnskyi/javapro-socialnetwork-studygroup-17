@@ -1,16 +1,16 @@
 version: "3.7"
 
 services:
-  db:
-    image: 'postgres:13.1-alpine'
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=javapro
-      - POSTGRES_PASSWORD=iddqd
-      - POSTGRES_DB=javapro
-    networks:
-      - "infrastructure"
+  # db:
+  #   image: 'postgres:13.1-alpine'
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - POSTGRES_USER=javapro
+  #     - POSTGRES_PASSWORD=iddqd
+  #     - POSTGRES_DB=javapro
+  #   networks:
+  #     - "infrastructure"
   social_network:
     image: "social_network:0.1"
     ports:
