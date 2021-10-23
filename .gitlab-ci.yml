@@ -11,8 +11,7 @@ build:
     - tags
   script:
     - echo "package jar"
-    - mvn clean
-    - mvn install
+    - mvn clean install
 
 main_testing:
   stage: test
