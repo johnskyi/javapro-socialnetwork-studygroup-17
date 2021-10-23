@@ -11,7 +11,7 @@ build:
     - tags
   script:
     - echo "package jar"
-    - ./mvnw clean package 
+    - ./mvnw clean package -DskipTests
 
 main_testing:
   stage: test
