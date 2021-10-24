@@ -39,4 +39,5 @@ deploy:
     - tags
   script:
     - echo "do deploy"
+    - - docker build -t social_network .
     - cd /home/gitlab-runner/ && docker-compose up -d
