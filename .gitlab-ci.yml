@@ -12,7 +12,7 @@ build:
   script:
     - echo "package jar"
     - mvn clean
-    - ./mvnw spring-boot:repackage
+    - mvn package
 
 main_testing:
   stage: test
