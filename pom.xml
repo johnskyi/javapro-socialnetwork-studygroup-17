@@ -16,8 +16,6 @@
 
     <properties>
         <java.version>11</java.version>
-        <docker.image.prefix>org</docker.image.prefix>
-        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
     </properties>
 
     <profiles>
@@ -221,28 +219,6 @@
                     <includes>
                         <include>**/*IntTest.java</include>
                     </includes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${dockerfile-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
-                    <repository>${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>
