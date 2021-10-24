@@ -9,10 +9,12 @@ build:
     - main
   except:
     - tags
-  script:
-    - echo "package jar"
+  before_script:
+    - echo "cleaning old jars"
     - mvn clean
-    - mvn package
+  script:
+    - echo "build new image"
+    - ./mvnw spring-boot:build-image -Dmaven.test.skip=true
 
 main_testing:
   stage: test
@@ -32,16 +34,12 @@ additional_testing:
   script:
     - echo "Do another parallel tests here.."
 
-deploy-job:
-  image: docker:latest
-  stage: deploy 
+deploy:
+  stage: deploy
   only:
-     - main
+    - main
   except:
-     - tags
-
+    - tags
   script:
-    - echo "Do docker image..."
-    - docker build -t social_network .
+    - echo "do deploy"
     - cd /home/gitlab-runner/ && docker-compose up -d
-
