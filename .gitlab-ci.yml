@@ -12,6 +12,10 @@ build:
   script:
     - echo "do package jar..."
     - mvn package
+    - docker build -t social_network .
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker tag $CI_REGISTRY_IMAGE CI_REGISTRY_USER/$CI_REGISTRY_IMAGE
+    - docker push $CI_REGISTRY_IMAGE
 
 main_testing:
   stage: test
@@ -39,5 +43,4 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - - docker build -t social_network .
     - cd /home/gitlab-runner/ && docker-compose up -d
