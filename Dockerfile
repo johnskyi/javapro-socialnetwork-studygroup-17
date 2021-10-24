@@ -1,8 +1,10 @@
 FROM openjdk:latest
 MAINTAINER Team JavaPRO <x.noreply@yzq.org>
-ENTRYPOINT ["java", "-jar", "/javapro/backend.jar"]
-ARG JAR_FILE
-ADD target/${JAR_FILE} /org/javapro/backend.jar
+ARG JAR_FILE=/target/social_network-0.1-docker-info.jar
+ADD target/${JAR_FILE} social_network-0.1-docker-info.jar
+ENTRYPOINT ["java", "-jar", "social_network-0.1-docker-info.jar"]
+
+
 
 
 
