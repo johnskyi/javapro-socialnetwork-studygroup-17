@@ -12,7 +12,7 @@ build:
   script:
     - echo "package jar"
     - mvn clean
-    - ./mvnw spring-boot:run -Dmaven.test.skip=true
+    - ./mvnw spring-boot:repackage
 
 main_testing:
   stage: test
