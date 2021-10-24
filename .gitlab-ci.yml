@@ -11,10 +11,10 @@ build:
     - tags
   before_script:
     - echo "cleaning old jars"
-    - mvn clean
+    - mvn package
   script:
     - echo "build new image"
-    - ./mvnw spring-boot:build-image -Dmaven.test.skip=true
+    # - ./mvnw spring-boot:build-image -Dmaven.test.skip=true
 
 main_testing:
   stage: test
