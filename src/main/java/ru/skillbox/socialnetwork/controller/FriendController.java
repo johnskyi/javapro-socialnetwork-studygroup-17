@@ -50,4 +50,10 @@ public class FriendController {
         return ResponseEntity.ok(friendService.getRecommendations(offset, itemPerPage));
     }
 
+    @PostMapping("/api/v1/friends/{id}")
+    public ResponseEntity<ErrorTimeDataResponse> add(@PathVariable Long id) {
+        friendService.addFriend(id);
+        return ResponseEntity.ok(new ErrorTimeDataResponse(new MessageResponse()));
+    }
+
 }
