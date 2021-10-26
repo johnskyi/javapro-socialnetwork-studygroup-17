@@ -88,15 +88,3 @@ databaseChangeLog:
               - column:
                   name: dst_person_id
                   value: 5
-        - insert:
-            tableName: friendship
-            columns:
-              - column:
-                  name: status_id
-                  value: 6
-              - column:
-                  name: src_person_id
-                  value: 4
-              - column:
-                  name: dst_person_id
-                  value: 5

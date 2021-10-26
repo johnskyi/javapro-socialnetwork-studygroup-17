@@ -84,31 +84,7 @@ databaseChangeLog:
                   value: 2021-09-01 00:00:00
               - column:
                   name: name
-                  value: "Friendship name4"
-              - column:
-                  name: code
-                  value: FRIEND
-        - insert:
-            tableName: friendship_status
-            columns:
-              - column:
-                  name: time
-                  value: 2021-09-01 00:00:00
-              - column:
-                  name: name
                   value: "Friendship name5"
               - column:
                   name: code
                   value: BLOCKED
-        - insert:
-            tableName: friendship_status
-            columns:
-              - column:
-                  name: time
-                  value: 2021-09-01 00:00:00
-              - column:
-                  name: name
-                  value: "Friendship name6"
-              - column:
-                  name: code
-                  value: FRIEND
