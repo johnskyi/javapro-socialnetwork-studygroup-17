@@ -110,7 +110,7 @@ public class FriendService {
         Person dstPerson = personRepository.findById(dstPersonId).orElseThrow(() -> new PersonNotFoundException(dstPersonId));
         Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).orElse(new Friendship());
         if (friendshipOut.getFriendshipStatus() != null &&
-                (friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.REQUEST) ||
+                (//friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.REQUEST) ||
                         friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.FRIEND) ||
                         friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.SUBSCRIBED))
         ) {
@@ -129,10 +129,18 @@ public class FriendService {
             } else if (friendshipIn.getFriendshipStatus().getCode().equals(FriendshipStatusType.DECLINED)) {
                 friendshipOut.setFriendshipStatus(friendshipStatusRepository.findByCode(FriendshipStatusType.SUBSCRIBED).get());
             } else if (friendshipIn.getFriendshipStatus().getCode().equals(FriendshipStatusType.BLOCKED)) {
-                throw new CustomExceptionBadRequest("Запрос запрещен другим пользователем!");
+                throw new CustomExceptionBadRequest("Friendship request prohibited by destination user");
             }
         }
         friendshipRepository.save(friendshipOut);
+//        notificationsRepository.save(new Notification(
+//                notificationTypeRepository.findById().get(),
+//                LocalDateTime.now(),
+//                dstPerson,
+//                friendshipOut.getId(),
+//                dstPerson.getEmail(),
+//                0
+//        ));
     }
 
     private List<PersonResponse.Data> convertPersonPageToList(Page<Person> page) {
