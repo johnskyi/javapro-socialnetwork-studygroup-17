@@ -7,6 +7,7 @@ build:
   stage: build
   only:
     - main
+    - dev
   except:
     - tags
   script:
@@ -17,7 +18,8 @@ build:
 main_testing:
   stage: test
   only:
-    - master
+    - main
+    - dev
   except:
     - tags
   script:
@@ -27,7 +29,8 @@ main_testing:
 additional_testing:
   stage: test
   only:
-    - master
+    - main
+    - dev
   except:
     - tags
   script:
