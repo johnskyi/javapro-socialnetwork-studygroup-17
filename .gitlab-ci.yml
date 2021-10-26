@@ -22,6 +22,7 @@ main_testing:
     - tags
   script:
     - echo "do test"
+    - mvn verify
 
 additional_testing:
   stage: test
