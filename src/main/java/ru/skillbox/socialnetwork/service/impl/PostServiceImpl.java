@@ -3,7 +3,9 @@ package ru.skillbox.socialnetwork.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
@@ -16,6 +18,7 @@ import ru.skillbox.socialnetwork.service.PostService;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,6 +150,45 @@ public class PostServiceImpl implements PostService {
                 .offset(offset)
                 .perPage(limit)
                 .comments(comments)
+                .build();
+    }
+
+    @Override
+    public GetUserPostsResponse searchPosts(String text, String dateFrom, String dateTo, String author, String offset, String itemPerPage) {
+        LocalDateTime localDateTimeFrom = dateFrom.equals("") ? LocalDateTime.now().minusYears(1) :
+                LocalDateTime.parse(dateFrom.substring(0, dateFrom.indexOf(" ")));
+        LocalDateTime localDateTimeTo = dateTo.equals("") ? LocalDateTime.now() :
+                LocalDateTime.parse(dateTo.substring(0, dateTo.indexOf(" ")));
+        Pageable pageable = PageRequest.of(Integer.parseInt(offset), Integer.parseInt(itemPerPage));
+        Page<Post> posts = postRepository.findAllBySearchFilter(text.equals("") ? null : text,
+               localDateTimeFrom,
+               localDateTimeTo,
+                author.equals("") ? null : author,
+                pageable);
+        List<PostDto> postDto = new ArrayList<>();
+        for (Post post : posts) {
+            List<CommentDto> commentDto = new ArrayList<>();
+            for (PostComment comment : post.getComments()) {
+                commentDto.add(new CommentDto(comment));
+            }
+                postDto.add(PostDto.builder()
+                        .id(post.getId())
+                        .time(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                        .author(new AuthorDto(post.getAuthor()))
+                        .title(post.getTitle())
+                        .text(post.getTextHtml())
+                        .isBlocked(post.isBlocked())
+                        .likes(post.getLikes().size())
+                        .comments(commentDto)
+                        .build());
+        }
+        return GetUserPostsResponse.builder()
+                .error("string")
+                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                .total(posts.getTotalElements())
+                .offset(Long.parseLong(offset))
+                .perPage(Long.parseLong(itemPerPage))
+                .posts(postDto)
                 .build();
     }
 
