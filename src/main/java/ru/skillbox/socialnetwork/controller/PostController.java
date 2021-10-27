@@ -8,7 +8,6 @@ import ru.skillbox.socialnetwork.data.dto.Posts.*;
 import ru.skillbox.socialnetwork.service.PostService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.security.Principal;
 
 @RestController

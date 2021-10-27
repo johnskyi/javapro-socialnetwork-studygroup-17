@@ -17,7 +17,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "select p from Post p JOIN p.author a " +
             "WHERE (:text is null or (p.textHtml LIKE %:text% OR p.title LIKE %:text% OR a.firstName LIKE %:text%))" +
             "AND (p.time > :date_from AND p.time < :date_to)" +
-            "AND (:author is null or a.firstName = :author)")
+            "AND (:author is null or a.firstName = :author)" +
+            "AND (p.isBlocked = true)")
     Page<Post> findAllBySearchFilter(@Param("text") String text,
                                      @Param("date_from") LocalDateTime dateFrom,
                                      @Param("date_to") LocalDateTime dateTo,
