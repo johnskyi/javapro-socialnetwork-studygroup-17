@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
+import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.Town;
+import ru.skillbox.socialnetwork.service.ConvertTimeService;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -60,5 +62,24 @@ public class PersonResponse {
         private String message;
 
         private String token;
+
+        public Data(Person person) {
+            this.id = person.getId();
+            this.firstName = person.getFirstName();
+            this.lastName = person.getLastName();
+            if (person.getRegTime() != null) this.regDate = ConvertTimeService.getTimestamp(person.getRegTime());
+            if (person.getBirthTime() != null) this.birthDate = ConvertTimeService.getTimestamp(person.getBirthTime());
+            this.email = person.getEmail();
+            this.phone = person.getPhone();
+            this.photo = person.getPhoto();
+            this.about = person.getAbout();
+            this.town = person.getTown();
+            this.country = person.getTown().getCountry();
+            this.messagePermission = person.getMessagePermission();
+            if (person.getLastOnlineTime() != null) {
+                this.lastOnlineTime = ConvertTimeService.getTimestamp(person.getLastOnlineTime());
+            }
+            this.isBlocked = person.isBlocked();
+        }
     }
 }

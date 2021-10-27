@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
@@ -16,6 +18,7 @@ import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
+import ru.skillbox.socialnetwork.exception.UnauthorizedException;
 import ru.skillbox.socialnetwork.service.PersonService;
 
 import java.security.Principal;
@@ -25,6 +28,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +57,25 @@ public class PersonServiceImpl implements PersonService {
         Person person = findPerson(principal);
         personRepository.delete(person);
         return createSmallPersonResponse();
+    }
+
+    @Override
+    public Person getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null) {
+            throw new SecurityException("Session is not authorized");
+        }
+
+        String email = auth.getName();
+
+        Optional<Person> per = personRepository.findByEmail(email);
+
+        if (per.isEmpty()) {
+            throw new UnauthorizedException(email);
+        }
+
+        return per.get();
     }
 
     @Override
