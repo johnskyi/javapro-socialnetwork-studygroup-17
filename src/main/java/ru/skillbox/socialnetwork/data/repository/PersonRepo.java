@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.data.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public interface PersonRepo extends JpaRepository<Person, Long> {
 
     @Transactional
@@ -41,4 +43,8 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
 
     @Query(value = "select P from #{#entityName} P where P not in :known")
     Page<Person> findRandomRecs(List<Person> known, Pageable paging);
+
+    @Modifying
+    @Query(value = "delete from Person p WHERE p.email = :email")
+    void deletePersonByEmail(@Param("email") String email);
 }

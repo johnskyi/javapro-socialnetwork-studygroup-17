@@ -24,24 +24,28 @@ public class PersonControllerImpl implements PersonController {
     private final Logger logger = LoggerFactory.getLogger(PersonControllerImpl.class);
 
     @Override
+    @ApiOperation(value = "Получение профиля пользователя")
     public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");
         return ResponseEntity.ok(personService.getPersonDetail(principal));
     }
 
     @Override
+    @ApiOperation(value = "Редактирование профиля пользователя")
     public ResponseEntity<PersonResponse> putPersonDetail(@Valid @RequestBody PersonRequest personRequest, Principal principal) {
         logger.info("Call PUT /api/v1/users/me");
         return ResponseEntity.ok(personService.putPersonDetail(personRequest, principal));
     }
 
     @Override
+    @ApiOperation(value = "Удаление пользователя")
     public ResponseEntity<PersonResponse> deletePerson(Principal principal) {
         logger.info("Call DELETE /api/v1/users/me");
         return ResponseEntity.ok(personService.deletePerson(principal));
     }
 
     @Override
+    @ApiOperation(value = "Поиск пользователей")
     public ResponseEntity<PersonSearchResponse> searchPerson(@RequestParam(value = "first_name", defaultValue = "")String firstName,
                                                              @RequestParam(value = "last_name", defaultValue = "")String lastName,
                                                              @RequestParam(value = "age_from", defaultValue = "0")String ageFrom,

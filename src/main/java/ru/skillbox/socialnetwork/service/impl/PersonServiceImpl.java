@@ -14,8 +14,9 @@ import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
 import ru.skillbox.socialnetwork.data.dto.PersonSearchResponse;
 import ru.skillbox.socialnetwork.data.entity.File;
 import ru.skillbox.socialnetwork.data.entity.Person;
-import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
+import ru.skillbox.socialnetwork.data.repository.NotificationRepository;
+import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.UnauthorizedException;
@@ -39,6 +40,7 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepo personRepository;
     private final TownRepository townRepository;
     private final FileRepository fileRepository;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public PersonResponse getPersonDetail(Principal principal) {
@@ -55,7 +57,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonResponse deletePerson(Principal principal) {
         Person person = findPerson(principal);
-        personRepository.delete(person);
+        notificationRepository.findAllByPersonId(person.getId())
+                .forEach(notification -> notificationRepository.deleteNotificationById(notification.getId()));
+        personRepository.deletePersonByEmail(person.getEmail());
+        SecurityContextHolder.clearContext();
         return createSmallPersonResponse();
     }
 
