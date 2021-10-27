@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.data.dto.Notifications;
+package ru.skillbox.socialnetwork.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -53,6 +53,8 @@ public class NotificationResponse {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class Author {
+            @JsonProperty("author_id")
+            private long authorId;
             @JsonProperty("first_name")
             private String firstName;
 
@@ -63,6 +65,7 @@ public class NotificationResponse {
             private Long birthDate;
 
             public Author(Person person){
+                this.authorId = person.getId();
                 this.firstName = person.getFirstName();
                 this.lastName = person.getLastName();
                 this.photo = person.getPhoto();
