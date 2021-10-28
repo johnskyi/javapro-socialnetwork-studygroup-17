@@ -70,8 +70,9 @@ public class PostController {
                                                             @RequestParam(value = "date_to", defaultValue = "") String dateTo,
                                                             @RequestParam(value = "author", defaultValue = "") String author,
                                                             @RequestParam(value = "offset", defaultValue = "0") String offset,
-                                                            @RequestParam(value = "itemPerPage", defaultValue = "20") String itemPerPage){
-        return ResponseEntity.ok(postService.searchPosts(text, dateFrom, dateTo, author, offset, itemPerPage));
+                                                            @RequestParam(value = "itemPerPage", defaultValue = "20") String itemPerPage,
+                                                            @RequestParam(value = "tags", defaultValue = "") String tags){
+        return ResponseEntity.ok(postService.searchPosts(text, dateFrom, dateTo, author, offset, itemPerPage, tags));
     }
 
 }

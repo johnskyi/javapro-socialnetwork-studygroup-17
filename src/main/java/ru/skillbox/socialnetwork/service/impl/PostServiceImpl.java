@@ -154,7 +154,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public GetUserPostsResponse searchPosts(String text, String dateFrom, String dateTo, String author, String offset, String itemPerPage) {
+    public GetUserPostsResponse searchPosts(String text, String dateFrom, String dateTo, String author, String offset, String itemPerPage, String tags) {
         LocalDateTime localDateTimeFrom = dateFrom.equals("") ? LocalDateTime.now().minusYears(1) :
                 LocalDateTime.parse(dateFrom.substring(0, dateFrom.indexOf(" ")));
         LocalDateTime localDateTimeTo = dateTo.equals("") ? LocalDateTime.now() :

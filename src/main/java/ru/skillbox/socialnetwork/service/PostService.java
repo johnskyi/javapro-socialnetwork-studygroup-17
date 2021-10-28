@@ -16,5 +16,5 @@ public interface PostService {
 
     PostResponse getPost(Long postId);
 
-    GetUserPostsResponse searchPosts(String text, String dateFrom, String dateTo, String author, String offset, String itemPerPage);
+    GetUserPostsResponse searchPosts(String text, String dateFrom, String dateTo, String author, String offset, String itemPerPage, String tags);
 }
