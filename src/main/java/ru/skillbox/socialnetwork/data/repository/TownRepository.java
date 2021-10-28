@@ -9,6 +9,8 @@ import ru.skillbox.socialnetwork.data.entity.Town;
 
 public interface TownRepository extends JpaRepository<Town, Long> {
 
-    @Query("select t from Town t where t.name like %:query% and t.country.id = :countryId")
-    Page<Town> findTownsByQuery(String query, Long countryId, Pageable pageable);
+    @Query("select t from Town t where " +
+            "(:city is null or t.name like %:city%) " +
+            "and t.country.id = :countryId")
+    Page<Town> findTownsByQuery(String city, Long countryId, Pageable pageable);
 }
