@@ -1,5 +1,7 @@
 package ru.skillbox.socialnetwork.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +13,14 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
+@Api(tags = "Работа с публикациями")
 @RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
 
     @PostMapping("/api/v1/users/{id}/wall")
+    @ApiOperation(value="Добавление публикации на стену пользователя")
     public ResponseEntity<PostResponse> postNewPost(
             @PathVariable Long id,
             @RequestParam(name = "publish_date", required = false) Long publishDate,
@@ -26,6 +30,7 @@ public class PostController {
     }
 
     @PostMapping("/api/v1/post/{postId}/comments")
+    @ApiOperation(value="Создание комментария к публикации")
     public ResponseEntity<AddCommentResponse> addComment(
             @PathVariable Long postId,
             @RequestBody AddCommentRequest addCommentRequest,
@@ -35,6 +40,7 @@ public class PostController {
     }
 
     @GetMapping("/api/v1/post/{postId}")
+    @ApiOperation(value="Получение публикации по ID")
     public ResponseEntity<PostResponse> getPostById(@PathVariable Long postId) {
 
         return ResponseEntity.ok(postService.getPost(postId));
@@ -42,6 +48,7 @@ public class PostController {
     }
 
     @GetMapping("/api/v1/post/{postId}/comments")
+    @ApiOperation(value="Получение комментариев на публикации")
     public ResponseEntity<CommentsResponse> requestComments(
             @PathVariable Long postId,
             @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
@@ -52,6 +59,7 @@ public class PostController {
     }
 
     @GetMapping("/api/v1/users/{personId}/wall")
+    @ApiOperation(value="Получение записей на стене пользователя")
     public ResponseEntity<GetUserPostsResponse> getUserPosts(
             @PathVariable Long personId,
             @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
@@ -61,6 +69,7 @@ public class PostController {
     }
 
     @GetMapping("/api/v1/post")
+    @ApiOperation(value="Поиск публикации")
     public ResponseEntity<GetUserPostsResponse> searchPosts(@RequestParam(value = "text", defaultValue = "") String text,
                                                             @RequestParam(value = "date_from", defaultValue = "") String dateFrom,
                                                             @RequestParam(value = "date_to", defaultValue = "") String dateTo,
