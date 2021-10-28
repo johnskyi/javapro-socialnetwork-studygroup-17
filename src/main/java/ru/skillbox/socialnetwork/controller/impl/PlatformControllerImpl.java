@@ -41,7 +41,7 @@ public class PlatformControllerImpl implements PlatformController {
     ///api/v1/platform/getAllCountriesWithTowns
     @Override
     @ApiOperation("Получение списка городов")
-    public ResponseEntity<PlatformResponse> getCities(@RequestParam("country_id") Long countryId,
+    public ResponseEntity<PlatformResponse> getCities(@RequestParam("countryId") Long countryId,
                                                       @RequestParam(value = "city", defaultValue = "") String city,
                                                       @RequestParam(value = "offset", defaultValue = "0") int offset,
                                                       @RequestParam(value = "itemPerPage", defaultValue = "20") int itemPerPage) {
