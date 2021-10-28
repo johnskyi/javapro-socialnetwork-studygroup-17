@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.skillbox.socialnetwork.data.entity.Town;
 
+import java.util.List;
+
 
 public interface TownRepository extends JpaRepository<Town, Long> {
 
@@ -13,4 +15,8 @@ public interface TownRepository extends JpaRepository<Town, Long> {
             "(:city is null or t.name like %:city%) " +
             "and t.country.id = :countryId")
     Page<Town> findTownsByQuery(String city, Long countryId, Pageable pageable);
+    @Query("select t from Town t where " +
+            "(:city is null or t.name like %:city%)" +
+            "and t.country.id = :countryId")
+    List<Town> findAllByCountry_Id(Long countryId, String city);
 }

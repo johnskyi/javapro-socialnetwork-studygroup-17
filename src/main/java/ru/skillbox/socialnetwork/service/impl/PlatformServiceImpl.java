@@ -71,16 +71,17 @@ public class PlatformServiceImpl implements PlatformService {
 
     @Override
     public PlatformResponse getCities(Long countryId, String city, int offset, int itemPerPage) {
-        Pageable pageable = PageRequest.of(offset, itemPerPage);
-        Page<Town> pages = townRepository.findTownsByQuery(city.equals("") ? null : city,
-                countryId,
-                pageable);
+//        Pageable pageable = PageRequest.of(offset, itemPerPage);
+//        Page<Town> pages = townRepository.findTownsByQuery(city.equals("") ? null : city,
+//                countryId,
+//                pageable);
+        List<Town> pages = townRepository.findAllByCountry_Id(countryId, city.equals("") ? null : city);
         return PlatformResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
                 .offset(offset)
                 .perPage(itemPerPage)
-                .total((int) pages.getTotalElements())
+                .total(pages.size())
                 .data(pages.stream()
                         .map(c -> PlatformResponse.Datum.builder()
                                 .id(c.getId())
