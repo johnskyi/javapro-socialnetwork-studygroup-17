@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -27,4 +28,12 @@ public class Post {
 
     @Column(name = "is_blocked")
     private boolean isBlocked;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
+    private List<PostLike> likes;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
+    private List<PostComment> comments;
 }

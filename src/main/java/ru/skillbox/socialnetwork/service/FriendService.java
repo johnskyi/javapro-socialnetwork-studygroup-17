@@ -105,12 +105,12 @@ public class FriendService {
     public void addFriend(Long dstPersonId) {
         Person currentPerson = personService.getCurrentUser();
         if (currentPerson.getId() == dstPersonId) {
-            throw new CustomExceptionBadRequest("Self request");
+            throw new CustomExceptionBadRequest("Запрос на добавление себя");
         }
         Person dstPerson = personRepository.findById(dstPersonId).orElseThrow(() -> new PersonNotFoundException(dstPersonId));
         Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).orElse(new Friendship());
         if (friendshipOut.getFriendshipStatus() != null &&
-                (friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.REQUEST) ||
+                (//friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.REQUEST) ||
                         friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.FRIEND) ||
                         friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.SUBSCRIBED))
         ) {
@@ -134,7 +134,7 @@ public class FriendService {
         }
         friendshipRepository.save(friendshipOut);
 //        notificationsRepository.save(new Notification(
-//                notificationTypeRepository.findById(4L).get(),
+//                notificationTypeRepository.findById().get(),
 //                LocalDateTime.now(),
 //                dstPerson,
 //                friendshipOut.getId(),
