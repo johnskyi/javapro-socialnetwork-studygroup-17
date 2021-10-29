@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetwork.data.dto.Notifications.NotificationResponse;
+import ru.skillbox.socialnetwork.data.dto.NotificationResponse;
 import ru.skillbox.socialnetwork.data.entity.Notification;
 import ru.skillbox.socialnetwork.data.repository.NotificationRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
@@ -15,9 +15,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,14 +46,11 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public NotificationResponse putNotifications(Long id, Boolean all, Principal principal) {
-        if(all){
+    public NotificationResponse putNotifications(Long id, Boolean deleteAllNotifications, Principal principal) {
+        if(deleteAllNotifications){
             Iterable<Notification> notifications = notificationRepository.findAllByPersonId(
                     personRepository.findByEmail(principal.getName()).get().getId()
             );
-            for (Notification notification : notifications) {
-                System.out.println("id -" + notification.getId() + "notification.getPerson.getId " + notification.getPerson().getId());
-            }
             List<Long> notificationsId = new ArrayList<>();
             List<NotificationResponse.Data> data = new ArrayList<>();
             for (Notification notification : notifications) {
