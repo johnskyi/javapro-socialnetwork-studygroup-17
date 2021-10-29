@@ -53,20 +53,7 @@ public class PlatformServiceImpl implements PlatformService {
     @Override
     public PlatformResponse getCountries(String country, Integer offset, Integer itemPerPage) {
         logger.info("country {}, offset {}, itemPerPage {}", country, offset, itemPerPage);
-  //      Pageable pageable = PageRequest.of(offset, itemPerPage);
- //       Page<Country> pages = countryRepository.findCountriesByQuery(country, pageable);
         List<Country> pages = countryRepository.findAll();
-        return createPlatformResponse(pages);
-    }
-
-    @Override
-    public PlatformResponse getCities(Long countryId, String city, int offset, int itemPerPage) {
-        Pageable pageable = PageRequest.of(offset, itemPerPage);
-        Page<Town> pages = townRepository.findTownsByQuery(city, countryId, pageable);
-        return createPlatformResponse(pages, offset, itemPerPage);
-    }
-
-    private PlatformResponse createPlatformResponse(List<Country> pages) {
         return PlatformResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
@@ -82,13 +69,19 @@ public class PlatformServiceImpl implements PlatformService {
                 .build();
     }
 
-    private PlatformResponse createPlatformResponse(Page<? extends Platform> pages, int offset, int itemPerPage) {
+    @Override
+    public PlatformResponse getCities(Long countryId, String city, int offset, int itemPerPage) {
+//        Pageable pageable = PageRequest.of(offset, itemPerPage);
+//        Page<Town> pages = townRepository.findTownsByQuery(city.equals("") ? null : city,
+//                countryId,
+//                pageable);
+        List<Town> pages = townRepository.findAllByCountry_Id(countryId, city.equals("") ? null : city);
         return PlatformResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
-                .total(pages.getTotalPages())
                 .offset(offset)
                 .perPage(itemPerPage)
+                .total(pages.size())
                 .data(pages.stream()
                         .map(c -> PlatformResponse.Datum.builder()
                                 .id(c.getId())
