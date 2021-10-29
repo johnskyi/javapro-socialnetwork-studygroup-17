@@ -18,6 +18,7 @@ import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -81,8 +82,10 @@ public class FriendService {
                 itemPerPage,
                 Sort.by(Sort.Direction.ASC, "personReceiveFriend.lastName"));
 
-        List<Person> friends = friendshipRepository.findByPersonRequestFriendAndAndFriendshipStatus_Code(currentPerson, FriendshipStatusType.FRIEND);
-        List<Person> known = friendshipRepository.findBySrcPerson(currentPerson);
+        List<Friendship> friendships = friendshipRepository.findByPersonReceiveFriendAndFriendshipStatus_Code(currentPerson, FriendshipStatusType.FRIEND);
+        List<Person> friends =  friendships.stream().map(friendship -> friendship.getPersonRequestFriend()).collect(Collectors.toList());
+        List<Friendship> friendships_known = friendshipRepository.findByPersonReceiveFriend(currentPerson);
+        List<Person> known = friendships_known.stream().map(friendship -> friendship.getPersonRequestFriend()).collect(Collectors.toList());
         known.add(currentPerson);
         Page<Person> recommendedPersons = null;
         if (!friends.isEmpty()) {
