@@ -7,11 +7,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.FriendResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
-import ru.skillbox.socialnetwork.data.dto.UserIdStatusResponse;
 import ru.skillbox.socialnetwork.data.entity.*;
-import ru.skillbox.socialnetwork.data.repository.FriendshipRepository;
-import ru.skillbox.socialnetwork.data.repository.FriendshipStatusRepository;
-import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.exception.CustomExceptionBadRequest;
 import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 
@@ -28,12 +25,16 @@ public class FriendService {
     private final PersonRepo personRepository;
     private final PersonService personService;
     private final FriendshipStatusRepository friendshipStatusRepository;
+    private final NotificationRepository notificationRepository;
+    private final NotificationTypeRepository notificationTypeRepository;
 
-    public FriendService(FriendshipRepository friendshipRepository, PersonRepo personRepository, PersonService personService, FriendshipStatusRepository friendshipStatusRepository) {
+    public FriendService(FriendshipRepository friendshipRepository, PersonRepo personRepository, PersonService personService, FriendshipStatusRepository friendshipStatusRepository, NotificationRepository notificationRepository, NotificationTypeRepository notificationTypeRepository) {
         this.friendshipRepository = friendshipRepository;
         this.personRepository = personRepository;
         this.personService = personService;
         this.friendshipStatusRepository = friendshipStatusRepository;
+        this.notificationRepository = notificationRepository;
+        this.notificationTypeRepository = notificationTypeRepository;
     }
 
     public FriendResponse getFriends(String name, Integer offset, Integer itemPerPage,
@@ -136,14 +137,15 @@ public class FriendService {
             }
         }
         friendshipRepository.save(friendshipOut);
-//        notificationsRepository.save(new Notification(
-//                notificationTypeRepository.findById().get(),
-//                LocalDateTime.now(),
-//                dstPerson,
-//                friendshipOut.getId(),
-//                dstPerson.getEmail(),
-//                0
-//        ));
+        notificationRepository.save(
+                new Notification(
+                    notificationTypeRepository.findById(4L).get(),
+                    LocalDateTime.now(),
+                    dstPerson,
+                    friendshipOut.getId(),
+                    dstPerson.getEmail()
+                )
+        );
     }
 
     private List<PersonResponse.Data> convertPersonPageToList(Page<Person> page) {
