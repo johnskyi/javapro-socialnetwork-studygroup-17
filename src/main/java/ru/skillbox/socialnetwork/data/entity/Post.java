@@ -36,4 +36,10 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private List<PostComment> comments;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "post2tag",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    private List<Tag> tags;
 }

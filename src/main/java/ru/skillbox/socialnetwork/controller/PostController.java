@@ -1,5 +1,7 @@
 package ru.skillbox.socialnetwork.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
+@Api(tags = "Работа с постами")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -61,13 +64,15 @@ public class PostController {
     }
 
     @GetMapping("/api/v1/post")
+    @ApiOperation("Поиск поста")
     public ResponseEntity<GetUserPostsResponse> searchPosts(@RequestParam(value = "text", defaultValue = "") String text,
                                                             @RequestParam(value = "date_from", defaultValue = "") String dateFrom,
                                                             @RequestParam(value = "date_to", defaultValue = "") String dateTo,
                                                             @RequestParam(value = "author", defaultValue = "") String author,
                                                             @RequestParam(value = "offset", defaultValue = "0") String offset,
-                                                            @RequestParam(value = "itemPerPage", defaultValue = "20") String itemPerPage){
-        return ResponseEntity.ok(postService.searchPosts(text, dateFrom, dateTo, author, offset, itemPerPage));
+                                                            @RequestParam(value = "itemPerPage", defaultValue = "20") String itemPerPage,
+                                                            @RequestParam(value = "tags", defaultValue = "") String tags){
+        return ResponseEntity.ok(postService.searchPosts(text, dateFrom, dateTo, author, offset, itemPerPage, tags));
     }
 
 }
