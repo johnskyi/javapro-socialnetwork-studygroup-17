@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/v1/auth/logout")
-    @ApiOperation(value="Логаут")
+    @ApiOperation(value="Выполнить выход")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> logout(){
         return authService.logout();

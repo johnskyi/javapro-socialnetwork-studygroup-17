@@ -21,7 +21,7 @@ public class AccountController {
 
     @CrossOrigin(allowCredentials = "true", origins = "http://127.0.0.1:8080")
     @PostMapping("/api/v1/account/register")
-    @ApiOperation(value="Регистрацияпользователя")
+    @ApiOperation(value="Регистрация пользователя")
     public ResponseEntity regPerson(@RequestBody RegisterRequest registerRequest) {
         return registerService.regPerson(registerRequest);
     }

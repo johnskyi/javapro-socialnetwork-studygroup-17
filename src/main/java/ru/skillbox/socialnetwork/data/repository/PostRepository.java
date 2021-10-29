@@ -8,12 +8,15 @@ import org.springframework.data.repository.query.Param;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.Post;
 
+import java.util.Optional;
 import java.time.LocalDateTime;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findPostsByAuthor(Person author, Pageable pageable);
-
+    
+    Optional<Post> findPostById(long id);
+    
     @Query(value = "select p from Post p JOIN p.author a " +
             "WHERE (:text is null or (p.textHtml LIKE %:text% OR p.title LIKE %:text% OR a.firstName LIKE %:text%))" +
             "AND (p.time > :date_from AND p.time < :date_to)" +
