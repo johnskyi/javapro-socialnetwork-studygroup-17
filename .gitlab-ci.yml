@@ -12,8 +12,8 @@ build:
     - tags
   script:
     - echo "do package jar..."
+    - mvn clean
     - mvn package
-    - docker build -t social_network .
 
 main_testing:
   stage: test
@@ -44,4 +44,6 @@ deploy:
     - tags
   script:
     - echo "do deploy"
+    - mvn package
+    - docker build -t social_network .
     - cd /home/gitlab-runner/  && docker-compose up -d

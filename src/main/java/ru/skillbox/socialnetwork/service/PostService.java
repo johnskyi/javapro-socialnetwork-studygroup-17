@@ -15,4 +15,6 @@ public interface PostService {
     CommentsResponse commentsForPost(Long postId, int offset, int limit);
 
     PostResponse getPost(Long postId);
+
+    GetUserPostsResponse searchPosts(String text, String dateFrom, String dateTo, String author, String offset, String itemPerPage, String tags);
 }

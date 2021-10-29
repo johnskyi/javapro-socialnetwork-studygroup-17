@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,9 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -147,6 +150,39 @@ public class PostServiceImpl implements PostService {
                 .offset(offset)
                 .perPage(limit)
                 .comments(comments)
+                .build();
+    }
+
+    @Override
+    public GetUserPostsResponse searchPosts(String text, String dateFrom, String dateTo, String author, String offset, String itemPerPage, String tags) {
+
+        Page<Post> posts = postRepository.findAllBySearchFilter(
+                text.isEmpty() ? null : text,
+                dateFrom.isEmpty() ? LocalDateTime.now().minusYears(10) : LocalDateTime.parse(dateFrom.substring(0, dateFrom.indexOf(" "))),
+                dateTo.isEmpty() ? LocalDateTime.now() : LocalDateTime.parse(dateTo.substring(0, dateTo.indexOf(" "))),
+                author.isEmpty() ? null : author,
+                Arrays.stream(tags.split(",")).map(tagRepository::findByTag).collect(Collectors.toList()),
+                PageRequest.of(Integer.parseInt(offset), Integer.parseInt(itemPerPage)));
+
+        return GetUserPostsResponse.builder()
+                .error("string")
+                .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                .total(posts.getTotalElements())
+                .offset(Long.parseLong(offset))
+                .perPage(Long.parseLong(itemPerPage))
+                .posts(posts.map(post ->
+                        PostDto.builder()
+                                .id(post.getId())
+                                .time(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                                .author(new AuthorDto(post.getAuthor()))
+                                .title(post.getTitle())
+                                .text(post.getTextHtml())
+                                .isBlocked(post.isBlocked())
+                                .likes(post.getLikes().size())
+                                .comments(post.getComments().stream()
+                                        .map(CommentDto::new)
+                                        .collect(Collectors.toList()))
+                                .build()).toList())
                 .build();
     }
 
