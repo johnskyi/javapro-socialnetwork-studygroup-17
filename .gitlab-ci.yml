@@ -28,16 +28,16 @@ main_testing:
     - echo "do test"
     - mvn verify
 
-additional_testing:
-  stage: test
-  only:
-    - main
-    - dev
-    - merge_request
-  except:
-    - tags
-  script:
-    - echo "Do another parallel tests here.."
+# additional_testing:
+#   stage: test
+#   only:
+#     - main
+#     - dev
+#     - merge_request
+#   except:
+#     - tags
+#   script:
+#     - echo "Do another parallel tests here.."
 
 deploy:
   stage: deploy
