@@ -1,5 +1,7 @@
 package ru.skillbox.socialnetwork.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +16,14 @@ import ru.skillbox.socialnetwork.service.TagService;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/tags/")
+@Api(tags = "Действия с тэгами")
 public class TagsController {
 
     private final TagService tagService;
 
 
     @GetMapping
+    @ApiOperation(value="Получить тэги публикации")
     public ResponseEntity<TagListResponse> getTagsForPublication(
             @PathVariable Long postId
             /*
@@ -35,6 +39,7 @@ public class TagsController {
     }
 
     @PostMapping
+    @ApiOperation(value="Создать тэг")
     public ResponseEntity<PostTagResponse> createTag(@RequestParam(name = "tag") String tagName){
 
         log.info("POST /api/v1/tags/ " + tagName);
@@ -42,6 +47,7 @@ public class TagsController {
     }
 
     @DeleteMapping
+    @ApiOperation(value="Удалить тэг")
     public ResponseEntity<DeleteTagResponse> deleteTag(@RequestParam(name = "id") long tagId){
         log.info("DELETE /api/v1/tags/ " + tagId);
         return ResponseEntity.ok(tagService.deleteTag(tagId));
