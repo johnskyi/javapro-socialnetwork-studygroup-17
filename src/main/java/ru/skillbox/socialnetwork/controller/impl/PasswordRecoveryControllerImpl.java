@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.controller.impl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ import java.security.Principal;
 
 @RestController
 @Api(tags = "Работа с аккаунтом")
+@Slf4j
 public class PasswordRecoveryControllerImpl {
 
     private final PasswordRecoveryServiceImpl passwordRecoveryService;
 
-    private final Logger logger = LoggerFactory.getLogger(PasswordRecoveryControllerImpl.class);
 
     public PasswordRecoveryControllerImpl(PasswordRecoveryServiceImpl passwordRecoveryService) {
         this.passwordRecoveryService = passwordRecoveryService;
@@ -31,21 +32,21 @@ public class PasswordRecoveryControllerImpl {
     @PutMapping("/api/v1/account/password/recovery")
     @ApiOperation(value="Отправка письма на почту при забытом пароле")
     public ResponseEntity<PasswordRecoveryResponse> sendEmail(@RequestParam("email") String email) {
-        logger.info("Person {} requested the password recovery", email);
+        log.info("PUT /api/v1/account/password/recovery " + email);
         return ResponseEntity.ok(passwordRecoveryService.send(email));
     }
 
     @PutMapping("/api/v1/account/password/set")
     @ApiOperation(value="Смена пароля")
     public ResponseEntity<PasswordRecoveryResponse> setPassword(@RequestParam("token") String token, @RequestParam("password") String password) {
-        logger.info("Person {} requested the password change", token);
+        log.info("PUT /api/v1/account/password/set " + token);
         return ResponseEntity.ok(passwordRecoveryService.setPassword(password, token));
     }
     @PutMapping("/api/v1/account/email")
     @ApiOperation(value="Смена почты")
     public ResponseEntity<PasswordRecoveryResponse> setEmail(@RequestBody String newEmail, Principal principal)
     {
-        logger.info("Person {} requested the email change", newEmail);
+        log.info("PUT /api/v1/account/email" + principal.getName());
         return ResponseEntity.ok(passwordRecoveryService.setEmail(newEmail,principal));
     }
 }

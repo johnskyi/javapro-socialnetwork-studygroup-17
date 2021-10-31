@@ -27,3 +27,14 @@ spring:
     jdbc:
       initialize-schema: always
       table-name: SPRING_SESSION
+
+
+
+
+
+
+
+
+
+
+
