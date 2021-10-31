@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.data.dto.Likes.LikedResponse;
@@ -16,6 +17,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "Работа с Лайками")
+@Slf4j
 public class LikesController {
 
     private final LikesService likesService;
@@ -26,7 +28,7 @@ public class LikesController {
             @RequestParam(name = "user_id", required = false) Long personId,
             @RequestParam(name = "item_id") Long itemId,
             @RequestParam(name = "type") String type){
-
+        log.info("GET /api/v1/liked " + personId);
         return ResponseEntity.ok(likesService.isLikedByPerson(personId, itemId, type));
 
     }
@@ -36,7 +38,7 @@ public class LikesController {
     public ResponseEntity<LikeUsersListResponse> getLikeUsersList(
             @RequestParam(name = "item_id") Long itemId,
             @RequestParam(name = "type") String type){
-
+        log.info("GET /api/v1/likes" + itemId);
         return ResponseEntity.ok(likesService.getLikeUsersList(itemId, type));
 
     }
@@ -47,6 +49,7 @@ public class LikesController {
             @RequestBody PutLikeRequest putLikeRequest,
             Principal principal){
 
+        log.info("PUT /api/v1/like " + principal.getName());
         return ResponseEntity.ok(likesService.putLike(putLikeRequest.getItemId(), putLikeRequest.getType(), principal));
 
     }
@@ -57,6 +60,7 @@ public class LikesController {
             @RequestParam(name = "item_id") Long itemId,
             @RequestParam(name = "type") String type,
             Principal principal){
+        log.info("DELETE /api/v1/likes " + principal.getName());
 
         return ResponseEntity.ok(likesService.deleteLike(itemId, type, principal));
 

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import ru.skillbox.socialnetwork.service.PlatformService;
 @RequestMapping("/api/v1/platform")
 public class PlatformControllerImpl implements PlatformController {
 
-    private Logger logger = LoggerFactory.getLogger(PlatformControllerImpl.class);
     private final PlatformService platformService;
 
     @Override
@@ -34,8 +34,7 @@ public class PlatformControllerImpl implements PlatformController {
     public ResponseEntity<PlatformResponse> getCountries(@RequestParam(value = "country", defaultValue = "") String country,
                                                          Integer offset,
                                                          Integer itemPerPage) {
-        logger.info("GET /api/v1/platform/countries");
-        logger.info("country {}, offset {}, itemPerPage {}", country, offset, itemPerPage);
+
         return ResponseEntity.ok(platformService.getCountries(country, offset, itemPerPage));
     }
     ///api/v1/platform/getAllCountriesWithTowns

@@ -2,6 +2,7 @@ package ru.skillbox.socialnetwork.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import ru.skillbox.socialnetwork.service.FriendService;
 
 @RestController
 @Api(tags = "Работа с друзьями")
+@Slf4j
 public class FriendController {
 
     private final FriendService friendService;
@@ -27,6 +29,7 @@ public class FriendController {
             @RequestParam(required = false, defaultValue = "0") Integer offset,
             @RequestParam(required = false, defaultValue = "20") Integer itemPerPage) {
 
+        log.info("GET /api/v1/friends " + name);
         return ResponseEntity.ok(friendService.getFriends(name, offset, itemPerPage, FriendshipStatusType.FRIEND));
     }
 
@@ -35,6 +38,7 @@ public class FriendController {
     public ResponseEntity<ErrorTimeDataResponse> delete(@PathVariable Long id) {
 
         friendService.deleteFriend(id);
+        log.info("DELETE  /api/v1/friends/{id}" + id);
         return ResponseEntity.ok(new ErrorTimeDataResponse(new MessageResponse()));
     }
 
@@ -44,7 +48,7 @@ public class FriendController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false, defaultValue = "0") Integer offset,
             @RequestParam(required = false, defaultValue = "20") Integer itemPerPage) {
-
+        log.info("GET /api/v1/friends/request " + name);
         return ResponseEntity.ok(friendService.getFriends(name, offset, itemPerPage, FriendshipStatusType.REQUEST));
     }
 
@@ -54,6 +58,7 @@ public class FriendController {
             @RequestParam(required = false, defaultValue = "0") Integer offset,
             @RequestParam(required = false, defaultValue = "20") Integer itemPerPage) {
 
+        log.info("GET /api/v1/friends/recommendations ");
         return ResponseEntity.ok(friendService.getRecommendations(offset, itemPerPage));
     }
 
@@ -61,6 +66,7 @@ public class FriendController {
     @ApiOperation(value="Принять/Добавить пользователя в друзья")
     public ResponseEntity<ErrorTimeDataResponse> add(@PathVariable Long id) {
         friendService.addFriend(id);
+        log.info("POST /api/v1/friends/{id}" + id);
         return ResponseEntity.ok(new ErrorTimeDataResponse(new MessageResponse()));
     }
 }

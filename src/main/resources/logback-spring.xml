@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="info" class="ch.qos.logback.core.FileAppender">
+        <file>logs/logs.log</file>
+        <encoder>
+            <pattern>[%-5level] %d{dd-MM-yyyy hh:mm:ss.SSS a} [%thread]  %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="ru.skillbox.socialnetwork" level="ALL" additivity="true">
+        <appender-ref ref="info"/>
+    </logger>
+</configuration>
