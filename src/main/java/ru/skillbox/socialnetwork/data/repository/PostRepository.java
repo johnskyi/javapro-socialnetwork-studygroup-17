@@ -19,9 +19,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     
     Optional<Post> findPostById(long id);
     
-    @Query(value = "select p from Post p JOIN p.author a " +
-            "WHERE (:text is null or (p.textHtml LIKE %:text% OR p.title LIKE %:text% OR a.firstName LIKE %:text%))" +
-
     @Query(value = "select p from Post p LEFT JOIN p.tags t WHERE " +
             "(:text is null or (p.textHtml LIKE %:text% OR p.title LIKE %:text% OR p.author.firstName LIKE %:text% OR p.author.lastName LIKE %:text%))" +
             "AND (COALESCE(:tags, null) is null or t in :tags)" +
