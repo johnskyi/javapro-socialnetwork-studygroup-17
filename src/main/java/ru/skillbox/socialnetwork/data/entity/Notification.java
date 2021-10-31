@@ -28,4 +28,12 @@ public class Notification {
     private long entityId;
 
     private String contact;
+
+    public Notification(NotificationType type, LocalDateTime time, Person personNotification, Long entityId, String contact) {
+        this.type = type;
+        this.time = time;
+        this.person = personNotification;
+        this.entityId = entityId;
+        this.contact = contact;
+    }
 }

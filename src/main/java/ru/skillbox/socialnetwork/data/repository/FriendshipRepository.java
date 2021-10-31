@@ -18,13 +18,11 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     Page<Friendship> findByPersonReceiveFriendAndFriendshipStatus_Code (Person dstPerson, FriendshipStatusType code, Pageable paging);
 
-    //@Query(value = "select F.personReceiveFriend from #{#entityName} F where F.personRequestFriend = :srcPerson and F.friendshipStatus = :code")
-    List<Person> findByPersonRequestFriendAndAndFriendshipStatus_Code(Person srcPerson, FriendshipStatusType code);
+    List<Friendship> findByPersonReceiveFriendAndFriendshipStatus_Code(Person srcPerson, FriendshipStatusType code);
 
-    @Query(value = "select F.personReceiveFriend from #{#entityName} F where F.personRequestFriend = :srcPerson")
-    List<Person> findBySrcPerson(Person srcPerson);
+    List<Friendship> findByPersonReceiveFriend(Person srcPerson);
 
-    @Query(value = "select distinct F.personReceiveFriend from #{#entityName} F where F.personRequestFriend in :friends and F.friendshipStatus = 'FRIEND' and F.personReceiveFriend not in :known")
+    @Query(value = "select distinct F.personReceiveFriend from #{#entityName} F where F.personRequestFriend in :friends and F.friendshipStatus = 3 and F.personReceiveFriend not in :known")
     Page<Person> findNewRecs(List<Person> friends, List<Person> known, Pageable paging);
 
     @Query(value = "select F from #{#entityName} F where F.personReceiveFriend = ?1 and F.friendshipStatus = ?3 and upper(F.personRequestFriend.firstName) like concat('%',upper(?2),'%') ")
