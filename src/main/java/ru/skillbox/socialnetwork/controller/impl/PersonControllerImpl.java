@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.controller.impl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Api(tags = "Работа с пользователями")
 @RequestMapping("/api/v1/users")
+@Slf4j
 public class PersonControllerImpl implements PersonController {
 
     private final PersonService personService;

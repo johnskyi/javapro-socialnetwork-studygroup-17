@@ -8,6 +8,7 @@ build:
   only:
     - main
     - dev
+    - merge_request
   except:
     - tags
   script:
@@ -20,21 +21,12 @@ main_testing:
   only:
     - main
     - dev
+    - merge_request
   except:
     - tags
   script:
     - echo "do test"
     - mvn verify
-
-additional_testing:
-  stage: test
-  only:
-    - main
-    - dev
-  except:
-    - tags
-  script:
-    - echo "Do another parallel tests here.."
 
 deploy:
   stage: deploy

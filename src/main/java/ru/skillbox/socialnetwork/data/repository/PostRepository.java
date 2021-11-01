@@ -9,13 +9,16 @@ import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.Post;
 import ru.skillbox.socialnetwork.data.entity.Tag;
 
+import java.util.Optional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findPostsByAuthor(Person author, Pageable pageable);
-
+    
+    Optional<Post> findPostById(long id);
+    
     @Query(value = "select p from Post p LEFT JOIN p.tags t WHERE " +
             "(:text is null or (p.textHtml LIKE %:text% OR p.title LIKE %:text% OR p.author.firstName LIKE %:text% OR p.author.lastName LIKE %:text%))" +
             "AND (COALESCE(:tags, null) is null or t in :tags)" +

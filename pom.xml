@@ -11,52 +11,14 @@
     <groupId>ru.skillbox.socialnetwork</groupId>
     <artifactId>social_network</artifactId>
     <version>0.1</version>
-    <name>social_net</name>
+    <name>social_network</name>
+
+    <packaging>jar</packaging>
     <description>Team project of the social network &quot;group 17&quot;</description>
 
     <properties>
         <java.version>11</java.version>
     </properties>
-
-    <profiles>
-        <!-- Define variables in different scenarios for command line control to execute different tests -->
-        <!-- mvn clean install -P skipTests: skip all tests -->
-        <profile>
-            <id>skipTests</id>
-            <properties>
-                <skipIntTest>true</skipIntTest>
-                <skipUnitTest>true</skipUnitTest>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <!-- mvn clean install -P unit: execute unit test only -->
-        <profile>
-            <id>unit</id>
-            <properties>
-                <skipIntTest>true</skipIntTest>
-                <skipUnitTest>false</skipUnitTest>
-            </properties>
-        </profile>
-        <!-- mvn clean install -P int: Only perform integration tests -->
-        <profile>
-            <id>int</id>
-            <properties>
-                <skipIntTest>false</skipIntTest>
-                <skipUnitTest>true</skipUnitTest>
-            </properties>
-        </profile>
-        <!-- mvn clean install -P tests: execute all tests (unit test + integration test) -->
-        <profile>
-            <id>tests</id>
-            <properties>
-                <skipIntTest>false</skipIntTest>
-                <skipUnitTest>false</skipUnitTest>
-            </properties>
-        </profile>
-    </profiles>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -72,8 +34,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
@@ -90,7 +50,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -152,12 +111,15 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-
-
     </dependencies>
 
     <build>
         <plugins>
+            <!-- <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin> -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
@@ -190,35 +152,6 @@
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
                     <changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <goals>
-                    <goal>test</goal>
-                </goals>
-                <configuration>
-                    <skipTests>${skipUnitTest}</skipTests>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*IntTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <goals>
-                    <goal>test</goal>
-                </goals>
-                <configuration>
-                    <skipITs>${skipIntTest}</skipITs>
-                    <includes>
-                        <include>**/*IntTest.java</include>
-                    </includes>
                 </configuration>
             </plugin>
         </plugins>
