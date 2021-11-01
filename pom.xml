@@ -11,7 +11,9 @@
     <groupId>ru.skillbox.socialnetwork</groupId>
     <artifactId>social_network</artifactId>
     <version>0.1</version>
-    <name>social_net</name>
+    <name>social_network</name>
+
+    <packaging>jar</packaging>
     <description>Team project of the social network &quot;group 17&quot;</description>
 
     <properties>
@@ -47,11 +49,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
