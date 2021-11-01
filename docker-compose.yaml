@@ -13,6 +13,19 @@ services:
       - "8080:8080"
     networks:
       - "infrastructure"
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    volumes:
+      - ./:/etc/nginx/conf.d
+    tty: true
+    ports:
+      - "5000:5000"
+      - "443:443"
+    networks:
+      - "infrastructure"
+  
 
 networks:
   infrastructure:
