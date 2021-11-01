@@ -28,16 +28,6 @@ main_testing:
     - echo "do test"
     - mvn verify
 
-# additional_testing:
-#   stage: test
-#   only:
-#     - main
-#     - dev
-#   except:
-#     - tags
-#   script:
-#     - echo "Do another parallel tests here.."
-
 deploy:
   stage: deploy
   only:
