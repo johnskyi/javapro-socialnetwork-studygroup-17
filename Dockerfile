@@ -1,4 +1,4 @@
-FROM openjdk:latest
+FROM openjdk:11
 MAINTAINER Team JavaPRO <x.noreply@yzq.org>
 ARG JAR_FILE=target/social_network-0.1.jar
 ADD ${JAR_FILE} social_network-0.1.jar
