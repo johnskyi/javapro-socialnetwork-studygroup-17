@@ -37,8 +37,6 @@ deploy:
   script:
     - echo "do deploy"
     - mvn package
-    - docker images prune
-    - docker volume prune
-    - docker container prune
+    - docker system prune -a -f
     - docker build -t social_network .
     - cd /home/gitlab-runner/  && docker-compose up -d
