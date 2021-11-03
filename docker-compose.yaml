@@ -13,7 +13,7 @@ services:
       - "8080:8080"
       - "443:443"
     volumes:
-      - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original:/etc/nginx/conf.d
+      - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original:/etc/nginx/sites-available
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/dist:/var/www
       - ./logs/nginx:/var/log/nginx
     networks:
