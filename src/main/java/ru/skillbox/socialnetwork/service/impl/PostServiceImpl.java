@@ -79,8 +79,9 @@ public class PostServiceImpl implements PostService {
 
         Person person = personRepository.findById(personId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<PostDto> posts = new ArrayList<>();
+        Page<Post> postPage = postRepository.findPostsByAuthor(person, PageRequest.of(offset/limit, limit, Sort.by("time").descending()));
 
-        for (Post post : postRepository.findPostsByAuthor(person, PageRequest.of(offset/limit, limit, Sort.by("time").descending()))) {
+        for (Post post : postPage) {
             List<CommentDto> comments = new ArrayList<>();
             for (PostComment postComment : postCommentsRepository.findAllByPostId(post.getId())) {
                 comments.add(new CommentDto(postComment));
@@ -95,7 +96,7 @@ public class PostServiceImpl implements PostService {
         return GetUserPostsResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
-                .total(posts.size())
+                .total(postPage.getTotalElements())
                 .offset(offset)
                 .perPage(limit)
                 .posts(posts)
