@@ -38,4 +38,6 @@ deploy:
     - echo "do deploy"
     - mvn package
     - docker system prune -a -f
-    - cd /home/gitlab-runner/ && docker-compose down  && docker-compose up -d
+    - cd /home/gitlab-runner/
+    - docker-compose up --build -d
+
