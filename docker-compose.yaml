@@ -3,7 +3,8 @@ version: "3.7"
 services:
   social_network:
     build:
-      dockerfile: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
+      context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8086:8086"
     networks:
