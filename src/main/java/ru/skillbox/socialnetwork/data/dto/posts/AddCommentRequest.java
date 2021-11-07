@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.data.dto.Posts;
+package ru.skillbox.socialnetwork.data.dto.posts;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

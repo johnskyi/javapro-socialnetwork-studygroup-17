@@ -28,16 +28,6 @@ main_testing:
     - echo "do test"
     - mvn verify
 
-# additional_testing:
-#   stage: test
-#   only:
-#     - main
-#     - dev
-#   except:
-#     - tags
-#   script:
-#     - echo "Do another parallel tests here.."
-
 deploy:
   stage: deploy
   only:
@@ -47,5 +37,8 @@ deploy:
   script:
     - echo "do deploy"
     - mvn package
-    - docker build -t social_network .
-    - cd /home/gitlab-runner/  && docker-compose up -d
+    - cd /home/gitlab-runner/
+    - docker-compose down
+    - docker system prune -a -f
+    - docker-compose up --build -d
+

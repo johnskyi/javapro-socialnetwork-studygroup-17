@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.data.dto.Likes;
+package ru.skillbox.socialnetwork.data.dto.likes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

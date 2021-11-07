@@ -1,5 +1,4 @@
 HELP.md
-.gitlab-ci.yml
 logs/
 target/
 !.mvn/wrapper/maven-wrapper.jar

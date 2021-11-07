@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
-import ru.skillbox.socialnetwork.data.dto.Posts.*;
+import ru.skillbox.socialnetwork.data.dto.posts.*;
 import ru.skillbox.socialnetwork.data.entity.*;
 import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.exception.PostNotFoundException;
