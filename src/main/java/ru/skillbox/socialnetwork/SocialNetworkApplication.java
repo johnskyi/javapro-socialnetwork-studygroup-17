@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class SocialNetworkApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SocialNetworkApplication.class, args);
-		log.info("Start application: " + LocalDateTime.now());
 	}
 
 }
