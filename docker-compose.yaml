@@ -16,7 +16,7 @@ services:
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/dist:/var/www
       - ./logs/nginx:/var/log/nginx
     ports:
-      - "8080:8080"
+      - "5000:5000"
     networks:
       - "infrastructure" 
 networks:
