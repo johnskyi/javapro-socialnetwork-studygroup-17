@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.socialnetwork.data.dto.Likes.LikedResponse;
-import ru.skillbox.socialnetwork.data.dto.Likes.LikeUsersListResponse;
-import ru.skillbox.socialnetwork.data.dto.Likes.LikesCountResponse;
-import ru.skillbox.socialnetwork.data.dto.Likes.PutLikeRequest;
+import ru.skillbox.socialnetwork.data.dto.likes.LikedResponse;
+import ru.skillbox.socialnetwork.data.dto.likes.LikeUsersListResponse;
+import ru.skillbox.socialnetwork.data.dto.likes.LikesCountResponse;
+import ru.skillbox.socialnetwork.data.dto.likes.PutLikeRequest;
 import ru.skillbox.socialnetwork.service.LikesService;
 
 import java.security.Principal;

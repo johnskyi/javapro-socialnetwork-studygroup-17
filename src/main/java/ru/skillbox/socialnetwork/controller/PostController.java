@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
-import ru.skillbox.socialnetwork.data.dto.Posts.*;
+import ru.skillbox.socialnetwork.data.dto.posts.*;
 import ru.skillbox.socialnetwork.service.PostService;
 
 import javax.validation.Valid;

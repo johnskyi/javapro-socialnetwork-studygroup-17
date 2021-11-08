@@ -35,7 +35,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
-//    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private final PersonRepo personRepository;
     private final TownRepository townRepository;

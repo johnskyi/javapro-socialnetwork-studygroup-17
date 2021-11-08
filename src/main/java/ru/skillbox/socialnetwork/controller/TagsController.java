@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetwork.data.dto.DeleteTagResponse;
-import ru.skillbox.socialnetwork.data.dto.Likes.LikedResponse;
 import ru.skillbox.socialnetwork.data.dto.PostTagResponse;
 import ru.skillbox.socialnetwork.data.dto.TagListResponse;
 import ru.skillbox.socialnetwork.service.TagService;

@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.data.dto.Likes;
+package ru.skillbox.socialnetwork.data.dto.likes;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LikesCountResponse {
+public class LikedResponse {
     private String error;
     private long timestamp;
     private Data data;
@@ -21,7 +21,6 @@ public class LikesCountResponse {
     @Builder
     @JsonInclude(NON_NULL)
     public static class Data {
-        private long likes;
+        private Boolean likes;
     }
 }
-

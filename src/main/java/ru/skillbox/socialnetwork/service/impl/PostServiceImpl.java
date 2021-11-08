@@ -5,10 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
-import ru.skillbox.socialnetwork.data.dto.Posts.*;
+import ru.skillbox.socialnetwork.data.dto.posts.*;
 import ru.skillbox.socialnetwork.data.entity.*;
 import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.exception.PostNotFoundException;
@@ -42,7 +43,7 @@ public class PostServiceImpl implements PostService {
 
         Post post = new Post();
         post.setAuthor(person);
-        post.setTime(publicationTimestamp == null ? LocalDateTime.now() : LocalDateTime.ofEpochSecond(publicationTimestamp, 0, ZoneOffset.UTC));
+        post.setTime(publicationTimestamp == null ? LocalDateTime.now(ZoneOffset.UTC) : LocalDateTime.ofEpochSecond(publicationTimestamp, 0, ZoneOffset.UTC));
         post.setTitle(addPostRequest.getTitle());
         post.setTextHtml(addPostRequest.getText());
         post.setBlocked(false);
@@ -78,8 +79,9 @@ public class PostServiceImpl implements PostService {
 
         Person person = personRepository.findById(personId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<PostDto> posts = new ArrayList<>();
+        Page<Post> postPage = postRepository.findPostsByAuthor(person, PageRequest.of(offset/limit, limit, Sort.by("time").descending()));
 
-        for (Post post : postRepository.findPostsByAuthor(person, PageRequest.of(offset/limit, limit))) {
+        for (Post post : postPage) {
             List<CommentDto> comments = new ArrayList<>();
             for (PostComment postComment : postCommentsRepository.findAllByPostId(post.getId())) {
                 comments.add(new CommentDto(postComment));
@@ -94,7 +96,7 @@ public class PostServiceImpl implements PostService {
         return GetUserPostsResponse.builder()
                 .error("string")
                 .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
-                .total(posts.size())
+                .total(postPage.getTotalElements())
                 .offset(offset)
                 .perPage(limit)
                 .posts(posts)
