@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
 import ru.skillbox.socialnetwork.service.impl.PasswordRecoveryServiceImpl;
 
+import java.security.Principal;
+
 @RestController
 @Api(tags = "Работа с аккаунтом")
 @Slf4j
