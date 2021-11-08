@@ -24,7 +24,7 @@ public class PasswordRecoveryServiceImpl {
     @Value("${spring.mail.username}")
     private String userName;
 
-    public PasswordRecoveryServiceImpl(JavaMailSender javaMailSender, PersonRepo personRepo, Principal principal) {
+    public PasswordRecoveryServiceImpl(JavaMailSender javaMailSender, PersonRepo personRepo) {
         this.javaMailSender = javaMailSender;
         this.personRepo = personRepo;
     }
