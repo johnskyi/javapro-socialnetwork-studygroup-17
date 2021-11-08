@@ -2,18 +2,23 @@ version: "3.7"
 
 services:
   social_network:
-    image: "social_network:latest"
+    build:
+      context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
+      dockerfile: Dockerfile
     ports:
       - "8086:8086"
     networks:
       - "infrastructure"
-  social_network_front:
-    image: "social_network_front:latest"
+  social_network_frontend:
+    image: nginx:latest
+    volumes:
+      - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/nginx:/etc/nginx/conf.d
+      - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/dist:/var/www
+      - ./logs/nginx:/var/log/nginx
     ports:
-      - "8080:8080"
+      - "5000:5000"
     networks:
       - "infrastructure" 
-
 networks:
   infrastructure:
     driver: "bridge"
