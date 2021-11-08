@@ -2,23 +2,22 @@ package ru.skillbox.socialnetwork.controller.impl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.controller.DialogController;
 import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
-import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
+import ru.skillbox.socialnetwork.service.DialogService;
 
 @RestController
 @Api(tags = "Работа с диалогами")
 @Slf4j
+@RequiredArgsConstructor
 public class DialogControllerImpl implements DialogController {
 
-    private final DialogServiceImpl dialogService;
+    private final DialogService dialogService;
 
-    public DialogControllerImpl(DialogServiceImpl dialogService) {
-        this.dialogService = dialogService;
-    }
 
     @Override
     @ApiOperation(value="Отправка сообщений")

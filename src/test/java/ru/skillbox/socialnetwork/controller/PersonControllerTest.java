@@ -1,6 +1,7 @@
 package ru.skillbox.socialnetwork.controller;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -174,18 +175,19 @@ class PersonControllerTest {
         assertThrows(PersonNotAuthorized.class, () -> personController.getPersonDetail(principal));
     }
 
-//    @Test
-//    @DisplayName("Update person details is successful")
-//    public void putPersonDetail() {
-//        when(principal.getName()).thenReturn("test@test.com");
-//        when(personRepository.findByEmail("test@test.com")).thenReturn(Optional.of(person));
-//        File file = new File();
-//        file.setRelativeFilePath("http://2.jpg");
-//        when(townRepository.getById(any())).thenReturn(town);
-//        when(fileRepository.getById(any())).thenReturn(file);
-//        assertEquals(Objects.requireNonNull(personController.putPersonDetail(personRequest, principal).getBody(),
-//                "putPersonDetail method turned out to be null").getData(), personResponseForPutDetail.getData());
-//    }
+    @Test
+    @Disabled
+    @DisplayName("Update person details is successful")
+    public void putPersonDetail() {
+        when(principal.getName()).thenReturn("test@test.com");
+        when(personRepository.findByEmail("test@test.com")).thenReturn(Optional.of(person));
+        File file = new File();
+        file.setRelativeFilePath("http://2.jpg");
+        when(townRepository.getById(any())).thenReturn(town);
+        when(fileRepository.getById(any())).thenReturn(file);
+        assertEquals(Objects.requireNonNull(personController.putPersonDetail(personRequest, principal).getBody(),
+                "putPersonDetail method turned out to be null").getData(), personResponseForPutDetail.getData());
+    }
 
     @Test
     @DisplayName("Update person details. Incorrect firstname format")

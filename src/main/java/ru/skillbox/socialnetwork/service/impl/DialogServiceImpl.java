@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
 import ru.skillbox.socialnetwork.data.entity.Message;
 import ru.skillbox.socialnetwork.data.entity.Person;
@@ -11,6 +12,7 @@ import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
 import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 import ru.skillbox.socialnetwork.service.DialogService;
 
+@Service
 public class DialogServiceImpl implements DialogService {
 
     private final MessageRepository messageRepository;
