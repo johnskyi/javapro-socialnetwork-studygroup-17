@@ -1,7 +1,7 @@
 package ru.skillbox.socialnetwork.service;
 
 import ru.skillbox.socialnetwork.data.dto.AddPostRequest;
-import ru.skillbox.socialnetwork.data.dto.Posts.*;
+import ru.skillbox.socialnetwork.data.dto.posts.*;
 
 import java.security.Principal;
 

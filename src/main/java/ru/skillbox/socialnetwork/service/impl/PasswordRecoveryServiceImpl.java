@@ -20,13 +20,15 @@ public class PasswordRecoveryServiceImpl {
 
 
     private final PersonRepo personRepo;
+    private final Principal principal;
 
     @Value("${spring.mail.username}")
     private String userName;
 
-    public PasswordRecoveryServiceImpl(JavaMailSender javaMailSender, PersonRepo personRepo) {
+    public PasswordRecoveryServiceImpl(JavaMailSender javaMailSender, PersonRepo personRepo, Principal principal) {
         this.javaMailSender = javaMailSender;
         this.personRepo = personRepo;
+        this.principal = principal;
     }
 
     public PasswordRecoveryResponse send(String email) {
@@ -51,7 +53,7 @@ public class PasswordRecoveryServiceImpl {
                 .build();
     }
 
-    public PasswordRecoveryResponse setEmail(String newEmail, Principal principal) {
+    public PasswordRecoveryResponse setEmail(String newEmail) {
         String email = principal.getName();
         Person person = findPersonByEmail(email);
         person.setEmail(newEmail);

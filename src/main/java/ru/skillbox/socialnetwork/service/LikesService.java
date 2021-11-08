@@ -3,24 +3,19 @@ package ru.skillbox.socialnetwork.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
-import ru.skillbox.socialnetwork.data.dto.Likes.LikedResponse;
-import ru.skillbox.socialnetwork.data.dto.Likes.LikeUsersListResponse;
-import ru.skillbox.socialnetwork.data.dto.Likes.LikesCountResponse;
+import ru.skillbox.socialnetwork.data.dto.likes.LikedResponse;
+import ru.skillbox.socialnetwork.data.dto.likes.LikeUsersListResponse;
+import ru.skillbox.socialnetwork.data.dto.likes.LikesCountResponse;
 import ru.skillbox.socialnetwork.data.entity.*;
 import ru.skillbox.socialnetwork.data.repository.*;
 
-import javax.swing.text.html.Option;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
