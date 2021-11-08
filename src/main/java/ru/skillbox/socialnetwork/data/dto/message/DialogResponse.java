@@ -29,7 +29,7 @@ public class DialogResponse {
         private long id;
         private LocalDateTime time;
         private Long author;
-        private long recipientId;
+        private Long recipientId;
         private String messageText;
         private ReadStatus readStatus;
     }
