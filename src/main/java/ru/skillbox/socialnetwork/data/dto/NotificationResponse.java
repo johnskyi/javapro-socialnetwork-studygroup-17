@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Notification;
-import ru.skillbox.socialnetwork.data.entity.NotificationType1;
+import ru.skillbox.socialnetwork.data.entity.NotificationType;
 import ru.skillbox.socialnetwork.data.entity.Person;
 
 import java.time.OffsetDateTime;
@@ -32,7 +32,7 @@ public class NotificationResponse {
     public static class Data{
         private Long id;
         @JsonProperty("type_id")
-        private NotificationType1 typeId;
+        private NotificationType typeId;
         @JsonProperty("sent_time")
         private Long sentTime;
         @JsonProperty("entity_id")

@@ -18,7 +18,7 @@ public class Notification {
     //@ManyToOne(cascade = CascadeType.ALL)
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 16)
-    private NotificationType1 type;
+    private NotificationType type;
 
     @Column(name = "sent_time")
     private LocalDateTime time;
@@ -32,7 +32,7 @@ public class Notification {
 
     private String contact;
 
-    public Notification(NotificationType1 type, LocalDateTime time, Person personNotification, Long entityId, String contact) {
+    public Notification(NotificationType type, LocalDateTime time, Person personNotification, Long entityId, String contact) {
         this.type = type;
         this.time = time;
         this.person = personNotification;
