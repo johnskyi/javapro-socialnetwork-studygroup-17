@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
 import ru.skillbox.socialnetwork.service.impl.PasswordRecoveryServiceImpl;
 
+import java.security.Principal;
+
 @RestController
 @Api(tags = "Работа с аккаунтом")
 @Slf4j
@@ -37,9 +39,9 @@ public class PasswordRecoveryControllerImpl {
     }
     @PutMapping("/api/v1/account/email")
     @ApiOperation(value="Смена почты")
-    public ResponseEntity<PasswordRecoveryResponse> setEmail(@RequestParam("email") String newEmail)
+    public ResponseEntity<PasswordRecoveryResponse> setEmail(@RequestParam("email") String newEmail, Principal principal)
     {
         log.info("PUT /api/v1/account/email" + newEmail);
-        return ResponseEntity.ok(passwordRecoveryService.setEmail(newEmail));
+        return ResponseEntity.ok(passwordRecoveryService.setEmail(newEmail,principal));
     }
 }
