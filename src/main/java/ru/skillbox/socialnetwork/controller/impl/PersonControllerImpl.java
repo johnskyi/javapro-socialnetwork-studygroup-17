@@ -1,6 +1,7 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -45,9 +46,9 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     @ApiOperation(value = "Удаление пользователя")
-    public ResponseEntity<PersonResponse> deletePerson(Principal principal) {
+    public ResponseEntity<PersonResponse> deletePerson(Boolean isHardDelete, Principal principal) {
         logger.info("Call DELETE /api/v1/users/me");
-        return ResponseEntity.ok(personService.deletePerson(principal));
+        return ResponseEntity.ok(personService.deletePerson(isHardDelete, principal));
     }
 
     @Override

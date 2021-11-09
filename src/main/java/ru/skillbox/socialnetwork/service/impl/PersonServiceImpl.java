@@ -14,10 +14,7 @@ import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
 import ru.skillbox.socialnetwork.data.dto.PersonSearchResponse;
 import ru.skillbox.socialnetwork.data.entity.File;
 import ru.skillbox.socialnetwork.data.entity.Person;
-import ru.skillbox.socialnetwork.data.repository.FileRepository;
-import ru.skillbox.socialnetwork.data.repository.NotificationRepository;
-import ru.skillbox.socialnetwork.data.repository.PersonRepo;
-import ru.skillbox.socialnetwork.data.repository.TownRepository;
+import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.UnauthorizedException;
 import ru.skillbox.socialnetwork.service.PersonService;
@@ -40,6 +37,7 @@ public class PersonServiceImpl implements PersonService {
     private final TownRepository townRepository;
     private final FileRepository fileRepository;
     private final NotificationRepository notificationRepository;
+    private final FriendshipRepository friendshipRepository;
 
     @Override
     public PersonResponse getPersonDetail(Principal principal) {
@@ -54,11 +52,19 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonResponse deletePerson(Principal principal) {
+    public PersonResponse deletePerson(Boolean isHardDelete, Principal principal) {
         Person person = findPerson(principal);
-        notificationRepository.findAllByPersonId(person.getId())
-                .forEach(notification -> notificationRepository.deleteNotificationById(notification.getId()));
-        personRepository.deletePersonByEmail(person.getEmail());
+
+        if(isHardDelete) {
+            personRepository.delete(person);
+        } else {
+            person.setFirstName("Deleted");
+            person.setLastName("User");
+            person.setPhoto("https://static.thenounproject.com/png/438810-200.png");
+            person.setApproved(false);
+            person.setBlocked(true);
+            personRepository.save(person);
+        }
         SecurityContextHolder.clearContext();
         return createSmallPersonResponse();
     }

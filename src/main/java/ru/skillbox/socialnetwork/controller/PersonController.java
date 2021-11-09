@@ -20,7 +20,7 @@ public interface PersonController {
     ResponseEntity<PersonResponse> putPersonDetail(PersonRequest request, Principal principal);
 
     @DeleteMapping("/me")
-    ResponseEntity<PersonResponse> deletePerson(Principal principal);
+    ResponseEntity<PersonResponse> deletePerson(Boolean isHardDelete, Principal principal);
 
     @GetMapping("/search")
     ResponseEntity<PersonSearchResponse> searchPerson(@RequestParam(value = "first_name", required = false)String firstName,
