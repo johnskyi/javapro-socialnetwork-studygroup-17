@@ -1,7 +1,6 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
@@ -112,9 +111,8 @@ class PasswordRecoveryControllerImplTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("Check setEmail method")
-    @WithUserDetails
+    @WithMockUser(username = "test2@test2.com",password = "12345678")
     void setEmail() throws Exception {
         when(principal.getName()).thenReturn("test2@test2.com");
         when(personRepo.findByEmail(any())).thenReturn(Optional.of(person));

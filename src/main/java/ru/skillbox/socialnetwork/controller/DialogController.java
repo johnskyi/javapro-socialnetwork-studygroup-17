@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
 
+import java.security.Principal;
+
 public interface DialogController {
 
     /**Отправка сообщений.*/
@@ -17,7 +19,7 @@ public interface DialogController {
     ResponseEntity<DialogResponse> getAllMessages(@RequestParam("dialog_id") Long id);
     /**Создать диалог.*/
     @PostMapping("/api/v1/dialogs")
-    ResponseEntity<DialogResponse> dialogCreate(@RequestParam("user_ids") Long id);
+    ResponseEntity<DialogResponse> dialogCreate(@RequestParam("user_ids") Long id, Principal principal);
 
 
 }

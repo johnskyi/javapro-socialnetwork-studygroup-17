@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.controller.DialogController;
 import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
 import ru.skillbox.socialnetwork.service.DialogService;
+import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
+
+import java.security.Principal;
 
 @RestController
 @Api(tags = "Работа с диалогами")
@@ -16,7 +19,7 @@ import ru.skillbox.socialnetwork.service.DialogService;
 @RequiredArgsConstructor
 public class DialogControllerImpl implements DialogController {
 
-    private final DialogService dialogService;
+    private final DialogServiceImpl dialogService;
 
 
     @Override
@@ -35,8 +38,8 @@ public class DialogControllerImpl implements DialogController {
 
     @Override
     @ApiOperation(value="Создание диалога")
-    public ResponseEntity<DialogResponse> dialogCreate(Long userId) {
+    public ResponseEntity<DialogResponse> dialogCreate(Long userId, Principal principal) {
         log.info("POST /api/v1/dialogs" + userId);
-        return ResponseEntity.ok(dialogService.dialogCreate(userId));
+        return ResponseEntity.ok(dialogService.dialogCreate(userId, principal));
     }
 }
