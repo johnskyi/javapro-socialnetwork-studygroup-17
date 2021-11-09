@@ -17,11 +17,11 @@ public class Message {
 
     private LocalDateTime time;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Person author;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "recipient_id", referencedColumnName = "id")
     private Person recipient;
 

@@ -139,7 +139,8 @@ public class FriendService {
         friendshipRepository.save(friendshipOut);
         notificationRepository.save(
                 new Notification(
-                    notificationTypeRepository.findById(4L).get(),
+                    //notificationTypeRepository.findById(4L).get(),
+                        NotificationType1.FRIEND_REQUEST,
                     LocalDateTime.now(),
                     dstPerson,
                     friendshipOut.getId(),

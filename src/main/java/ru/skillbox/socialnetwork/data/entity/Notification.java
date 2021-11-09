@@ -1,11 +1,13 @@
 package ru.skillbox.socialnetwork.data.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "notification")
 public class Notification {
@@ -13,14 +15,15 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "type_id", referencedColumnName = "id")
-    private NotificationType type;
+    //@ManyToOne(cascade = CascadeType.ALL)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", length = 16)
+    private NotificationType1 type;
 
     @Column(name = "sent_time")
     private LocalDateTime time;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
@@ -29,7 +32,7 @@ public class Notification {
 
     private String contact;
 
-    public Notification(NotificationType type, LocalDateTime time, Person personNotification, Long entityId, String contact) {
+    public Notification(NotificationType1 type, LocalDateTime time, Person personNotification, Long entityId, String contact) {
         this.type = type;
         this.time = time;
         this.person = personNotification;

@@ -17,7 +17,7 @@ public class Post {
 
     private LocalDateTime time;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Person author;
 
@@ -29,12 +29,10 @@ public class Post {
     @Column(name = "is_blocked")
     private boolean isBlocked;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostLike> likes;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostComment> comments;
 
     @ManyToMany(cascade = CascadeType.ALL)
