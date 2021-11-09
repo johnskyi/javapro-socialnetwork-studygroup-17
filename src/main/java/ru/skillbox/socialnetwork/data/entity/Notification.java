@@ -28,15 +28,15 @@ public class Notification {
     private Person person;
 
     @Column(name = "entity_id")
-    private long entityId;
+    private long targetPersonId;
 
     private String contact;
 
-    public Notification(NotificationType type, LocalDateTime time, Person personNotification, Long entityId, String contact) {
+    public Notification(NotificationType type, LocalDateTime time, Person personNotification, Long targetPersonId, String contact) {
         this.type = type;
         this.time = time;
         this.person = personNotification;
-        this.entityId = entityId;
+        this.targetPersonId = targetPersonId;
         this.contact = contact;
     }
 }

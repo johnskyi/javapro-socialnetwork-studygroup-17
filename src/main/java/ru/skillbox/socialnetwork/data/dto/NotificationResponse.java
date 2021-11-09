@@ -44,7 +44,7 @@ public class NotificationResponse {
             this.id = notification.getId();
             this.typeId = notification.getType();
             this.sentTime = notification.getTime().toEpochSecond(OffsetDateTime.now().getOffset());
-            this.entityId = notification.getEntityId();
+            this.entityId = notification.getTargetPersonId();
             this.author = new Author(person);
 
         }
