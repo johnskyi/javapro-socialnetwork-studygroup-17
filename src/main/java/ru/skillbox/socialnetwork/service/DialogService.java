@@ -7,9 +7,9 @@ import java.security.Principal;
 
 public interface DialogService {
 
-    DialogResponse sendMessage(String message);
+    DialogResponse sendMessage(Principal principal, Long dialogId,String message);
 
-    DialogResponse getAllMessages(Long id);
+    DialogResponse getAllMessages(Long dialogId);
 
     DialogResponse dialogCreate(Long userId, Principal principal);
 }

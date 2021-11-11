@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.controller.DialogController;
 import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
-import ru.skillbox.socialnetwork.service.DialogService;
 import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
 
 import java.security.Principal;
@@ -24,16 +23,16 @@ public class DialogControllerImpl implements DialogController {
 
     @Override
     @ApiOperation(value="Отправка сообщений")
-    public ResponseEntity<DialogResponse> sendMessage(String message) {
-        log.info("POST /api/v1/dialogs/{id}/messages" + message);
-        return ResponseEntity.ok(dialogService.sendMessage(message));
+    public ResponseEntity<DialogResponse> sendMessage(Principal principal,Long dialogId, String message) {
+        log.info("POST /api/v1/dialogs/messages" + message);
+        return ResponseEntity.ok(dialogService.sendMessage(principal,dialogId, message));
     }
 
     @Override
     @ApiOperation(value="Получение списка сообщений")
-    public ResponseEntity<DialogResponse> getAllMessages(Long id) {
-        log.info("GET /api/v1/dialogs/{id}/messages" + id);
-        return ResponseEntity.ok(dialogService.getAllMessages(id));
+    public ResponseEntity<DialogResponse> getAllMessages(Long dialogId) {
+        log.info("GET /api/v1/dialogs/{id}/messages" + dialogId);
+        return ResponseEntity.ok(dialogService.getAllMessages(dialogId));
     }
 
     @Override

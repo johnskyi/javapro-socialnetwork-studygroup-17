@@ -14,6 +14,7 @@ import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 import ru.skillbox.socialnetwork.service.DialogService;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,13 +31,36 @@ public class DialogServiceImpl implements DialogService {
     }
 
     @Override
-    public DialogResponse sendMessage(String message) {
-        return null;
+    public DialogResponse sendMessage(Principal principal, Long dialogId, String message) {
+        Dialog dialog = findDialogById(dialogId);
+        Person author = findPersonByEmail(principal.getName());
+        Message newMessage = Message.builder()
+                .dialog(dialog)
+                .author(author)
+                .time(LocalDateTime.now())
+                .readStatus(ReadStatus.SENT)
+                .text(message)
+                .build();
+        messageRepository.save(newMessage);
+        dialog.getMessages().add(newMessage);
+        dialogRepository.save(dialog);
+        return DialogResponse.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .id(dialog.getId())
+                        .time(LocalDateTime.now())
+                        .author(author.getId())
+                        .recipientId(dialog.getRecipient().getId())
+                        .messageText(message)
+                        .readStatus(ReadStatus.SENT)
+                        .build())
+                .build();
     }
 
     @Override
-    public DialogResponse getAllMessages(Long id) {
-        Dialog dialog = findDialogById(id);
+    public DialogResponse getAllMessages(Long dialogId) {
+        Dialog dialog = findDialogById(dialogId);
         List<Message> messages = dialog.getMessages();
         return DialogResponse.builder()
                 .error("string")

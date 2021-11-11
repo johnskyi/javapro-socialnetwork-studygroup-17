@@ -1,12 +1,14 @@
 package ru.skillbox.socialnetwork.data.entity;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @Entity
 @Table(name = "message")
 public class Message {
