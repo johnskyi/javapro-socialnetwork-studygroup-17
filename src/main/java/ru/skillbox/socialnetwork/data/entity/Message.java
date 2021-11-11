@@ -1,12 +1,14 @@
 package ru.skillbox.socialnetwork.data.entity;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @Entity
 @Table(name = "message")
 public class Message {
@@ -15,16 +17,15 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private LocalDateTime time;
+    @ManyToOne
+    @JoinColumn(name = "dialog_id", referencedColumnName = "id")
+    private Dialog dialog;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Person author;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "recipient_id", referencedColumnName = "id")
-    private Person recipient;
-
+    private LocalDateTime time;
 
     @Column(name = "message_text")
     private String text;
@@ -33,4 +34,8 @@ public class Message {
     @Column(name = "read_status", length = 16)
     private ReadStatus readStatus;
 
+    @Override
+    public String toString() {
+        return  author + "  " + time.toString() + "\n" + text;
+    }
 }
