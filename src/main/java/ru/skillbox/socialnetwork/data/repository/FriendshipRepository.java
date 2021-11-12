@@ -22,6 +22,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     List<Friendship> findByPersonReceiveFriend(Person srcPerson);
 
+    List<Friendship> findByPersonRequestFriend(Person dstPerson);
+
     @Query(value = "select distinct F.personReceiveFriend from #{#entityName} F where F.personRequestFriend in :friends and F.friendshipStatus = 3 and F.personReceiveFriend not in :known")
     Page<Person> findNewRecs(List<Person> friends, List<Person> known, Pageable paging);
 

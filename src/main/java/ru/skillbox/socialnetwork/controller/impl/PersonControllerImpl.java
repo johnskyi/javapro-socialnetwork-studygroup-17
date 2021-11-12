@@ -1,6 +1,7 @@
 package ru.skillbox.socialnetwork.controller.impl;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -30,24 +31,28 @@ public class PersonControllerImpl implements PersonController {
     private final Logger logger = LoggerFactory.getLogger(PersonControllerImpl.class);
 
     @Override
+    @ApiOperation(value = "Получение профиля пользователя")
     public ResponseEntity<PersonResponse> getPersonDetail(Principal principal) {
         logger.info("Call GET /api/v1/users/me");
         return ResponseEntity.ok(personService.getPersonDetail(principal));
     }
 
     @Override
+    @ApiOperation(value = "Редактирование профиля пользователя")
     public ResponseEntity<PersonResponse> putPersonDetail(@Valid @RequestBody PersonRequest personRequest, Principal principal) {
         logger.info("Call PUT /api/v1/users/me");
         return ResponseEntity.ok(personService.putPersonDetail(personRequest, principal));
     }
 
     @Override
-    public ResponseEntity<PersonResponse> deletePerson(Principal principal) {
+    @ApiOperation(value = "Удаление пользователя")
+    public ResponseEntity<PersonResponse> deletePerson(Boolean isHardDelete, Principal principal) {
         logger.info("Call DELETE /api/v1/users/me");
-        return ResponseEntity.ok(personService.deletePerson(principal));
+        return ResponseEntity.ok(personService.deletePerson(isHardDelete, principal));
     }
 
     @Override
+    @ApiOperation(value = "Поиск пользователей")
     public ResponseEntity<PersonSearchResponse> searchPerson(@RequestParam(value = "first_name", defaultValue = "")String firstName,
                                                              @RequestParam(value = "last_name", defaultValue = "")String lastName,
                                                              @RequestParam(value = "age_from", defaultValue = "0")String ageFrom,

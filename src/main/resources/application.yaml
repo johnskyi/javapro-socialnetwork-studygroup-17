@@ -11,6 +11,7 @@ spring:
   liquibase:
     enabled: false
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
+    #url: jdbc:postgresql://localhost:5432/testDB?user=postgres&password=admin
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
@@ -22,7 +23,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     generate-ddl: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   session:
     jdbc:
       initialize-schema: always

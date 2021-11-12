@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.data.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -13,15 +14,15 @@ public class Friendship {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private FriendshipStatus friendshipStatus;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "src_person_id", referencedColumnName = "id")
     private Person personRequestFriend;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "dst_person_id", referencedColumnName = "id")
     private Person personReceiveFriend;
 

@@ -26,15 +26,13 @@ public class FriendService {
     private final PersonService personService;
     private final FriendshipStatusRepository friendshipStatusRepository;
     private final NotificationRepository notificationRepository;
-    private final NotificationTypeRepository notificationTypeRepository;
 
-    public FriendService(FriendshipRepository friendshipRepository, PersonRepo personRepository, PersonService personService, FriendshipStatusRepository friendshipStatusRepository, NotificationRepository notificationRepository, NotificationTypeRepository notificationTypeRepository) {
+    public FriendService(FriendshipRepository friendshipRepository, PersonRepo personRepository, PersonService personService, FriendshipStatusRepository friendshipStatusRepository, NotificationRepository notificationRepository) {
         this.friendshipRepository = friendshipRepository;
         this.personRepository = personRepository;
         this.personService = personService;
         this.friendshipStatusRepository = friendshipStatusRepository;
         this.notificationRepository = notificationRepository;
-        this.notificationTypeRepository = notificationTypeRepository;
     }
 
     public FriendResponse getFriends(String name, Integer offset, Integer itemPerPage,
@@ -139,7 +137,8 @@ public class FriendService {
         friendshipRepository.save(friendshipOut);
         notificationRepository.save(
                 new Notification(
-                    notificationTypeRepository.findById(4L).get(),
+                    //notificationTypeRepository.findById(4L).get(),
+                        NotificationType.FRIEND_REQUEST,
                     LocalDateTime.now(),
                     dstPerson,
                     friendshipOut.getId(),
