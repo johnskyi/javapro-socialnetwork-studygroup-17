@@ -26,7 +26,9 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
     Optional<Person> findById(Long id);
 
     @Query(value = "select p from Person p join p.town t join t.country c " +
-            "WHERE (:firstName is null or p.firstName LIKE %:firstName%) " +
+            "WHERE ((:firstName is null or p.firstName LIKE %:firstName%) " +
+                    "or (:firstName is null or p.lastName LIKE %:firstName%) " +
+                    "or (:firstName is null or (concat(p.firstName, ' ', p.lastName) like %:firstName%)) )" +
             "AND (:lastName is null or p.lastName LIKE %:lastName%) " +
             "AND (p.birthTime >= :ageFrom AND p.birthTime <= :ageTo) " +
             "AND (:city is null or p.town.name = :city) " +
