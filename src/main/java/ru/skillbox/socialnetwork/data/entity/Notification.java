@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @Entity
 @NoArgsConstructor
 @Table(name = "notification")

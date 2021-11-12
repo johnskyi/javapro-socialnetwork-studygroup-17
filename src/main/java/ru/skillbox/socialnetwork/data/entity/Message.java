@@ -1,6 +1,7 @@
 package ru.skillbox.socialnetwork.data.entity;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class Message {
     @JoinColumn(name = "recipient_id", referencedColumnName = "id")
     private Person recipient;
 
+    private LocalDateTime time;
 
     @Column(name = "message_text")
     private String text;

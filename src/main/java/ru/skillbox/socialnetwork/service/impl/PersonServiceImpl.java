@@ -36,8 +36,6 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepo personRepository;
     private final TownRepository townRepository;
     private final FileRepository fileRepository;
-    private final NotificationRepository notificationRepository;
-    private final FriendshipRepository friendshipRepository;
 
     @Override
     public PersonResponse getPersonDetail(Principal principal) {
