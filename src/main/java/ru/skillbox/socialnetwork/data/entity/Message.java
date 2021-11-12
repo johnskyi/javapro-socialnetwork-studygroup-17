@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @Entity
 @Table(name = "message")
 public class Message {
@@ -15,7 +16,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private LocalDateTime time;
+    @ManyToOne
+    @JoinColumn(name = "dialog_id", referencedColumnName = "id")
+    private Dialog dialog;
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
@@ -33,4 +36,8 @@ public class Message {
     @Column(name = "read_status", length = 16)
     private ReadStatus readStatus;
 
+    @Override
+    public String toString() {
+        return  author + "  " + time.toString() + "\n" + text;
+    }
 }
