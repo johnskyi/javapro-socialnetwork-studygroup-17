@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.FriendResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
+import ru.skillbox.socialnetwork.data.dto.UserIdStatusResponse;
 import ru.skillbox.socialnetwork.data.entity.*;
 import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.exception.CustomExceptionBadRequest;
@@ -40,14 +41,14 @@ public class FriendService {
         Person currentPerson = personService.getCurrentUser();
         Pageable paging = PageRequest.of(offset / itemPerPage,
                 itemPerPage,
-                Sort.by(Sort.Direction.ASC, "personRequestFriend.lastName"));
+                Sort.by(Sort.Direction.ASC, "personReceiveFriend.lastName"));
 
         Page<Friendship> friendPage;
         if (name == null || name.isEmpty())
             friendPage = friendshipRepository.findByPersonReceiveFriendAndFriendshipStatus_Code(currentPerson, friendStatus, paging);
         else
             friendPage = friendshipRepository
-                    .findByPersonReceiveFriendAndFriendshipStatus_CodeAndAndPersonRequestFriend_FirstName(currentPerson, name, friendStatus, paging);
+                    .findByPersonReceiveFriendAndFriendshipStatus_CodeAndPersonReceiveFriend_FirstName(currentPerson, friendStatus, name, paging);
 
         return new FriendResponse(
                 friendPage.getTotalElements(),
@@ -59,13 +60,13 @@ public class FriendService {
     public void deleteFriend(Long dstPersonId) {
         Person currentPerson = personService.getCurrentUser();
         Person dstPerson = personRepository.findById(dstPersonId).orElseThrow(() -> new PersonNotFoundException(dstPersonId));
-        if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).isEmpty())
+        if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(dstPerson, currentPerson).isEmpty())
             return;
-        Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).get();
+        Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(dstPerson, currentPerson).get();
         if (friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.REQUEST) || friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.SUBSCRIBED)) {
             friendshipRepository.delete(friendshipOut);
         } else if (friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.FRIEND)) {
-            friendshipOut.setFriendshipStatus(new FriendshipStatus(LocalDateTime.now(),"",FriendshipStatusType.DECLINED));
+            friendshipOut.setFriendshipStatus(friendshipStatusRepository.findByCode(FriendshipStatusType.DECLINED).get());
             friendshipRepository.save(friendshipOut);
             if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).isPresent()) {
                 Friendship friendshipIn = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).get();
@@ -75,6 +76,7 @@ public class FriendService {
         }
     }
 
+
     public FriendResponse getRecommendations(Integer offset, Integer itemPerPage) {
         Person currentPerson = personService.getCurrentUser();
         Pageable paging = PageRequest.of(offset / itemPerPage,
@@ -82,7 +84,7 @@ public class FriendService {
                 Sort.by(Sort.Direction.ASC, "personReceiveFriend.lastName"));
 
         List<Friendship> friendships = friendshipRepository.findByPersonReceiveFriendAndFriendshipStatus_Code(currentPerson, FriendshipStatusType.FRIEND);
-        List<Person> friends =  friendships.stream().map(friendship -> friendship.getPersonRequestFriend()).collect(Collectors.toList());
+        List<Person> friends = friendships.stream().map(friendship -> friendship.getPersonRequestFriend()).collect(Collectors.toList());
         List<Friendship> friendships_known = friendshipRepository.findByPersonReceiveFriend(currentPerson);
         List<Person> known = friendships_known.stream().map(friendship -> friendship.getPersonRequestFriend()).collect(Collectors.toList());
         known.add(currentPerson);
@@ -110,16 +112,16 @@ public class FriendService {
             throw new CustomExceptionBadRequest("Запрос на добавление себя");
         }
         Person dstPerson = personRepository.findById(dstPersonId).orElseThrow(() -> new PersonNotFoundException(dstPersonId));
-        Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).orElse(new Friendship());
+        Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(dstPerson, currentPerson).orElse(new Friendship());
         if (friendshipOut.getFriendshipStatus() != null &&
-                (//friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.REQUEST) ||
+                (friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.REQUEST) ||
                         friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.FRIEND) ||
                         friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.SUBSCRIBED))
         ) {
             throw new CustomExceptionBadRequest("Повторный запрос");
         }
-        friendshipOut.setPersonRequestFriend(dstPerson);
-        friendshipOut.setPersonReceiveFriend(currentPerson);
+        friendshipOut.setPersonRequestFriend(currentPerson);
+        friendshipOut.setPersonReceiveFriend(dstPerson);
         if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).isEmpty()) {
             friendshipOut.setFriendshipStatus(friendshipStatusRepository.findByCode(FriendshipStatusType.REQUEST).get());
         } else {
@@ -131,20 +133,61 @@ public class FriendService {
             } else if (friendshipIn.getFriendshipStatus().getCode().equals(FriendshipStatusType.DECLINED)) {
                 friendshipOut.setFriendshipStatus(friendshipStatusRepository.findByCode(FriendshipStatusType.SUBSCRIBED).get());
             } else if (friendshipIn.getFriendshipStatus().getCode().equals(FriendshipStatusType.BLOCKED)) {
-                throw new CustomExceptionBadRequest("Friendship request prohibited by destination user");
+                throw new CustomExceptionBadRequest("Запрос заблокирован удаленной стороной");
             }
         }
         friendshipRepository.save(friendshipOut);
         notificationRepository.save(
                 new Notification(
-                    //notificationTypeRepository.findById(4L).get(),
+                        //notificationTypeRepository.findById(4L).get(),
                         NotificationType.FRIEND_REQUEST,
-                    LocalDateTime.now(),
-                    dstPerson,
-                    friendshipOut.getId(),
-                    dstPerson.getEmail()
+                        LocalDateTime.now(),
+                        dstPerson,
+                        friendshipOut.getId(),
+                        dstPerson.getEmail()
                 )
         );
+    }
+
+    public void blockFriend(Long dstPersonId) {
+        Person currentPerson = personService.getCurrentUser();
+
+        if (currentPerson.getId() == dstPersonId) {
+            throw new CustomExceptionBadRequest("Запрос на блокировку себя");
+        }
+
+        Person dstPerson = personRepository.findById(dstPersonId).orElseThrow(() -> new PersonNotFoundException(dstPersonId));
+
+        if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(dstPerson, currentPerson).isEmpty())
+            return;
+        Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(dstPerson, currentPerson).get();
+        if (friendshipOut.getFriendshipStatus().getCode().equals(FriendshipStatusType.BLOCKED)) {
+            friendshipRepository.delete(friendshipOut);
+        } else {
+            friendshipOut.setFriendshipStatus(friendshipStatusRepository.findByCode(FriendshipStatusType.BLOCKED).get());
+            friendshipRepository.save(friendshipOut);
+            if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).isPresent()) {
+                Friendship friendshipIn = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(currentPerson, dstPerson).get();
+                friendshipRepository.delete(friendshipIn);
+            }
+        }
+    }
+
+
+    public List<UserIdStatusResponse> isFriend(List<Long> userIds) {
+        Person currentPerson = personService.getCurrentUser();
+        List<UserIdStatusResponse> response = new ArrayList<>();
+        for (Long id : userIds) {
+            if (personRepository.findById(id).isEmpty())
+                continue;
+            if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(personRepository.findById(id).get(), currentPerson).isEmpty())
+                continue;
+            response.add(new UserIdStatusResponse(id,
+                    friendshipRepository
+                            .findByPersonReceiveFriendAndPersonRequestFriend(personRepository.findById(id).get(), currentPerson)
+                            .get().getFriendshipStatus()));
+        }
+        return response;
     }
 
     private List<PersonResponse.Data> convertPersonPageToList(Page<Person> page) {
