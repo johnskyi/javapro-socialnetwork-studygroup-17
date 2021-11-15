@@ -65,6 +65,30 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostComment> comments;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> likes;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostCommentLike> postCommentLikes;
+
+    @OneToMany(mappedBy = "personRequestFriend", cascade = CascadeType.ALL)
+    private List<Friendship> friendshipsRequest;
+
+    @OneToMany(mappedBy = "personReceiveFriend", cascade = CascadeType.ALL)
+    private List<Friendship> friendshipsReceives;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Message> authorMessages;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    private List<Message> recipientMessages;
+
     public Role getRole() {
         if (type.name().equals("USER")) {
             return Role.USER;

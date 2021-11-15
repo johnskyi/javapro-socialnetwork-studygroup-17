@@ -35,6 +35,9 @@ public class AuthService {
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             Person person = personRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            if(person.isBlocked() || !person.isApproved()){
+                throw new UsernameNotFoundException("User not found");
+            }
             String token = provider.creteToken(person.getEmail());
             return ResponseEntity.ok(createFullLoginResponse(person, token));
 

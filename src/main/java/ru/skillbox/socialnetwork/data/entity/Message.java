@@ -21,9 +21,13 @@ public class Message {
     @JoinColumn(name = "dialog_id", referencedColumnName = "id")
     private Dialog dialog;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Person author;
+
+    @ManyToOne
+    @JoinColumn(name = "recipient_id", referencedColumnName = "id")
+    private Person recipient;
 
     private LocalDateTime time;
 

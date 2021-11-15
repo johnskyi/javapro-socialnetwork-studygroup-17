@@ -28,8 +28,7 @@ public class CommentDto {
     private String postId;
     private Long time;
 
-    @JsonProperty("author_id")
-    private Long authorId;
+    private Author author;
 
     @JsonProperty("is_blocked")
     private Boolean isBlocked;
@@ -43,7 +42,23 @@ public class CommentDto {
         this.text = postComment.getText();
         this.postId = String.valueOf(postComment.getPost().getId());
         this.time = postComment.getTime().toEpochSecond(ZoneOffset.UTC);
-        this.authorId = postComment.getAuthor().getId();
+        this.author = Author.builder()
+                .id(postComment.getAuthor().getId())
+                .fullName(postComment.getAuthor().getFirstName() + " " +
+                        postComment.getAuthor().getLastName())
+                .photo(postComment.getAuthor().getPhoto())
+                .build();
         this.isBlocked = postComment.isBlocked();
     }
+
+    @lombok.Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Author{
+        private Long id;
+        private String fullName;
+        private String photo;
+    }
+
 }

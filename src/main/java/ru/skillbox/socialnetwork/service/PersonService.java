@@ -14,7 +14,7 @@ public interface PersonService {
 
     PersonResponse putPersonDetail(PersonRequest personRequest, Principal principal);
 
-    PersonResponse deletePerson(Principal principal);
+    PersonResponse deletePerson(Boolean isHardDelete, Principal principal);
 
      Person getCurrentUser();
 
