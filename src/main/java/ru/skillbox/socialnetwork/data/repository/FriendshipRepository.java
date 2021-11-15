@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
-    Page<Friendship> findByPersonReceiveFriendAndFriendshipStatus_Code (Person dstPerson, FriendshipStatusType code, Pageable paging);
+    Page<Friendship> findByPersonReceiveFriendAndFriendshipStatus_Code (Person srcPerson, FriendshipStatusType code, Pageable paging);
 
     List<Friendship> findByPersonReceiveFriendAndFriendshipStatus_Code(Person srcPerson, FriendshipStatusType code);
 
@@ -27,8 +27,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     @Query(value = "select distinct F.personReceiveFriend from #{#entityName} F where F.personRequestFriend in :friends and F.friendshipStatus = 3 and F.personReceiveFriend not in :known")
     Page<Person> findNewRecs(List<Person> friends, List<Person> known, Pageable paging);
 
-    @Query(value = "select F from #{#entityName} F where F.personReceiveFriend = ?1 and F.friendshipStatus = ?3 and upper(F.personRequestFriend.firstName) like concat('%',upper(?2),'%') ")
-    Page<Friendship> findByPersonReceiveFriendAndFriendshipStatus_CodeAndAndPersonRequestFriend_FirstName(Person dstPerson, String name, FriendshipStatusType code, Pageable paging);
+    @Query(value = "select F from #{#entityName} F where F.personRequestFriend = ?1 and F.friendshipStatus = ?2 and upper(F.personRequestFriend.firstName) like concat('%',upper(?3),'%') ")
+    Page<Friendship> findByPersonReceiveFriendAndFriendshipStatus_CodeAndPersonReceiveFriend_FirstName(Person dstPerson, FriendshipStatusType code, String name, Pageable paging);
 
     Optional<Friendship> findByPersonReceiveFriendAndPersonRequestFriend(Person dstPerson, Person srcPerson);
 }
