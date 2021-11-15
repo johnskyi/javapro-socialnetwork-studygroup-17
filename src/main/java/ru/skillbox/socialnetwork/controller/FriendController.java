@@ -34,7 +34,7 @@ public class FriendController {
     }
 
     @DeleteMapping("/api/v1/friends/{id}")
-    @ApiOperation(value="Удалить пользователя из друзей")
+    @ApiOperation(value="Удалить пользователя из друзей/отклонить заявку в друзья")
     public ResponseEntity<ErrorTimeDataResponse> delete(@PathVariable Long id) {
 
         friendService.deleteFriend(id);
@@ -68,5 +68,19 @@ public class FriendController {
         friendService.addFriend(id);
         log.info("POST /api/v1/friends/{id}" + id);
         return ResponseEntity.ok(new ErrorTimeDataResponse(new MessageResponse()));
+    }
+
+    @PostMapping("/api/v1/friends/block/{id}")
+    @ApiOperation(value="Блокировка/Разблокировка пользователя")
+    public ResponseEntity<ErrorTimeDataResponse> block(@PathVariable Long id) {
+        friendService.blockFriend(id);
+        log.info("POST /api/v1/friends/block/{id}" + id);
+        return ResponseEntity.ok(new ErrorTimeDataResponse(new MessageResponse()));
+    }
+
+    @PostMapping("/api/v1/is/friends")
+    @ApiOperation(value="Проверка является ли пользователь другом")
+    public ResponseEntity<ListDataResponse> isFriend(@RequestBody ListUserIdsRequest userIds) {
+        return ResponseEntity.ok(new ListDataResponse(friendService.isFriend(userIds.getUserIds())));
     }
 }
