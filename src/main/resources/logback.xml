@@ -12,9 +12,10 @@
         </encoder>
     </appender>>
     <root level="info>">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
     <logger name="ru.skillbox.socialnetwork" level="all">
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+
     </logger>
 </configuration>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.skillbox.socialnetwork.controller.AdviceController;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
+import ru.skillbox.socialnetwork.exception.MessageNotFoundException;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.PostNotFoundException;
 import springfox.documentation.annotations.ApiIgnore;
@@ -55,6 +56,14 @@ public class AdviceControllerImpl implements AdviceController {
     @Override
     @ExceptionHandler(DialogNotFoundException.class)
     public ResponseEntity<ErrorResponse> dialogNotFoundExceptionHandler(DialogNotFoundException exception) {
+        log.error(exception.getMessage());
+        return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @ExceptionHandler(MessageNotFoundException.class)
+    public ResponseEntity<ErrorResponse> messageNotFoundExceptionHandler(MessageNotFoundException exception) {
         log.error(exception.getMessage());
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
                 HttpStatus.BAD_REQUEST);

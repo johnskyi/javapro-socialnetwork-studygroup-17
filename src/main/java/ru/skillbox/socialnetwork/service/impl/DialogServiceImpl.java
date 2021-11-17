@@ -10,6 +10,7 @@ import ru.skillbox.socialnetwork.data.repository.DialogRepository;
 import ru.skillbox.socialnetwork.data.repository.MessageRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
+import ru.skillbox.socialnetwork.exception.MessageNotFoundException;
 import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 import ru.skillbox.socialnetwork.service.DialogService;
 
@@ -94,9 +95,45 @@ public class DialogServiceImpl implements DialogService {
                         .build())
                 .build();
     }
+
+    @Override
+    public DialogResponse dialogDelete(Long dialogId, Principal principal) {
+        Dialog dialog = findDialogById(dialogId);
+        findPersonByEmail(principal.getName());
+        dialogRepository.delete(dialog);
+        return DialogResponse.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .id(dialogId)
+                        .build())
+                .build();
+    }
+
+    @Override
+    public DialogResponse messageDelete(Long dialogId, Long messageId, Principal principal) {
+        Dialog dialog = findDialogById(dialogId);
+        findPersonByEmail(principal.getName());
+        Message message = findMessageById(messageId);
+        messageRepository.delete(message);
+        dialog.getMessages().remove(message);
+        dialogRepository.save(dialog);
+        return DialogResponse.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .id(messageId)
+                        .build())
+                .build();
+    }
+
     private Dialog findDialogById(Long id) {
         return dialogRepository.findById(id)
                 .orElseThrow(() -> new DialogNotFoundException("Dialog not found"));
+    }
+    private Message findMessageById(Long id) {
+        return messageRepository.findById(id)
+                .orElseThrow(() -> new MessageNotFoundException("Message not found"));
     }
     private Person findPersonById(Long id) {
         return personRepository.findById(id)

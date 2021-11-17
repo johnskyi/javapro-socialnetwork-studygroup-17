@@ -12,4 +12,8 @@ public interface DialogService {
     DialogResponse getAllMessages(Long dialogId);
 
     DialogResponse dialogCreate(Long userId, Principal principal);
+
+    DialogResponse dialogDelete(Long dialogId, Principal principal);
+
+    DialogResponse messageDelete(Long dialogId, Long messageId, Principal principal);
 }
