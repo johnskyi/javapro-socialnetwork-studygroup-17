@@ -1,6 +1,5 @@
 stages:
   - build
-  - test
   - deploy
 
 build:
@@ -12,21 +11,8 @@ build:
   except:
     - tags
   script:
-    - echo "do package jar..."
-    - mvn clean
-    - mvn package
-
-main_testing:
-  stage: test
-  only:
-    - main
-    - dev
-    - merge_request
-  except:
-    - tags
-  script:
-    - echo "do test"
-    - mvn verify
+    - echo "do build, test and package jar"
+    - mvn clean install
 
 deploy:
   stage: deploy
@@ -36,7 +22,7 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - mvn package
+    - mvn clean install
     - cd /home/gitlab-runner/
     - docker-compose down
     - docker system prune -a -f
