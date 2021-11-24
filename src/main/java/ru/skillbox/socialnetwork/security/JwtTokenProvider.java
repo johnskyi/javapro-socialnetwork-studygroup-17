@@ -12,6 +12,7 @@ import ru.skillbox.socialnetwork.exception.JwtAuthenticationException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
     private String secretKey = "javaPro";
-    private final String authorizationHeader = "Authorization";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     public JwtTokenProvider(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -28,7 +29,7 @@ public class JwtTokenProvider {
 
     @PostConstruct
     protected void init(){
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     public String creteToken(String username){
@@ -64,6 +65,6 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request){
-        return request.getHeader(authorizationHeader);
+        return request.getHeader(AUTHORIZATION_HEADER);
     }
 }

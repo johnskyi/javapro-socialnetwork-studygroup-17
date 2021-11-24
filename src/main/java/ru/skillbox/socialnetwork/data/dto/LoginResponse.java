@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
 import ru.skillbox.socialnetwork.data.entity.Town;
+import ru.skillbox.socialnetwork.data.entity.UserType;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -47,6 +48,8 @@ public class LoginResponse {
         private String about;
         private Town town;
         private Country country;
+        @JsonProperty("role")
+        private UserType userType;
 
         @JsonProperty("messages_permission")
         private MessagePermission messagePermission;

@@ -78,6 +78,7 @@ public class AuthService {
                         .messagePermission(person.getMessagePermission())
                         .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
                         .isBlocked(person.isBlocked())
+                        .userType(person.getType())
                         .token(token)
                         .build())
                 .build();

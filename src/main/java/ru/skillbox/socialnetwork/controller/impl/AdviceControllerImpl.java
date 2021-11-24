@@ -15,8 +15,6 @@ import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.PostNotFoundException;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.Objects;
-
 @ControllerAdvice
 @ApiIgnore
 @Slf4j
@@ -31,7 +29,7 @@ public class AdviceControllerImpl implements AdviceController {
     }
 
     @ExceptionHandler(PersonNotAuthorized.class)
-    public ResponseEntity<ErrorResponse> PersonNotAuthorizedExceptionHandler(PersonNotAuthorized exception) {
+    public ResponseEntity<ErrorResponse> personNotAuthorizedExceptionHandler(PersonNotAuthorized exception) {
         log.error(exception.getMessage());
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
                 HttpStatus.BAD_REQUEST);
@@ -41,9 +39,7 @@ public class AdviceControllerImpl implements AdviceController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
         log.error(exception.getMessage());
-        return new ResponseEntity<>(new ErrorResponse("invalid_request", Objects.requireNonNull(
-                exception.getFieldError(), "exception.getFieldError() is null").getDefaultMessage()),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
     @Override

@@ -81,7 +81,7 @@ public class FriendService {
         Person currentPerson = personService.getCurrentUser();
         Pageable paging = PageRequest.of(offset / itemPerPage,
                 itemPerPage,
-                Sort.by(Sort.Direction.ASC, "personReceiveFriend.lastName"));
+                Sort.by(Sort.Direction.DESC, "personReceiveFriend.lastName"));
 
         List<Friendship> friendships = friendshipRepository.findByPersonReceiveFriendAndFriendshipStatus_Code(currentPerson, FriendshipStatusType.FRIEND);
         List<Person> friends = friendships.stream().map(friendship -> friendship.getPersonRequestFriend()).collect(Collectors.toList());
@@ -95,7 +95,7 @@ public class FriendService {
         if (recommendedPersons == null || recommendedPersons.isEmpty()) {
             paging = PageRequest.of(offset / itemPerPage,
                     itemPerPage,
-                    Sort.by(Sort.Direction.ASC, "lastName"));
+                    Sort.by(Sort.Direction.DESC, "lastName"));
             recommendedPersons = personRepository.findRandomRecs(known, paging);
         }
 
@@ -139,7 +139,6 @@ public class FriendService {
         friendshipRepository.save(friendshipOut);
         notificationRepository.save(
                 new Notification(
-                        //notificationTypeRepository.findById(4L).get(),
                         NotificationType.FRIEND_REQUEST,
                         LocalDateTime.now(),
                         dstPerson,
@@ -151,13 +150,10 @@ public class FriendService {
 
     public void blockFriend(Long dstPersonId) {
         Person currentPerson = personService.getCurrentUser();
-
         if (currentPerson.getId() == dstPersonId) {
             throw new CustomExceptionBadRequest("Запрос на блокировку себя");
         }
-
         Person dstPerson = personRepository.findById(dstPersonId).orElseThrow(() -> new PersonNotFoundException(dstPersonId));
-
         if (friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(dstPerson, currentPerson).isEmpty())
             return;
         Friendship friendshipOut = friendshipRepository.findByPersonReceiveFriendAndPersonRequestFriend(dstPerson, currentPerson).get();
