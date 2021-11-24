@@ -1,9 +1,9 @@
 stages:
-  - build
+  - mvn clean install
   - deploy
 
 build:
-  stage: build
+  stage: mvn clean install
   only:
     - main
     - dev
