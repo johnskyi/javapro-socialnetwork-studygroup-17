@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                         "/configuration/security",
                         "/webjars/**",
                         "/swagger-ui/index.html").permitAll()
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .apply(jwtConfigurer)
