@@ -13,7 +13,7 @@ public interface AdviceController {
 
     ResponseEntity<ErrorResponse> userNotFoundExceptionHandler(UsernameNotFoundException exception);
 
-    ResponseEntity<ErrorResponse> PersonNotAuthorizedExceptionHandler(PersonNotAuthorized exception);
+    ResponseEntity<ErrorResponse> personNotAuthorizedExceptionHandler(PersonNotAuthorized exception);
 
     ResponseEntity<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception);
 
