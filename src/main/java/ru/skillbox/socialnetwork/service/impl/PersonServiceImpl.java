@@ -68,6 +68,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public PersonResponse getPersonById(Long id) {
+        Person person = personRepository.getById(id);
+        return createFullPersonResponse(person);
+    }
+
+    @Override
     public Person getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
