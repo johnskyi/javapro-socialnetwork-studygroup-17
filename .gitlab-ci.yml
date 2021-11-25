@@ -2,7 +2,7 @@ stages:
   - mvn clean install
   - deploy
 
-build:
+mvn-clean-install:
   stage: mvn clean install
   only:
     - main
