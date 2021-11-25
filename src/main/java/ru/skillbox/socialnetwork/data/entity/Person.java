@@ -62,6 +62,9 @@ public class Person {
     @Column(name = "role", length = 16)
     private UserType type;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications;
 
