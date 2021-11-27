@@ -52,6 +52,12 @@ public class PersonControllerImpl implements PersonController {
     }
 
     @Override
+    public ResponseEntity<PersonResponse> getPersonById(Long id) {
+        logger.info("Call GET /api/v1/users/{id}");
+        return ResponseEntity.ok(personService.getPersonById(id));
+    }
+
+    @Override
     @ApiOperation(value = "Поиск пользователей")
     public ResponseEntity<PersonSearchResponse> searchPerson(@RequestParam(value = "first_name", defaultValue = "")String firstName,
                                                              @RequestParam(value = "last_name", defaultValue = "")String lastName,
