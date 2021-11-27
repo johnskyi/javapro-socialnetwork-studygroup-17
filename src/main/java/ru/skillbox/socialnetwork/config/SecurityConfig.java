@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers("/api/v1/auth/logout").permitAll()
                 .antMatchers("/api/v1/account/password/recovery").permitAll()
                 .antMatchers("/api/v1/account/password/set").permitAll()
+                .antMatchers("/actuator/prometheus").permitAll()
                 .antMatchers("/api/v1/support").permitAll()
                 .antMatchers("/swagger-ui.html",
                         "/v2/api-docs",
