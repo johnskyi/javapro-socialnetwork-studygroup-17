@@ -18,7 +18,32 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - "infrastructure" 
+      - "infrastructure"
+  grafana:
+    build: './builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/grafana'
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      monitoring:
+        aliases:
+          - grafana
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/prometheus
+    networks:
+      monitoring:
+        aliases:
+          - prometheus
 networks:
   infrastructure:
     driver: "bridge"
+  monitoring:
