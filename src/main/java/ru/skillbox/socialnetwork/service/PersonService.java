@@ -16,6 +16,8 @@ public interface PersonService {
 
     PersonResponse deletePerson(Boolean isHardDelete, Principal principal);
 
+    PersonResponse getPersonById(Long id);
+
      Person getCurrentUser();
 
     public PersonSearchResponse searchPerson(String firstName, String lastName, String ageFrom,
