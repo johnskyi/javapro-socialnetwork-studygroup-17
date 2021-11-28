@@ -39,6 +39,17 @@ management:
     distribution:
       percentiles-histogram:
         "[http.server.requests]": true
+backup:
+  host: 45.134.255.54
+  localpath: /home/javapro/db_backups/
+  files:
+    maxcount: 200
+    maxtotalsize: 1_000_000_000
+    minfreespace: 1_000_000_000
+    maxcleaningiterations: 50
+
+
+
 
 
 
