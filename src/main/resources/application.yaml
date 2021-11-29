@@ -1,4 +1,3 @@
-#lol lol lol
 server:
   port: 8086
 spring:
@@ -28,6 +27,18 @@ spring:
     jdbc:
       initialize-schema: always
       table-name: SPRING_SESSION
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
 
 
 
