@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        System.out.println();
         http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -70,7 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                         "/configuration/security",
                         "/webjars/**",
                         "/swagger-ui/index.html").permitAll()
-                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .apply(jwtConfigurer)
