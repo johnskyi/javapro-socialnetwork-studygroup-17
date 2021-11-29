@@ -9,11 +9,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "post_comment")
 public class PostComment {
     @Id
