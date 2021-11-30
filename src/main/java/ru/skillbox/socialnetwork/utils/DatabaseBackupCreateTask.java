@@ -61,8 +61,8 @@ public class DatabaseBackupCreateTask {
 
     //every day on 3:00
     @Scheduled(cron = "0 0 3 * * *")
-    // One day
-    //@Scheduled(fixedRate = 1000 * 60 * 60 * 12)
+    // every hour
+    @Scheduled(fixedRate = 1000 * 60)
     public void createBackupAndMoveToGoogleDrive(){
         if (!System.getProperty("os.name").equals(VALID_SYSTEM_NAME)){
             log.info("Creating database backup failed. This option implement only for linux system");
