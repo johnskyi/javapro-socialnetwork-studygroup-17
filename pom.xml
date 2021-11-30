@@ -125,6 +125,36 @@
             <artifactId>spotbugs-annotations</artifactId>
             <version>4.2.0</version>
         </dependency>
+
+        <!-- google drive-->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-drive</artifactId>
+            <version>v3-rev20211107-1.32.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.32.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client-jackson2</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.32.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-appsactivity</artifactId>
+            <version>v1-rev20200128-1.30.10</version>
+        </dependency>
+        <!-- end googe drive-->
+
+
     </dependencies>
 
     <build>

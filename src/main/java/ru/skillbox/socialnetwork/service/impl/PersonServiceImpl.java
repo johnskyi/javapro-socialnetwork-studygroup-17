@@ -169,7 +169,7 @@ public class PersonServiceImpl implements PersonService {
             person.setTown(townRepository.getById(request.getTownId()));
         }
 
-        personRepository.flush();
+        personRepository.save(person);
     }
 
     private String getFormattedPhone(String phone) {
