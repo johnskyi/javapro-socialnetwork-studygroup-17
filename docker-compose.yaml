@@ -23,7 +23,7 @@ services:
     build: './builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/grafana'
     ports:
       - "3000:3000"
-    user: '104'
+    user: "$UID:$GID"
     volumes:
       - ./grafana:/var/lib/grafana
     environment:
@@ -37,7 +37,7 @@ services:
     image: prom/prometheus
     ports:
       - "9090:9090"
-    user: '104'
+    user: "$UID:$GID"
     volumes:
       - ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus:/prometheus
