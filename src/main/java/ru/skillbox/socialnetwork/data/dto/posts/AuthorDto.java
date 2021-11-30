@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
@@ -14,7 +15,7 @@ import java.time.ZoneOffset;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-@lombok.Data
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
