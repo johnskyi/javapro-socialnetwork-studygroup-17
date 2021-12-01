@@ -127,9 +127,13 @@ public class DatabaseBackupCreateTask {
         long filesCount = 0;
         long filesSize = 0;
 
-        for (File file : Objects.requireNonNull(folder.listFiles(filenameFilter))){
-            filesCount++;
-            filesSize += file.length();
+        File[] files = folder.listFiles(filenameFilter);
+
+        if(files != null ) {
+            for (File file : files) {
+                filesCount++;
+                filesSize += file.length();
+            }
         }
 
         if(filesCount > maxFilesCount){
@@ -147,11 +151,15 @@ public class DatabaseBackupCreateTask {
 
     public String cleanOldestBackup(File folder) {
 
-        if (!folder.exists() || !folder.isDirectory() || folder.listFiles(filenameFilter) == null) {
+        if (!folder.exists() || !folder.isDirectory()) {
             return "error delete";
         }
 
-        File[] files = Objects.requireNonNull(folder.listFiles(filenameFilter));
+        File[] files = folder.listFiles(filenameFilter);
+
+        if(files == null ){
+            return "No files for delete";
+        }
 
         File candidate = files[0];
 
