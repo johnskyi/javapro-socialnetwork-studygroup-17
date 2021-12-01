@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(Include.NON_NULL)
-public class ErrorTimeTotalOffsetPerPageListDataResponse {
+public class DefaultResponseWithPagination {
 
     private String error;
     private long timestamp;
@@ -21,7 +21,7 @@ public class ErrorTimeTotalOffsetPerPageListDataResponse {
     private int perPage;
     private List<?> data;
 
-    public ErrorTimeTotalOffsetPerPageListDataResponse(long total, int offset, int perPage, List<?> data) {
+    public DefaultResponseWithPagination(long total, int offset, int perPage, List<?> data) {
         this.error = "";
         timestamp = System.currentTimeMillis();
         this.total = total;

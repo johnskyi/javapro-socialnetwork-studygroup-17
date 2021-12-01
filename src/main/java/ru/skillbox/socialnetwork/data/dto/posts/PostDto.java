@@ -4,15 +4,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Post;
+import ru.skillbox.socialnetwork.data.repository.PostCommentsRepository;
 
+import javax.persistence.Entity;
 import java.time.ZoneOffset;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-@lombok.Data
+
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,5 +51,16 @@ public class PostDto {
         this.likes = likes;
         this.comments = comments;
         this.type = PostType.POSTED;
+    }
+
+    public PostDto(Post post) {
+        this.id = post.getId();
+        this.time = post.getTime().toEpochSecond(ZoneOffset.UTC);;
+        this.author = new AuthorDto(post.getAuthor());
+        this.title = post.getTitle();
+        this.text = post.getTextHtml();
+        this.isBlocked = post.isBlocked();
+        this.likes = post.getLikes().size();
+        this.comments = CommentDto.getCommentDtoList(post.getComments());
     }
 }

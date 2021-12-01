@@ -4,10 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.PostComment;
 
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -51,7 +55,8 @@ public class CommentDto {
         this.isBlocked = postComment.isBlocked();
     }
 
-    @lombok.Data
+
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -59,6 +64,16 @@ public class CommentDto {
         private Long id;
         private String fullName;
         private String photo;
+    }
+
+    public static List<CommentDto> getCommentDtoList(
+            List<PostComment> listComments) {
+        List<CommentDto> response = new ArrayList<>();
+        listComments.stream().filter(Objects::nonNull).filter(comment -> comment.getParent() == null)
+                .forEach(comment -> response.add(new CommentDto(comment)));
+        listComments.stream().filter(Objects::nonNull).filter(comment -> comment.getParent() != null)
+                .forEach(comment -> response.add(new CommentDto(comment)));
+        return response;
     }
 
 }
