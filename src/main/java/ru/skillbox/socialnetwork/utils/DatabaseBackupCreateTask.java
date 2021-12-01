@@ -14,6 +14,7 @@ import ru.skillbox.socialnetwork.service.GoogleDriveService;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class DatabaseBackupCreateTask {
     private final GoogleDriveService googleDriveService;
 
     private static final String VALID_SYSTEM_NAME = "Linux";
-    private static final SimpleDateFormat fileNameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+    private static final DateFormat fileNameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
     private static final FilenameFilter filenameFilter = new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
