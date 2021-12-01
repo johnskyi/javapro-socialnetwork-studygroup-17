@@ -16,7 +16,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
@@ -28,15 +31,11 @@ public class DatabaseBackupCreateTask {
     private final GoogleDriveService googleDriveService;
 
     private static final String VALID_SYSTEM_NAME = "Linux";
-    private static final DateFormat fileNameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+    private static final DateTimeFormatter fileNameDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
     private static final FilenameFilter filenameFilter = new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
-            try {
-                fileNameDateFormat.parse(name.substring(0, name.indexOf('.')));
-            }catch (ParseException e){
-                return false;
-            }
+            fileNameDateFormat.parse(name.substring(0, name.indexOf('.')));
             return true;
         }
     };
@@ -88,7 +87,7 @@ public class DatabaseBackupCreateTask {
             log.info("Backup delete: " + cleanOldestBackup(localFolder));
         };
 
-        String simpleFileName = fileNameDateFormat.format(new Date()) + ".tar";
+        String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
 
         String cmd = "pg_dump" +
                 " --host=" + host +
@@ -165,13 +164,10 @@ public class DatabaseBackupCreateTask {
         File candidate = files[0];
 
         for (File file : files) {
-            try {
-                if (fileNameDateFormat.parse(file.getName().substring(0, file.getName().indexOf('.')))
-                        .before(fileNameDateFormat.parse(candidate.getName().substring(0, candidate.getName().indexOf('.'))))) {
-                    candidate = file;
-                }
-            } catch (ParseException parseException) {
-                System.out.println(parseException.getMessage());
+            if (
+                    LocalDateTime.parse(file.getName().substring(0, file.getName().indexOf('.')))
+                            .isBefore(LocalDateTime.parse(candidate.getName().substring(0, candidate.getName().indexOf('.'))))) {
+                candidate = file;
             }
         }
         if (candidate.delete()) {
