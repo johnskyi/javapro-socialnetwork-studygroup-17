@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @Component
@@ -114,7 +115,7 @@ public class DatabaseBackupCreateTask {
     }
 
     public boolean checkTooManyBackups(File folder){
-        if(!folder.exists() || !folder.isDirectory() || folder.listFiles(filenameFilter).length == 0){
+        if(!folder.exists() || !folder.isDirectory() || folder.listFiles(filenameFilter) == null){
             return false;
         }
 
@@ -126,7 +127,7 @@ public class DatabaseBackupCreateTask {
         long filesCount = 0;
         long filesSize = 0;
 
-        for (File file : folder.listFiles()){
+        for (File file : Objects.requireNonNull(folder.listFiles(filenameFilter))){
             filesCount++;
             filesSize += file.length();
         }
@@ -142,16 +143,15 @@ public class DatabaseBackupCreateTask {
         };
 
         return false;
-
     }
 
     public String cleanOldestBackup(File folder) {
 
-        if (!folder.exists() || !folder.isDirectory() || folder.listFiles(filenameFilter).length == 0) {
+        if (!folder.exists() || !folder.isDirectory() || folder.listFiles(filenameFilter) == null) {
             return "error delete";
         }
 
-        File[] files = folder.listFiles(filenameFilter);
+        File[] files = Objects.requireNonNull(folder.listFiles(filenameFilter));
 
         File candidate = files[0];
 
@@ -162,7 +162,7 @@ public class DatabaseBackupCreateTask {
                     candidate = file;
                 }
             } catch (ParseException parseException) {
-
+                System.out.println(parseException.getMessage());
             }
         }
         if (candidate.delete()) {
