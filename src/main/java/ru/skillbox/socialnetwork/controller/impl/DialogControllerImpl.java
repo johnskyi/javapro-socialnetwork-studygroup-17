@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.controller.DialogController;
-import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
+import ru.skillbox.socialnetwork.data.dto.dialogs.DialogResponse;
 import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
 
 import java.security.Principal;

@@ -1,7 +1,7 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
+import ru.skillbox.socialnetwork.data.dto.dialogs.DialogResponse;
 import ru.skillbox.socialnetwork.data.entity.Dialog;
 import ru.skillbox.socialnetwork.data.entity.Message;
 import ru.skillbox.socialnetwork.data.entity.Person;
