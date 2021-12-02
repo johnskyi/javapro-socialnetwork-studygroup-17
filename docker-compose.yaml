@@ -3,7 +3,7 @@ version: "3.7"
 services:
   db:
     image: 'postgres:13.1-alpine'
-    container_name: userAccountPostgres
+    container_name: postgres
     ports:
       - 5432:5432
     environment:
@@ -14,6 +14,7 @@ services:
     build:
       context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
       dockerfile: Dockerfile
+    container_name: backend
     ports:
       - "8086:8086"
     networks:
@@ -24,12 +25,14 @@ services:
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/nginx:/etc/nginx/conf.d
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/dist:/var/www
       - ./logs/nginx:/var/log/nginx
+    container_name: frontend
     ports:
       - "5000:5000"
     networks:
       - "infrastructure"
   grafana:
     build: './builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/grafana'
+    container_name: grafana
     ports:
       - "3000:3000"
     user: "$UID:$GID"
@@ -44,6 +47,7 @@ services:
           - grafana
   prometheus:
     image: prom/prometheus
+    container_name: prometheus
     ports:
       - "9090:9090"
     user: "$UID:$GID"
