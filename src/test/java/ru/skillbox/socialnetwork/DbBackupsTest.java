@@ -1,10 +1,7 @@
 package ru.skillbox.socialnetwork;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.skillbox.socialnetwork.service.GoogleDriveService;
 import ru.skillbox.socialnetwork.utils.DatabaseBackupCreateTask;
 
@@ -22,7 +19,7 @@ public class DbBackupsTest {
     static void init() {
         databaseBackupCreateTask = new DatabaseBackupCreateTask(new GoogleDriveService());
 
-        databaseBackupCreateTask.setLocalPath("/home/alexey/db_backup/");
+        databaseBackupCreateTask.setLocalPath("/home/javapro/db_backup_test/");
         databaseBackupCreateTask.setHost("45.134.255.54");
         databaseBackupCreateTask.setMaxTotalFilesSize(Long.MAX_VALUE);
         databaseBackupCreateTask.setMinFreeSpace(0);
@@ -31,23 +28,6 @@ public class DbBackupsTest {
     }
 
     @Test
-    @Disabled
-    @DisplayName("Проверка переполнения файлов бэкапа по minimal free space")
-    public void checkTooManyBackupFilesMinFreeSpaceTest() {
-
-        File folder = new File(databaseBackupCreateTask.getLocalPath());
-        long freeSpace = folder.getUsableSpace();
-
-        databaseBackupCreateTask.setMinFreeSpace(freeSpace + 1);
-        assertTrue(databaseBackupCreateTask.checkTooManyBackups(folder));
-
-        databaseBackupCreateTask.setMinFreeSpace(freeSpace - 1);
-        assertFalse(databaseBackupCreateTask.checkTooManyBackups(folder));
-
-    }
-
-    @Test
-    @Disabled
     @DisplayName("Проверка создания папки")
     public void createFolderTest() throws IOException {
 
@@ -67,8 +47,23 @@ public class DbBackupsTest {
 
     }
 
+
     @Test
-    @Disabled
+    @DisplayName("Проверка переполнения файлов бэкапа по minimal free space")
+    public void checkTooManyBackupFilesMinFreeSpaceTest() {
+
+        File folder = new File(databaseBackupCreateTask.getLocalPath());
+        long freeSpace = folder.getUsableSpace();
+
+        databaseBackupCreateTask.setMinFreeSpace(freeSpace + 1);
+        assertTrue(databaseBackupCreateTask.checkTooManyBackups(folder));
+
+        databaseBackupCreateTask.setMinFreeSpace(freeSpace - 1);
+        assertFalse(databaseBackupCreateTask.checkTooManyBackups(folder));
+
+    }
+
+    @Test
     @DisplayName("Проверка переполнения файлов бэкапа по превышению количества файлов")
     public void checkTooManyBackupFilesMaxCountTest() {
 
@@ -88,7 +83,6 @@ public class DbBackupsTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("Проверка переполнения файлов бэкапа по max total files size")
     public void checkTooManyBackupFilesTest() {
         File folder = new File(databaseBackupCreateTask.getLocalPath());
@@ -109,7 +103,6 @@ public class DbBackupsTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("Проверка удаления бэкапов")
     public void deleteBackupTest(){
         File folder = new File(databaseBackupCreateTask.getLocalPath());
@@ -132,9 +125,13 @@ public class DbBackupsTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("Проверка превышения количества попыток удаления старых бэкапов")
     public void deleteBackupTryIterTest() {
+
+        databaseBackupCreateTask.setMaxTotalFilesSize(Long.MAX_VALUE);
+        databaseBackupCreateTask.setMinFreeSpace(0);
+        databaseBackupCreateTask.setMaxFilesCount(Long.MAX_VALUE);
+
         File folder = new File(databaseBackupCreateTask.getLocalPath());
 
         long maxIter = 3;
@@ -150,7 +147,21 @@ public class DbBackupsTest {
 
         databaseBackupCreateTask.createBackupAndMoveToGoogleDrive();
 
+        System.out.println(folder.listFiles().length);
+        System.out.println(filesCountBefore + " " + maxIter);
         assertEquals(folder.listFiles().length, filesCountBefore - maxIter);
     }
 
+    @AfterAll
+    @DisplayName("Удаление тестовой папки с бэкапами после тестов")
+    static void afterAllTests(){
+        File folder = new File(databaseBackupCreateTask.getLocalPath());
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+            for (File file : files) {
+                file.delete();
+            }
+            folder.delete();
+        }
+    }
 }
