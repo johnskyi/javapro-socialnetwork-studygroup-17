@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,14 +19,19 @@ import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
+import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -43,8 +49,6 @@ class PasswordRecoveryControllerImplTest {
     private PasswordRecoveryControllerImpl controller;
     @MockBean
     private PersonRepo personRepo;
-    @MockBean
-    private TownRepository townRepository;
     @MockBean
     private Principal principal;
 
@@ -88,7 +92,6 @@ class PasswordRecoveryControllerImplTest {
     void sendEmail() throws Exception {
         when(principal.getName()).thenReturn("test2@test2.com");
         when(personRepo.findByEmail(any())).thenReturn(Optional.of(person));
-        when(townRepository.getById(any())).thenReturn(town);
         this.mockMvc.perform(put("/api/v1/account/password/recovery")
                 .param("email", person.getEmail()))
                 .andDo(print())
@@ -101,7 +104,6 @@ class PasswordRecoveryControllerImplTest {
     void setPassword() throws Exception {
         when(principal.getName()).thenReturn("test2@test2.com");
         when(personRepo.findByCode(any())).thenReturn(Optional.of(person));
-        when(townRepository.getById(any())).thenReturn(town);
         this.mockMvc.perform(put("/api/v1/account/password/set")
                         .param("token", person.getCode())
                         .param("password",person.getPassword()))
@@ -116,7 +118,6 @@ class PasswordRecoveryControllerImplTest {
     void setEmail() throws Exception {
         when(principal.getName()).thenReturn("test2@test2.com");
         when(personRepo.findByEmail(any())).thenReturn(Optional.of(person));
-        when(townRepository.getById(any())).thenReturn(town);
         this.mockMvc.perform(put("/api/v1/account/email")
                         .param("email","test3@test3.com")
                         .principal(principal))
@@ -124,4 +125,25 @@ class PasswordRecoveryControllerImplTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
+    @Test
+    @DisplayName("FindByEmail Throws PersonNotFoundException")
+    void findByEmail_unknownUser_throwPersonNotFound() {
+        when(principal.getName()).thenReturn("test2@test2.com");
+        when(personRepo.findByEmail("test3@yandex.ru")).thenThrow(PersonNotFoundException.class);
+
+        assertThatThrownBy(() -> controller.sendEmail("test3@yandex.ru") ).isInstanceOf(PersonNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("Set email. Person unauthorized")
+    public void setEmail_notAuthorizedUser_throwsUsernameNotFound() {
+        assertThrows(UsernameNotFoundException.class, () -> controller.setEmail("test3@yandex.ru",principal));
+    }
+    @Test
+    @DisplayName("FindByCode Throws PersonNotFoundException")
+    void findByCode_unknownCode_throwPersonNotFoundException() {
+        when(personRepo.findByCode("unknown code")).thenThrow(PersonNotFoundException.class);
+        assertThatThrownBy(() -> controller.setPassword("unknown code","new password") ).isInstanceOf(PersonNotFoundException.class);
+    }
+
 }
