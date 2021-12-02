@@ -13,5 +13,7 @@ public interface PostCommentsRepository extends JpaRepository<PostComment, Long>
 
     Page<PostComment> findByPostId(long id, Pageable pageable);
 
+    List<PostComment> findAllByParent_Id(long parentId);
+
     //Optional<PostComment> findByPersonIdAndCommentId(Long personId, Long itemId);
 }
