@@ -1,6 +1,6 @@
 package ru.skillbox.socialnetwork.service;
 
-import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
+import ru.skillbox.socialnetwork.data.dto.dialogs.DialogResponse;
 
 import java.security.Principal;
 
