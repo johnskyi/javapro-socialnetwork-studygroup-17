@@ -1,6 +1,15 @@
 version: "3.7"
 
 services:
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: userAccountPostgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=javapro
+      - POSTGRES_PASSWORD=iddqd
+      - POSTGRES_DB=javapro
   social_network:
     build:
       context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
