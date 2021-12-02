@@ -14,14 +14,8 @@ import ru.skillbox.socialnetwork.service.GoogleDriveService;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Objects;
 
 @Data
 @Component
@@ -64,8 +58,8 @@ public class DatabaseBackupCreateTask {
     //@Scheduled(cron = "0 0 3 * * *")
     // One hour
     @Scheduled(fixedRate = 1000 * 60 * 60)
-    public void createBackupAndMoveToGoogleDrive(){
-        if (!System.getProperty("os.name").equals(VALID_SYSTEM_NAME)){
+    public void createBackupAndMoveToGoogleDrive() {
+        if (!System.getProperty("os.name").equals(VALID_SYSTEM_NAME)) {
             log.info("Creating database backup failed. This option implement only for linux system");
             return;
         }
@@ -73,19 +67,20 @@ public class DatabaseBackupCreateTask {
         File localFolder = new java.io.File(localPath);
         try {
             FileUtils.forceMkdir(localFolder);
-        }catch (IOException e){
+        } catch (IOException e) {
             log.info("Creating database backup directory failed: " + e.getMessage());
         }
 
         long iter = 0;
 
-        while(checkTooManyBackups(localFolder)){
-            if((iter++ >= maxCleaningIteration)) {
+        while (checkTooManyBackups(localFolder)) {
+            if ((iter++ >= maxCleaningIteration)) {
                 log.info("Done " + maxCleaningIteration + " try for clean backups and no effect. Process backup failed");
                 return;
             }
             log.info("Backup delete: " + cleanOldestBackup(localFolder));
-        };
+        }
+        ;
 
         String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
 
@@ -98,9 +93,9 @@ public class DatabaseBackupCreateTask {
         try {
             Runtime.getRuntime().exec(cmd).waitFor();
             log.info("Created database backup file:" + localPath + simpleFileName);
-        }catch (IOException e){
+        } catch (IOException e) {
             log.info("Created database backup file error:" + e.getMessage());
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             log.info("Created database backup file error:" + e.getMessage());
         }
 
@@ -109,42 +104,45 @@ public class DatabaseBackupCreateTask {
         try {
             googleDriveService.uploadFile(content, simpleFileName);
             log.info("Backup file uploaded to google drive");
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info("Backup file uploading to google drive error: " + e.getMessage());
         }
     }
 
-    public boolean checkTooManyBackups(File folder){
-        if(!folder.exists() || !folder.isDirectory() || folder.listFiles(filenameFilter) == null){
+    public boolean checkTooManyBackups(File folder) {
+        if (!folder.exists() || !folder.isDirectory() || folder.listFiles(filenameFilter) == null) {
             return false;
         }
 
-        if(folder.getUsableSpace() < minFreeSpace){
+        if (folder.getUsableSpace() < minFreeSpace) {
             log.info("Too many backups: enabled minimal FreeSpace = " + minFreeSpace + " but now " + folder.getUsableSpace());
             return true;
-        };
+        }
+        ;
 
         long filesCount = 0;
         long filesSize = 0;
 
         File[] files = folder.listFiles(filenameFilter);
 
-        if(files != null ) {
+        if (files != null) {
             for (File file : files) {
                 filesCount++;
                 filesSize += file.length();
             }
         }
 
-        if(filesCount > maxFilesCount){
+        if (filesCount > maxFilesCount) {
             log.info("Too many backups: enabled maximal files count = " + maxFilesCount + " but now " + filesCount);
             return true;
-        };
+        }
+        ;
 
-        if(filesSize > maxTotalFilesSize){
+        if (filesSize > maxTotalFilesSize) {
             log.info("Too many backups: enabled maximal total files size = " + maxTotalFilesSize + " but now " + filesSize);
             return true;
-        };
+        }
+        ;
 
         return false;
     }
@@ -157,16 +155,15 @@ public class DatabaseBackupCreateTask {
 
         File[] files = folder.listFiles(filenameFilter);
 
-        if(files == null ){
+        if (files == null) {
             return "No files for delete";
         }
 
         File candidate = files[0];
 
         for (File file : files) {
-            if (
-                    LocalDateTime.parse(file.getName().substring(0, file.getName().indexOf('.')))
-                            .isBefore(LocalDateTime.parse(candidate.getName().substring(0, candidate.getName().indexOf('.'))))) {
+            if (LocalDateTime.parse(file.getName().substring(0, file.getName().indexOf('.')), fileNameDateFormat)
+                    .isBefore(LocalDateTime.parse(candidate.getName().substring(0, candidate.getName().indexOf('.')), fileNameDateFormat))) {
                 candidate = file;
             }
         }
