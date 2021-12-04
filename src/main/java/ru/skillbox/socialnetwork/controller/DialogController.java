@@ -15,19 +15,21 @@ public interface DialogController {
                                                 String message);
     /**Получить список сообщений в диалоге.*/
     @GetMapping("/api/v1/dialogs/{id}/messages")
-    ResponseEntity<DialogResponse> getAllMessages(@RequestBody Long dialogId);
+    ResponseEntity<DialogResponse> getAllMessages(@RequestParam("dialogId") Long dialogId);
 
     /**Создать диалог.*/
     @PostMapping("/api/v1/dialogs")
-    ResponseEntity<DialogResponse> dialogCreate(@RequestBody Long userId, Principal principal);
+    ResponseEntity<DialogResponse> dialogCreate(@RequestParam("userId") Long userId, Principal principal);
 
     /**Delete dialog by Id.*/
     @DeleteMapping("/api/v1/dialogs/")
-    ResponseEntity<DialogResponse> dialogDelete(@RequestBody Long dialogId, Principal principal);
+    ResponseEntity<DialogResponse> dialogDelete(@RequestParam("dialogId") Long dialogId, Principal principal);
 
     /**Delete message by Id.*/
     @DeleteMapping("/api/v1/dialogs/{dialogId}/messages/{messageId}")
-    ResponseEntity<DialogResponse> messageDelete(@RequestBody Long dialogId, Long messageId, Principal principal);
+    ResponseEntity<DialogResponse> messageDelete(@RequestParam("dialogId") Long dialogId,
+                                                 @RequestParam("messageId") Long messageId,
+                                                 Principal principal);
 
 
 }
