@@ -41,7 +41,7 @@ management:
         "[http.server.requests]": true
 backup:
   host: 45.134.255.54
-  localpath: /home/javapro/db_backups/
+  localpath: db_backups/
   files:
     maxcount: 200
     maxtotalsize: 1_000_000_000

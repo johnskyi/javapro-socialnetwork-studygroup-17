@@ -49,6 +49,7 @@ public class DbBackupsTest {
 
 
     @Test
+    @Disabled
     @DisplayName("Проверка переполнения файлов бэкапа по minimal free space")
     public void checkTooManyBackupFilesMinFreeSpaceTest() {
 
@@ -64,6 +65,7 @@ public class DbBackupsTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Проверка переполнения файлов бэкапа по превышению количества файлов")
     public void checkTooManyBackupFilesMaxCountTest() {
 
@@ -83,6 +85,7 @@ public class DbBackupsTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Проверка переполнения файлов бэкапа по max total files size")
     public void checkTooManyBackupFilesTest() {
         File folder = new File(databaseBackupCreateTask.getLocalPath());
@@ -103,6 +106,7 @@ public class DbBackupsTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Проверка удаления бэкапов")
     public void deleteBackupTest(){
         File folder = new File(databaseBackupCreateTask.getLocalPath());
@@ -125,6 +129,7 @@ public class DbBackupsTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Проверка превышения количества попыток удаления старых бэкапов")
     public void deleteBackupTryIterTest() {
 
