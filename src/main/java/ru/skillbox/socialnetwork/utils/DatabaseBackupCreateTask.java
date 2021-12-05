@@ -109,8 +109,22 @@ public class DatabaseBackupCreateTask {
 
         try {
             log.info("Run cmd: " + cmd);
-            Runtime.getRuntime().exec(cmd).waitFor(20, TimeUnit.SECONDS);
-            log.info("Created database backup file:" + localPath + simpleFileName);
+            Runtime.getRuntime().exec(cmd).waitFor(40, TimeUnit.SECONDS);
+            File file = new File(localPath + simpleFileName);
+            if(file.exists()) {
+                log.info("Created database backup file:" + localPath + simpleFileName);
+                long size = file.getUsableSpace();
+                if(size > 1000_000_000_000L) {
+                    log.info("File size: " + size / 1000_000_000_000L + "GB");
+                }else if(size > 1000_000_000) {
+                    log.info("File size: " + size / 1000_000_000 + "MB");
+                }else {
+                    log.info("File size: " + size + "MB");
+                }
+            }else{
+                log.info("Created database backup file error: " + "file not exist");
+            }
+
         } catch (IOException e) {
             log.info("Created database backup file error:" + e.getMessage());
         } catch (InterruptedException e) {
