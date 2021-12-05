@@ -26,10 +26,16 @@ public class DbBackupsTest {
         databaseBackupCreateTask.setMinFreeSpace(0);
         databaseBackupCreateTask.setMaxFilesCount(Long.MAX_VALUE);
 
+        File localFolder = new java.io.File(databaseBackupCreateTask.getLocalPath());
+        try {
+            FileUtils.forceMkdir(localFolder);
+        } catch (IOException e) {
+            //log.info("Creating database backup directory failed: " + e.getMessage());
+        }
     }
 
     @Test
-    @Disabled
+    //@Disabled
     @DisplayName("Проверка создания папки")
     public void createFolderTest() throws IOException {
 
@@ -114,7 +120,7 @@ public class DbBackupsTest {
 
         long filesCount = folder.listFiles().length;
 
-        System.out.println("Deleted: " + databaseBackupCreateTask.cleanOldestBackup(folder));
+        //System.out.println("Deleted: " + databaseBackupCreateTask.cleanOldestBackup(folder));
 
         File folderAfterDelete = new File(databaseBackupCreateTask.getLocalPath());
 
@@ -144,7 +150,6 @@ public class DbBackupsTest {
             databaseBackupCreateTask.createBackupAndMoveToGoogleDrive();
         }
 
-        System.out.println(4);
         long filesCountBefore = folder.listFiles().length;
 
         databaseBackupCreateTask.setMaxTotalFilesSize(1);
@@ -163,7 +168,7 @@ public class DbBackupsTest {
             for (File file : files) {
                 file.delete();
             }
-            folder.delete();
+//            folder.delete();
         }
     }
 }
