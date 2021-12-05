@@ -39,13 +39,10 @@ public class DbBackupsTest {
 
         File folder = new File(databaseBackupCreateTask.getLocalPath());
 
-        if (folder.exists()) {
-            FileUtils.forceDelete(folder);
+        if (!folder.exists()) {
+            databaseBackupCreateTask.createBackupDirectory(folder);
+            //FileUtils.forceDelete(folder);
         }
-
-        assertFalse(folder.exists());
-
-        databaseBackupCreateTask.createBackupDirectory(folder);
 
         assertTrue(folder.exists());
 
