@@ -15,6 +15,8 @@ services:
       context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
       dockerfile: Dockerfile
     container_name: backend
+    volumes:
+      - ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/:./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
     ports:
       - "8086:8086"
     networks:
