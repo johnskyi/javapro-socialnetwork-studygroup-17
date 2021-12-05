@@ -55,7 +55,7 @@ public class DbBackupsTest {
         log.info("Assert folder exist(false)");
         assertFalse(folder.exists());
 
-        databaseBackupCreateTask.createBackupAndMoveToGoogleDrive();
+        databaseBackupCreateTask.createBackupDirectory(folder);
 
         log.info("Assert folder exist(true)");
         assertTrue(folder.exists());

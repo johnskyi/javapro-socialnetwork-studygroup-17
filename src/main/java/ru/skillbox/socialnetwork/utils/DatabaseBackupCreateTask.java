@@ -53,6 +53,15 @@ public class DatabaseBackupCreateTask {
     @Value("${backup.files.maxcleaningiterations}")
     private long maxCleaningIteration;
 
+    public void createBackupDirectory(java.io.File folder){
+        try {
+            log.info("Creating database backup directory: " + folder.getName());
+            FileUtils.forceMkdir(folder);
+            log.info("Directory created");
+        } catch (IOException e) {
+            log.info("Creating database backup directory failed: " + e.getMessage());
+        }
+    }
 
     //every day on 3:00
     @Scheduled(cron = "0 0 3 * * *")
@@ -64,11 +73,10 @@ public class DatabaseBackupCreateTask {
             return;
         }
 
-        File localFolder = new java.io.File(localPath);
-        try {
-            FileUtils.forceMkdir(localFolder);
-        } catch (IOException e) {
-            log.info("Creating database backup directory failed: " + e.getMessage());
+        java.io.File localFolder = new java.io.File(localPath);
+
+        if(!localFolder.exists()){
+            this.createBackupDirectory(localFolder);
         }
 
         long iter = 0;
