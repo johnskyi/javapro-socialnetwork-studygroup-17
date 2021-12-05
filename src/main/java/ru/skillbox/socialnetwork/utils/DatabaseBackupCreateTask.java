@@ -28,16 +28,13 @@ public class DatabaseBackupCreateTask {
 
     private static final String VALID_SYSTEM_NAME = "Linux";
     private static final DateTimeFormatter fileNameDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-    private static final FilenameFilter filenameFilter = new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String name) {
-            try {
-                fileNameDateFormat.parse(name.substring(0, name.indexOf('.')));
-            }catch (DateTimeParseException e){
-                return false;
-            }
-            return true;
+    private static final FilenameFilter filenameFilter = (dir, name) -> {
+        try {
+            fileNameDateFormat.parse(name.substring(0, name.indexOf('.')));
+        }catch (DateTimeParseException e){
+            return false;
         }
+        return true;
     };
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseBackupCreateTask.class);
@@ -84,7 +81,6 @@ public class DatabaseBackupCreateTask {
             }
             log.info("Backup delete: " + cleanOldestBackup(localFolder));
         }
-        ;
 
         String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
 
@@ -115,7 +111,7 @@ public class DatabaseBackupCreateTask {
 
         try {
             log.info("Run cmd: " + cmd);
-            Runtime.getRuntime().exec(cmd).waitFor(40, TimeUnit.SECONDS);
+            Runtime.getRuntime().exec(cmd).waitFor();//40, TimeUnit.SECONDS);
             File file = new File(localPath + simpleFileName);
             if(file.exists()) {
                 log.info("Created database backup file:" + localPath + simpleFileName);
@@ -134,7 +130,7 @@ public class DatabaseBackupCreateTask {
         } catch (IOException e) {
             log.info("Created database backup file error:" + e.getMessage());
         } catch (InterruptedException e) {
-            log.info("Created database backup file error:" + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -147,7 +143,6 @@ public class DatabaseBackupCreateTask {
             log.info("Too many backups: enabled minimal FreeSpace = " + minFreeSpace + " but now " + folder.getUsableSpace());
             return true;
         }
-        ;
 
         long filesCount = 0;
         long filesSize = 0;
@@ -165,13 +160,11 @@ public class DatabaseBackupCreateTask {
             log.info("Too many backups: enabled maximal files count = " + maxFilesCount + " but now " + filesCount);
             return true;
         }
-        ;
 
         if (filesSize > maxTotalFilesSize) {
             log.info("Too many backups: enabled maximal total files size = " + maxTotalFilesSize + " but now " + filesSize);
             return true;
         }
-        ;
 
         return false;
     }
