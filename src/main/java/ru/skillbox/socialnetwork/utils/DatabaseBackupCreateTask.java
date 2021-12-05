@@ -90,13 +90,19 @@ public class DatabaseBackupCreateTask {
 
         createBackupFile(simpleFileName);
 
-        FileContent content = new FileContent("application/x-tar", new java.io.File(localPath + simpleFileName));
+        loadFileToGoogleDrive(simpleFileName);
+    }
+
+    public boolean loadFileToGoogleDrive(String fileName) {
+        FileContent content = new FileContent("application/x-tar", new File(localPath + fileName));
 
         try {
-            googleDriveService.uploadFile(content, simpleFileName);
+            googleDriveService.uploadFile(content, fileName);
             log.info("Backup file uploaded to google drive");
+            return true;
         } catch (Exception e) {
             log.info("Backup file uploading to google drive error: " + e.getMessage());
+            return false;
         }
     }
 

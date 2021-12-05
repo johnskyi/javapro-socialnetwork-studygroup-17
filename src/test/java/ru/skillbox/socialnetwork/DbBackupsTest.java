@@ -60,6 +60,18 @@ public class DbBackupsTest {
         assertTrue(file.exists());
     }
 
+    @Test
+    @DisplayName("Проверка загрузки бэкапа на гугл драйв")
+    public void googleDriveLoadTest(){
+
+        String fileName = "test_backup1.tar";
+        databaseBackupCreateTask.createBackupFile(fileName);
+        File file = new File(databaseBackupCreateTask.getLocalPath() + fileName);
+
+        assertTrue(file.exists());
+        assertTrue(databaseBackupCreateTask.loadFileToGoogleDrive(file.getName()));
+    }
+
 
     @Test
     @Disabled
