@@ -29,13 +29,10 @@ public class DbBackupsTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("Проверка создания папки")
     public void createFolderTest() throws IOException {
 
         File folder = new File(databaseBackupCreateTask.getLocalPath());
-
-        //System.out.println("Folder name: " + folder.getPath());
 
         if (folder.exists()) {
             FileUtils.forceDelete(folder);
