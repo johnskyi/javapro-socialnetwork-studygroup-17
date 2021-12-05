@@ -17,7 +17,7 @@ public class DbBackupsTest {
 
     @BeforeAll
     static void init() {
-        /*
+
         databaseBackupCreateTask = new DatabaseBackupCreateTask(new GoogleDriveService());
 
         databaseBackupCreateTask.setLocalPath("db_backup_test/");
@@ -25,7 +25,7 @@ public class DbBackupsTest {
         databaseBackupCreateTask.setMaxTotalFilesSize(Long.MAX_VALUE);
         databaseBackupCreateTask.setMinFreeSpace(0);
         databaseBackupCreateTask.setMaxFilesCount(Long.MAX_VALUE);
-*/
+
     }
 
     @Test
