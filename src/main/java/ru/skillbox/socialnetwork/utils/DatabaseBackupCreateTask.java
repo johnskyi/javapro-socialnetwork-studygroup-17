@@ -16,6 +16,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 @Data
 @Component
@@ -102,7 +103,8 @@ public class DatabaseBackupCreateTask {
                 " --format=tar";
 
         try {
-            Runtime.getRuntime().exec(cmd).waitFor();
+            log.info("Run cmd: " + cmd);
+            Runtime.getRuntime().exec(cmd).waitFor(20, TimeUnit.SECONDS);
             log.info("Created database backup file:" + localPath + simpleFileName);
         } catch (IOException e) {
             log.info("Created database backup file error:" + e.getMessage());
