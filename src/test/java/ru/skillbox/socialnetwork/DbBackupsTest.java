@@ -31,33 +31,23 @@ public class DbBackupsTest {
         databaseBackupCreateTask.setMaxCleaningIteration(3);
 
         File localFolder = new java.io.File(databaseBackupCreateTask.getLocalPath());
-        try {
-            FileUtils.forceMkdir(localFolder);
-        } catch (IOException e) {
-            log.info("Creating database backup directory failed: " + e.getMessage());
-        }
-        log.info("Init DB_Backup_tests done");
+        databaseBackupCreateTask.createBackupDirectory(localFolder);
     }
 
     @Test
-    //@Disabled
     @DisplayName("Проверка создания папки")
     public void createFolderTest() throws IOException {
 
-        log.info("createFolderTest");
         File folder = new File(databaseBackupCreateTask.getLocalPath());
 
         if (folder.exists()) {
-            log.info("Folder exist -> delete");
             FileUtils.forceDelete(folder);
         }
 
-        log.info("Assert folder exist(false)");
         assertFalse(folder.exists());
 
         databaseBackupCreateTask.createBackupDirectory(folder);
 
-        log.info("Assert folder exist(true)");
         assertTrue(folder.exists());
 
     }
@@ -177,7 +167,7 @@ public class DbBackupsTest {
             for (File file : files) {
                 file.delete();
             }
-//            folder.delete();
+            folder.delete();
         }
     }
 }
