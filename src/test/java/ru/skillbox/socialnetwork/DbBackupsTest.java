@@ -33,7 +33,7 @@ public class DbBackupsTest {
 
         File folder = new File(databaseBackupCreateTask.getLocalPath());
 
-        System.out.println("Folder name: " + folder.getPath());
+        //System.out.println("Folder name: " + folder.getPath());
 
         if (folder.exists()) {
             FileUtils.forceDelete(folder);
@@ -133,7 +133,6 @@ public class DbBackupsTest {
         databaseBackupCreateTask.setMaxFilesCount(Long.MAX_VALUE);
 
         File folder = new File(databaseBackupCreateTask.getLocalPath());
-
         long maxIter = 3;
         databaseBackupCreateTask.setMaxCleaningIteration(maxIter);
 
@@ -141,14 +140,13 @@ public class DbBackupsTest {
             databaseBackupCreateTask.createBackupAndMoveToGoogleDrive();
         }
 
+        System.out.println(4);
         long filesCountBefore = folder.listFiles().length;
 
         databaseBackupCreateTask.setMaxTotalFilesSize(1);
 
         databaseBackupCreateTask.createBackupAndMoveToGoogleDrive();
 
-        System.out.println(folder.listFiles().length);
-        System.out.println(filesCountBefore + " " + maxIter);
         assertEquals(folder.listFiles().length, filesCountBefore - maxIter);
     }
 
