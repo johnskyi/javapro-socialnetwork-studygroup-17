@@ -62,6 +62,7 @@ public class DbBackupsTest {
 
 
     @Test
+    @Disabled
     @DisplayName("Проверка переполнения файлов бэкапа по minimal free space")
     public void checkTooManyBackupFilesMinFreeSpaceTest() {
 
