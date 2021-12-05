@@ -2,6 +2,8 @@ package ru.skillbox.socialnetwork;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.jupiter.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.skillbox.socialnetwork.service.GoogleDriveService;
 import ru.skillbox.socialnetwork.utils.DatabaseBackupCreateTask;
 
@@ -13,6 +15,7 @@ import static org.junit.Assert.*;
 
 public class DbBackupsTest {
 
+    private static final Logger log = LoggerFactory.getLogger(DbBackupsTest.class);
     private static DatabaseBackupCreateTask databaseBackupCreateTask;
 
     @BeforeAll
@@ -30,8 +33,9 @@ public class DbBackupsTest {
         try {
             FileUtils.forceMkdir(localFolder);
         } catch (IOException e) {
-            //log.info("Creating database backup directory failed: " + e.getMessage());
+            log.info("Creating database backup directory failed: " + e.getMessage());
         }
+        log.info("Init DB_Backup_tests done");
     }
 
     @Test
@@ -39,16 +43,20 @@ public class DbBackupsTest {
     @DisplayName("Проверка создания папки")
     public void createFolderTest() throws IOException {
 
+        log.info("createFolderTest");
         File folder = new File(databaseBackupCreateTask.getLocalPath());
 
         if (folder.exists()) {
+            log.info("Folder exist -> delete");
             FileUtils.forceDelete(folder);
         }
 
+        log.info("Assert folder exist(false)");
         assertFalse(folder.exists());
 
         databaseBackupCreateTask.createBackupAndMoveToGoogleDrive();
 
+        log.info("Assert folder exist(true)");
         assertTrue(folder.exists());
 
     }
