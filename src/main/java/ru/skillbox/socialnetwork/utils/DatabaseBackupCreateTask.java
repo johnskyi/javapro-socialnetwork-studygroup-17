@@ -16,6 +16,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.concurrent.TimeUnit;
 
 @Data
@@ -30,7 +31,11 @@ public class DatabaseBackupCreateTask {
     private static final FilenameFilter filenameFilter = new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
-            fileNameDateFormat.parse(name.substring(0, name.indexOf('.')));
+            try {
+                fileNameDateFormat.parse(name.substring(0, name.indexOf('.')));
+            }catch (DateTimeParseException e){
+                return false;
+            }
             return true;
         }
     };
