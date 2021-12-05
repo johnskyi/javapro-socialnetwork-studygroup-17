@@ -53,16 +53,6 @@ public class DatabaseBackupCreateTask {
     @Value("${backup.files.maxcleaningiterations}")
     private long maxCleaningIteration;
 
-    public void createBackupDirectory(java.io.File folder){
-        try {
-            log.info("Creating database backup directory: " + folder.getName());
-            FileUtils.forceMkdir(folder);
-            log.info("Directory created");
-        } catch (IOException e) {
-            log.info("Creating database backup directory failed: " + e.getMessage());
-        }
-    }
-
     //every day on 3:00
     @Scheduled(cron = "0 0 3 * * *")
     // One hour
@@ -92,6 +82,19 @@ public class DatabaseBackupCreateTask {
 
         String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
 
+        createBackupFile(simpleFileName);
+
+        FileContent content = new FileContent("application/x-tar", new java.io.File(localPath + simpleFileName));
+
+        try {
+            googleDriveService.uploadFile(content, simpleFileName);
+            log.info("Backup file uploaded to google drive");
+        } catch (Exception e) {
+            log.info("Backup file uploading to google drive error: " + e.getMessage());
+        }
+    }
+
+    public void createBackupFile(String simpleFileName) {
         String cmd = "pg_dump" +
                 " --host=" + host +
                 " --username=javapro" +
@@ -105,15 +108,6 @@ public class DatabaseBackupCreateTask {
             log.info("Created database backup file error:" + e.getMessage());
         } catch (InterruptedException e) {
             log.info("Created database backup file error:" + e.getMessage());
-        }
-
-        FileContent content = new FileContent("application/x-tar", new java.io.File(localPath + simpleFileName));
-
-        try {
-            googleDriveService.uploadFile(content, simpleFileName);
-            log.info("Backup file uploaded to google drive");
-        } catch (Exception e) {
-            log.info("Backup file uploading to google drive error: " + e.getMessage());
         }
     }
 
@@ -181,4 +175,14 @@ public class DatabaseBackupCreateTask {
             return "error delete";
         }
     }
+    public void createBackupDirectory(java.io.File folder){
+        try {
+            log.info("Creating database backup directory: " + folder.getName());
+            FileUtils.forceMkdir(folder);
+            log.info("Directory created");
+        } catch (IOException e) {
+            log.info("Creating database backup directory failed: " + e.getMessage());
+        }
+    }
+
 }

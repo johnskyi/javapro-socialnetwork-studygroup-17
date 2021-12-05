@@ -9,7 +9,6 @@ import ru.skillbox.socialnetwork.utils.DatabaseBackupCreateTask;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 
 import static org.junit.Assert.*;
 
@@ -50,6 +49,18 @@ public class DbBackupsTest {
 
         assertTrue(folder.exists());
 
+    }
+
+
+    @Test
+    @DisplayName("Проверка создания бэкапа локально")
+    public void createBackupTest() throws IOException {
+
+        String fileName = "test_backup.tar";
+        databaseBackupCreateTask.createBackupFile(fileName);
+        File file = new File(databaseBackupCreateTask.getLocalPath() + fileName);
+
+        assertTrue(file.exists());
     }
 
 
@@ -165,9 +176,9 @@ public class DbBackupsTest {
         if (folder.exists()) {
             File[] files = folder.listFiles();
             for (File file : files) {
-                file.delete();
+                //file.delete();
             }
-            folder.delete();
+            //folder.delete();
         }
     }
 }
