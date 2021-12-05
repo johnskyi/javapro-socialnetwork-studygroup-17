@@ -28,6 +28,7 @@ public class DbBackupsTest {
         databaseBackupCreateTask.setMaxTotalFilesSize(Long.MAX_VALUE);
         databaseBackupCreateTask.setMinFreeSpace(0);
         databaseBackupCreateTask.setMaxFilesCount(Long.MAX_VALUE);
+        databaseBackupCreateTask.setMaxCleaningIteration(3);
 
         File localFolder = new java.io.File(databaseBackupCreateTask.getLocalPath());
         try {
