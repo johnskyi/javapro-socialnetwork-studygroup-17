@@ -1,7 +1,6 @@
 package ru.skillbox.socialnetwork.controller;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,7 +10,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.skillbox.socialnetwork.controller.impl.PersonControllerImpl;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
-import ru.skillbox.socialnetwork.data.entity.*;
+import ru.skillbox.socialnetwork.data.entity.Country;
+import ru.skillbox.socialnetwork.data.entity.MessagePermission;
+import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
@@ -174,21 +176,6 @@ class PersonControllerTest {
     public void getPersonDetailWithUnauthorizedTest() {
         assertThrows(PersonNotAuthorized.class, () -> personController.getPersonDetail(principal));
     }
-
-    @Test
-    @Disabled
-    @DisplayName("Update person details is successful")
-    public void putPersonDetail() {
-        when(principal.getName()).thenReturn("test@test.com");
-        when(personRepository.findByEmail("test@test.com")).thenReturn(Optional.of(person));
-        File file = new File();
-        file.setRelativeFilePath("http://2.jpg");
-        when(townRepository.getById(any())).thenReturn(town);
-        when(fileRepository.getById(any())).thenReturn(file);
-        assertEquals(Objects.requireNonNull(personController.putPersonDetail(personRequest, principal).getBody(),
-                "putPersonDetail method turned out to be null").getData(), personResponseForPutDetail.getData());
-    }
-
     @Test
     @DisplayName("Update person details. Incorrect firstname format")
     public void putPersonDetailWrongFirstName() {
