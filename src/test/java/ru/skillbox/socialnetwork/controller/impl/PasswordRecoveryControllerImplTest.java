@@ -13,16 +13,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
-import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.Person;
-import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
-import ru.skillbox.socialnetwork.data.repository.TownRepository;
-import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -31,7 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -53,21 +47,7 @@ class PasswordRecoveryControllerImplTest {
     private Principal principal;
 
     private static Person person;
-    private static final Country country;
-    private static final   Town town;
-    private static PasswordRecoveryResponse passwordRecoveryResponse;
 
-    static {
-        country = new Country();
-        country.setId(1L);
-        country.setName("Россия");
-
-        town = new Town();
-        town.setId(1L);
-        town.setName("Воронеж");
-        town.setCountry(country);
-        System.out.println(1);
-    }
     @BeforeAll
     static void initPerson() {
         person = new Person();
@@ -81,7 +61,6 @@ class PasswordRecoveryControllerImplTest {
         person.setPhoto("http://2.jpg");
         person.setPassword("12345678");
         person.setAbout("Бил Гейтс");
-        person.setTown(town);
         person.setCode("2");
         person.setApproved(true);
         person.setLastOnlineTime(LocalDateTime.ofEpochSecond(1L, 0, ZoneOffset.UTC));

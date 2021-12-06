@@ -1,6 +1,7 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.skillbox.socialnetwork.data.dto.dialogs.DialogRequest;
 import ru.skillbox.socialnetwork.data.dto.dialogs.DialogResponse;
 import ru.skillbox.socialnetwork.data.entity.Dialog;
 import ru.skillbox.socialnetwork.data.entity.Message;
@@ -32,15 +33,15 @@ public class DialogServiceImpl implements DialogService {
     }
 
     @Override
-    public DialogResponse sendMessage(Principal principal, Long dialogId, String message) {
-        Dialog dialog = findDialogById(dialogId);
+    public DialogResponse sendMessage(DialogRequest request, Principal principal) {
+        Dialog dialog = findDialogById(request.getDialogId());
         Person author = findPersonByEmail(principal.getName());
         Message newMessage = Message.builder()
                 .dialog(dialog)
                 .author(author)
                 .time(LocalDateTime.now())
                 .readStatus(ReadStatus.SENT)
-                .text(message)
+                .text(request.getMessage())
                 .build();
         messageRepository.save(newMessage);
         dialog.getMessages().add(newMessage);
@@ -53,7 +54,7 @@ public class DialogServiceImpl implements DialogService {
                         .time(LocalDateTime.now())
                         .author(author.getId())
                         .recipientId(dialog.getRecipient().getId())
-                        .messageText(message)
+                        .messageText(request.getMessage())
                         .readStatus(ReadStatus.SENT)
                         .build())
                 .build();
