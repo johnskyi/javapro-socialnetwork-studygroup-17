@@ -2,7 +2,7 @@ stages:
   - verify
   - deploy
 
-mvn-clean-install:
+verify:
   stage: verify
   only:
     - main
