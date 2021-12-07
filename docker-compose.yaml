@@ -1,13 +1,5 @@
 version: "3.7"
 services:
-  # db:
-  #   image: 'postgres:13.1-alpine'
-  #   ports:
-  #     - 5432:5432
-  #   environment:
-  #     - POSTGRES_USER=javapro
-  #     - POSTGRES_PASSWORD=iddqd
-  #     - POSTGRES_DB=javapro
   social_network:
     build:
       context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
@@ -15,7 +7,9 @@ services:
     ports:
       - "8086:8086"
     networks:
-      - "infrastructure"
+      infrastructure:
+        aliases:
+          - backend
   social_network_frontend:
     image: nginx:latest
     volumes:
@@ -26,7 +20,9 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - "infrastructure"
+      infrastructure:
+        aliases:
+          - frontend
   grafana:
     build: './builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/grafana'
     ports:
@@ -38,7 +34,7 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
-      monitoring:
+      infrastructure:
         aliases:
           - grafana
   prometheus:
@@ -50,7 +46,7 @@ services:
       - ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus:/prometheus
     networks:
-      monitoring:
+      infrastructure:
         aliases:
           - prometheus
 networks:
