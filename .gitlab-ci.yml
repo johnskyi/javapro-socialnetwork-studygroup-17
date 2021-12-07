@@ -1,9 +1,9 @@
 stages:
-  - mvn clean install
+  - verify
   - deploy
 
-mvn-clean-install:
-  stage: mvn clean install
+verify:
+  stage: verify
   only:
     - main
     - dev
@@ -12,7 +12,7 @@ mvn-clean-install:
     - tags
   script:
     - echo "do build, test and package jar"
-    - mvn clean install
+    - mvn clean verify
 
 deploy:
   stage: deploy
@@ -22,7 +22,7 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - mvn clean install
+    - mvn clean package
     - cd /home/gitlab-runner/
     - docker-compose down
     - docker system prune -a -f

@@ -13,6 +13,7 @@ import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
 
 import java.security.Principal;
 
+
 @RestController
 @Api(tags = "Работа с диалогами")
 @Slf4j
@@ -20,14 +21,13 @@ import java.security.Principal;
 public class DialogControllerImpl implements DialogController {
 
     private final DialogServiceImpl dialogService;
-    private final Principal principal;
 
 
     @Override
     @ApiOperation(value="Отправка сообщений")
-    public ResponseEntity<DialogResponse> sendMessage(DialogRequest request) {
+    public ResponseEntity<DialogResponse> sendMessage(DialogRequest request, Principal principal) {
         log.info("POST /api/v1/dialogs/messages" + request.getMessage());
-        return ResponseEntity.ok(dialogService.sendMessage(request, principal));
+        return ResponseEntity.ok(dialogService.sendMessage(request,principal));
     }
 
     @Override
@@ -39,21 +39,21 @@ public class DialogControllerImpl implements DialogController {
 
     @Override
     @ApiOperation(value="Создание диалога")
-    public ResponseEntity<DialogResponse> dialogCreate(Long userId) {
+    public ResponseEntity<DialogResponse> dialogCreate(Long userId, Principal principal) {
         log.info("POST /api/v1/dialogs" + userId);
         return ResponseEntity.ok(dialogService.dialogCreate(userId, principal));
     }
 
     @Override
     @ApiOperation(value="Удаление диалога")
-    public ResponseEntity<DialogResponse> dialogDelete(Long dialogId) {
+    public ResponseEntity<DialogResponse> dialogDelete(Long dialogId, Principal principal) {
         log.info("DELETE /api/v1/dialogs/" + dialogId);
         return ResponseEntity.ok(dialogService.dialogDelete(dialogId, principal));
     }
 
     @Override
     @ApiOperation(value="Удаление сообщения")
-    public ResponseEntity<DialogResponse> messageDelete(Long dialogId, Long messageId) {
+    public ResponseEntity<DialogResponse> messageDelete(Long dialogId, Long messageId, Principal principal) {
         log.info("DELETE /api/v1/dialogs/messages" + dialogId + " -- " +  messageId);
         return ResponseEntity.ok(dialogService.messageDelete(dialogId,messageId, principal));
     }

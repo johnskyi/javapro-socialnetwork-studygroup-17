@@ -1,7 +1,6 @@
 package ru.skillbox.socialnetwork.controller;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,7 +10,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.skillbox.socialnetwork.controller.impl.PersonControllerImpl;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
-import ru.skillbox.socialnetwork.data.entity.*;
+import ru.skillbox.socialnetwork.data.entity.Country;
+import ru.skillbox.socialnetwork.data.entity.MessagePermission;
+import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;

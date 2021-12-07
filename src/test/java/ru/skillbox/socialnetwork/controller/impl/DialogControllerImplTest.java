@@ -117,7 +117,7 @@ class DialogControllerImplTest {
                 .build();
         when(dialogService.sendMessage(dialogRequest,principal)).thenReturn(dialogResponseSend);
 
-        assertEquals(ResponseEntity.ok(dialogResponseSend),dialogController.sendMessage(dialogRequest));
+        assertEquals(ResponseEntity.ok(dialogResponseSend),dialogController.sendMessage(dialogRequest,principal));
         verify(dialogService,times(1)).sendMessage(dialogRequest,principal);
 
     }
@@ -160,7 +160,7 @@ class DialogControllerImplTest {
                 .build();
         when(dialogService.dialogCreate(2L,principal)).thenReturn(dialogResponseCreate);
 
-        assertEquals(ResponseEntity.ok(dialogResponseCreate), dialogController.dialogCreate(2L));
+        assertEquals(ResponseEntity.ok(dialogResponseCreate), dialogController.dialogCreate(2L,principal));
         verify(dialogService, times(1)).dialogCreate(2L,principal);
 
     }
@@ -180,7 +180,7 @@ class DialogControllerImplTest {
                 .build();
         when(dialogService.dialogDelete(1L,principal)).thenReturn(dialogResponseDelete);
 
-        assertEquals(ResponseEntity.ok(dialogResponseDelete),dialogController.dialogDelete(1L));
+        assertEquals(ResponseEntity.ok(dialogResponseDelete),dialogController.dialogDelete(1L,principal));
         verify(dialogService,times(1)).dialogDelete(1L,principal);
 
 
@@ -203,7 +203,7 @@ class DialogControllerImplTest {
                 .build();
         when(dialogService.messageDelete(1L,1L,principal)).thenReturn(dialogResponseDelete);
 
-        assertEquals(ResponseEntity.ok(dialogResponseDelete),dialogController.messageDelete(1L,1L));
+        assertEquals(ResponseEntity.ok(dialogResponseDelete),dialogController.messageDelete(1L,1L,principal));
         verify(dialogService,times(1)).messageDelete(1L,1L,principal);
     }
 }
