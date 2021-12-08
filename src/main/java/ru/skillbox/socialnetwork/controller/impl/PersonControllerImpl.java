@@ -39,7 +39,7 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     @ApiOperation(value = "Редактирование профиля пользователя")
-    public ResponseEntity<PersonResponse> putPersonDetail(@Valid @RequestBody PersonRequest personRequest, Principal principal) {
+    public ResponseEntity<PersonResponse> putPersonDetail(@RequestBody PersonRequest personRequest, Principal principal) {
         logger.info("Call PUT /api/v1/users/me");
         return ResponseEntity.ok(personService.putPersonDetail(personRequest, principal));
     }

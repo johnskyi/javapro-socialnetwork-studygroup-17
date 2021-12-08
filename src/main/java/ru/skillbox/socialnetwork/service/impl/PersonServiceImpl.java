@@ -12,8 +12,10 @@ import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
 import ru.skillbox.socialnetwork.data.dto.PersonSearchResponse;
+import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.File;
 import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.repository.*;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.UnauthorizedException;
@@ -35,6 +37,7 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepo personRepository;
     private final TownRepository townRepository;
+    private final CountryRepository countryRepository;
     private final FileRepository fileRepository;
 
     @Override
@@ -135,40 +138,45 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private void updatePersonDetail(PersonRequest request, Person person) {
-        if (Objects.nonNull(request.getFirstName())) {
-            person.setFirstName(request.getFirstName());
+        if (request.getData().getFirstName() != null && request.getData().getFirstName().matches("[\\wа-яёА-ЯЁa-zA-Z]{2,30}")) {
+            person.setFirstName(request.getData().getFirstName());
         }
 
-        if (Objects.nonNull(request.getLastName())) {
-            person.setLastName(request.getLastName());
+        if (request.getData().getLastName() != null && request.getData().getLastName().matches("[\\wа-яёА-ЯЁa-zA-Z]{2,30}")) {
+            person.setLastName(request.getData().getLastName());
         }
 
-        if (Objects.nonNull(request.getBirthDate())) {
-            person.setBirthTime(OffsetDateTime.parse( request.getBirthDate() ).toLocalDateTime());
+        if (request.getData().getBirthDate() != null) {
+            person.setBirthTime(OffsetDateTime.parse( request.getData().getBirthDate() ).toLocalDateTime());
         }
 
 
-        if (Objects.nonNull(request.getPhone())) {
-            person.setPhone(getFormattedPhone(request.getPhone()));
+        if (request.getData().getPhone() != null && request.getData().getPhone().matches("[0-9]{11}")) {
+            person.setPhone(request.getData().getPhone());
         }
 
-        if (Objects.nonNull(request.getPhotoId())) {
-            File file = fileRepository.getById(request.getPhotoId());
+        if (request.getData().getPhotoId() != null) {
+            File file = fileRepository.getById(request.getData().getPhotoId());
             person.setPhoto(file.getRelativeFilePath());
         }
 
-        if (Objects.nonNull(request.getAbout())) {
-            person.setAbout(request.getAbout());
+        if (request.getData().getAbout() != null) {
+            person.setAbout(request.getData().getAbout());
         }
 
-        if (Objects.nonNull(request.getMessagePermission())) {
-            person.setMessagePermission(request.getMessagePermission());
+        if (request.getData().getMessagePermission() != null) {
+            person.setMessagePermission(request.getData().getMessagePermission());
         }
 
-        if (Objects.nonNull(request.getTownId())) {
-            person.setTown(townRepository.getById(request.getTownId()));
+        if (request.getData().getTown() != null) {
+//            Country country = countryRepository.findByName(request.getData().getCountry()).orElse(null);
+//            Town town = country == null ?
+//                    (!townRepository.findByName(request.getData().getTown().getName()).isEmpty() ?
+//                            townRepository.findByName(request.getData().getTown().getName()).get(0) : null) : townRepository.findByNameAndCountry(request.getData().getTown().getName(), country).orElse(null);
+            Town town = townRepository.findByNameAndCountry(request.getData().getTown().getName(), countryRepository.findByName(request.getData().getCountry()).orElse(null)).orElse(null);
+            person.setTown(town != null ? town : person.getTown());
         }
-
+        personRepository.save(person);
         personRepository.flush();
     }
 
