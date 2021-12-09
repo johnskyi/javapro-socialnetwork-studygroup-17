@@ -20,6 +20,9 @@ import ru.skillbox.socialnetwork.data.entity.ReadStatus;
 import ru.skillbox.socialnetwork.data.repository.DialogRepository;
 import ru.skillbox.socialnetwork.data.repository.MessageRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
+import ru.skillbox.socialnetwork.exception.MessageNotFoundException;
+import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
 
 import java.security.Principal;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -99,7 +103,7 @@ class DialogControllerImplTest {
                 .build();
     }
     @Test
-    @DisplayName("Отправка сообщения")
+    @DisplayName("Send message")
     void sendMessage() {
         when(dialogRepository.findById(any())).thenReturn(Optional.ofNullable(dialog));
         when(personRepo.findByEmail(any())).thenReturn(Optional.ofNullable(personOne));
@@ -123,7 +127,7 @@ class DialogControllerImplTest {
     }
 
     @Test
-    @DisplayName("Получение списка сообщений")
+    @DisplayName("Get list messages")
     void getAllMessages() {
         when(dialogRepository.findById(any())).thenReturn(Optional.ofNullable(dialog));
         DialogResponse dialogResponseGetAll =  DialogResponse.builder()
@@ -147,7 +151,7 @@ class DialogControllerImplTest {
     }
 
     @Test
-    @DisplayName("Создание диалога")
+    @DisplayName("Dialog create")
     void dialogCreate() {
         when(personRepo.findById(any())).thenReturn(Optional.ofNullable(personTwo));
         when(principal.getName()).thenReturn(personOne.getEmail());
@@ -166,7 +170,7 @@ class DialogControllerImplTest {
     }
 
     @Test
-    @DisplayName("Удаление диалога")
+    @DisplayName("Delete dialog")
     void dialogDelete() {
         when(dialogRepository.findById(any())).thenReturn(Optional.ofNullable(dialog));
         when(personRepo.findById(any())).thenReturn(Optional.ofNullable(personOne));
@@ -188,7 +192,7 @@ class DialogControllerImplTest {
     }
 
     @Test
-    @DisplayName("Удаление сообщений")
+    @DisplayName("Delete message")
     void messageDelete() {
         when(dialogRepository.findById(any())).thenReturn(Optional.ofNullable(dialog));
         when(personRepo.findById(any())).thenReturn(Optional.ofNullable(personOne));
@@ -205,5 +209,24 @@ class DialogControllerImplTest {
 
         assertEquals(ResponseEntity.ok(dialogResponseDelete),dialogController.messageDelete(1L,1L,principal));
         verify(dialogService,times(1)).messageDelete(1L,1L,principal);
+    }
+
+    @Test
+    @DisplayName("Set message  person unauthorized throws PersonNotFound")
+    public void sendMessage_notAuthorizedUser_throwsPersonNotFound() {
+        when(dialogService.sendMessage(any(),any())).thenThrow(PersonNotFoundException.class);
+       assertThrows(PersonNotFoundException.class, () -> dialogController.sendMessage(dialogRequest,principal));
+    }
+    @Test
+    @DisplayName("Get all message unknown dialog throws DialogNotFound")
+    void getAllMessage_unknownDialog_throwDialogNotFoundException() {
+        when(dialogService.getAllMessages(any())).thenThrow(DialogNotFoundException.class);
+        assertThrows(DialogNotFoundException.class, () -> dialogController.getAllMessages(3L));
+    }
+    @Test
+    @DisplayName("Delete unknown message throws MessageNotFound")
+    void getAllMessage_unknownDialog_throwMessageNotFoundException() {
+        when(dialogService.messageDelete(any(),any(),any())).thenThrow(MessageNotFoundException.class);
+        assertThrows(MessageNotFoundException.class, () -> dialogController.messageDelete(3L,2L,principal));
     }
 }
