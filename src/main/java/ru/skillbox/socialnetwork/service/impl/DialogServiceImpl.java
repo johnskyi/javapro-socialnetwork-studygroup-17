@@ -39,6 +39,7 @@ public class DialogServiceImpl implements DialogService {
         Message newMessage = Message.builder()
                 .dialog(dialog)
                 .author(author)
+                .recipient(dialog.getRecipient())
                 .time(LocalDateTime.now())
                 .readStatus(ReadStatus.SENT)
                 .text(request.getMessage())
@@ -75,7 +76,7 @@ public class DialogServiceImpl implements DialogService {
                         .author(dialog.getAuthor().getId())
                         .recipientId(dialog.getRecipient().getId())
                         .messageText(messages.toString())
-                        .readStatus(ReadStatus.SENT)
+                        .readStatus(ReadStatus.READ)
                         .build())
                 .build();
     }
@@ -85,14 +86,25 @@ public class DialogServiceImpl implements DialogService {
         Person recipient = findPersonById(userId);
         Person author = findPersonByEmail(principal.getName());
         Dialog dialog = new Dialog();
+        Message message = Message.builder()
+                .author(author)
+                .recipient(recipient)
+                .time(LocalDateTime.now())
+                .dialog(dialog)
+                .readStatus(ReadStatus.SENT)
+                .text("User " + author.getFirstName() + "start dialog")
+                .build();
         dialog.setRecipient(recipient);
         dialog.setAuthor(author);
+        dialog.getMessages().add(message);
+        messageRepository.save(message);
         dialogRepository.save(dialog);
         return DialogResponse.builder()
                 .error("string")
                 .timestamp(System.currentTimeMillis())
                 .data(DialogResponse.Data.builder()
                         .id(dialog.getId())
+                        .messageText(message.getText())
                         .build())
                 .build();
     }

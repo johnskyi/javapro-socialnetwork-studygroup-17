@@ -26,7 +26,7 @@ public class DialogControllerImpl implements DialogController {
     @Override
     @ApiOperation(value="Отправка сообщений")
     public ResponseEntity<DialogResponse> sendMessage(DialogRequest request, Principal principal) {
-        log.info("POST /api/v1/dialogs/messages" + request.getMessage());
+        log.info("POST /api/v1/dialogs/messages " + request.getMessage());
         return ResponseEntity.ok(dialogService.sendMessage(request,principal));
     }
 
