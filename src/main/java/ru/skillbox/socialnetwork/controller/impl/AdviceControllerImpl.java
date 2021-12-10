@@ -32,8 +32,8 @@ public class AdviceControllerImpl implements AdviceController {
     @ExceptionHandler(NoHandlerFoundException.class)
     public  ResponseEntity<ErrorResponse> noHandlerFoundExceptionHandler(NoHandlerFoundException exception) {
         log.error("Ups! Handler for this request not found! " + exception.getRequestURL() + "\n" + exception.getMessage());
-        return new ResponseEntity<>(new ErrorResponse("Ups! We have the error! Sorry! We  have already started to fix it",
-                exception.getMessage()),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("server_error",
+                "Ups! We have the error! Sorry! We  have already started to fix it"),HttpStatus.BAD_REQUEST);
     }
     @Override
     @ExceptionHandler(PersonNotAuthorized.class)
