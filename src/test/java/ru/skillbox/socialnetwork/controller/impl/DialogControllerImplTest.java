@@ -22,7 +22,7 @@ import ru.skillbox.socialnetwork.data.repository.MessageRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
 import ru.skillbox.socialnetwork.exception.MessageNotFoundException;
-import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
 
 import java.security.Principal;
@@ -212,21 +212,51 @@ class DialogControllerImplTest {
     }
 
     @Test
-    @DisplayName("Set message  person unauthorized throws PersonNotFound")
-    public void sendMessage_notAuthorizedUser_throwsPersonNotFound() {
-        when(dialogService.sendMessage(any(),any())).thenThrow(PersonNotFoundException.class);
-       assertThrows(PersonNotFoundException.class, () -> dialogController.sendMessage(dialogRequest,principal));
+    @DisplayName("Set message  person unauthorized throws PersonNotAuthorized")
+    public void sendMessage_notAuthorizedUser_throwsPersonNotAuthorized() {
+        when(dialogService.sendMessage(any(),any())).thenThrow(PersonNotAuthorized.class);
+       assertThrows(PersonNotAuthorized.class, () -> dialogController.sendMessage(dialogRequest,principal));
+    }
+    @Test
+    @DisplayName("Delete  message unauthorized throws PersonNonAuthorized")
+    public void deleteMessage_notAuthorizedUser_throwsPersonNotAuthorized() {
+        when(dialogService.messageDelete(any(),any(),any())).thenThrow(PersonNotAuthorized.class);
+        assertThrows(PersonNotAuthorized.class, () -> dialogController.messageDelete(dialog.getId(),dialog.getMessages().get(0).getId(),principal));
+    }
+    @Test
+    @DisplayName("Delete dialog  person unauthorized throws PersonNonAuthorized")
+    public void deleteDialog_notAuthorizedUser_throwsPersonNotAuthorized() {
+        when(dialogService.dialogDelete(any(),any())).thenThrow(PersonNotAuthorized.class);
+        assertThrows(PersonNotAuthorized.class, () -> dialogController.dialogDelete(dialog.getId(),principal));
+    }
+    @Test
+    @DisplayName("Create dialog  person unauthorized throws PersonNonAuthorized")
+    public void createDialog_notAuthorizedUser_throwsPersonNotAuthorized() {
+        when(dialogService.dialogCreate(any(Long.class),any(Principal.class))).thenThrow(PersonNotAuthorized.class);
+        assertThrows(PersonNotAuthorized.class, () -> dialogController.dialogCreate(personOne.getId(),principal));
     }
     @Test
     @DisplayName("Get all message unknown dialog throws DialogNotFound")
     void getAllMessage_unknownDialog_throwDialogNotFoundException() {
-        when(dialogService.getAllMessages(any())).thenThrow(DialogNotFoundException.class);
+        when(dialogService.getAllMessages(any(Long.class))).thenThrow(DialogNotFoundException.class);
         assertThrows(DialogNotFoundException.class, () -> dialogController.getAllMessages(3L));
     }
     @Test
-    @DisplayName("Delete unknown message throws MessageNotFound")
-    void getAllMessage_unknownDialog_throwMessageNotFoundException() {
-        when(dialogService.messageDelete(any(),any(),any())).thenThrow(MessageNotFoundException.class);
-        assertThrows(MessageNotFoundException.class, () -> dialogController.messageDelete(3L,2L,principal));
+    @DisplayName("Delete unknown message throw MessageNotFound")
+    void deleteMessage_unknownMessage_throwMessageNotFoundException() {
+        when(dialogService.messageDelete(any(Long.class), any(Long.class), any(Principal.class))).thenThrow(MessageNotFoundException.class);
+        assertThrows(MessageNotFoundException.class, () -> dialogController.messageDelete(1L, 1L, principal));
     }
-}
+    @Test
+    @DisplayName("Delete unknown dialog throw DialogNotFound")
+    void deleteDialog_unknownDialog_throwDialogNotFoundException() {
+        when(dialogService.dialogDelete(any(Long.class),any(Principal.class))).thenThrow(DialogNotFoundException.class);
+        assertThrows(DialogNotFoundException.class, () -> dialogController.dialogDelete(1L, principal));
+    }
+    @Test
+    @DisplayName("Delete message unknown dialog throw DialogNotFound")
+    void deleteMessage_unknownDialog_throwDialogNotFoundException() {
+        when(dialogService.messageDelete(any(Long.class),any(Long.class),any(Principal.class))).thenThrow(DialogNotFoundException.class);
+        assertThrows(DialogNotFoundException.class, () -> dialogController.messageDelete(1L,1L, principal));
+    }
+    }

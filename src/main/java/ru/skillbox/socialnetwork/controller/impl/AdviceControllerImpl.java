@@ -27,12 +27,12 @@ public class AdviceControllerImpl implements AdviceController {
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
-
+    @Override
     @ExceptionHandler(PersonNotAuthorized.class)
     public ResponseEntity<ErrorResponse> personNotAuthorizedExceptionHandler(PersonNotAuthorized exception) {
         log.error(exception.getMessage());
-        return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("not_authorized", exception.getMessage()),
+                HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -43,6 +43,7 @@ public class AdviceControllerImpl implements AdviceController {
     }
 
     @Override
+    @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<ErrorResponse> postNotFoundExceptionHandler(PostNotFoundException exception) {
         log.error(exception.getMessage());
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),

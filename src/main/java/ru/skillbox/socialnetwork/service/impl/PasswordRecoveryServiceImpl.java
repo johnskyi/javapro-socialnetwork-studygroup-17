@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 
 import java.security.Principal;
 import java.util.Map;
@@ -66,12 +67,12 @@ public class PasswordRecoveryServiceImpl {
 
     private Person findPersonByEmail(String email) {
         return personRepo.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new PersonNotAuthorized("Sorry you are not authorized"));
     }
 
     private Person findPersonByCode(String token) {
         return personRepo.findByCode(token)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Sorry user with this token not found"));
     }
 
     private void sendEmail(String email, String token) {

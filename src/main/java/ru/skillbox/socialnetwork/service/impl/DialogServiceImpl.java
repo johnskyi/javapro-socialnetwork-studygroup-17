@@ -12,6 +12,7 @@ import ru.skillbox.socialnetwork.data.repository.MessageRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
 import ru.skillbox.socialnetwork.exception.MessageNotFoundException;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 import ru.skillbox.socialnetwork.service.DialogService;
 
@@ -34,8 +35,8 @@ public class DialogServiceImpl implements DialogService {
 
     @Override
     public DialogResponse sendMessage(DialogRequest request, Principal principal) {
-        Dialog dialog = findDialogById(request.getDialogId());
         Person author = findPersonByEmail(principal.getName());
+        Dialog dialog = findDialogById(request.getDialogId());
         Message newMessage = Message.builder()
                 .dialog(dialog)
                 .author(author)
@@ -83,8 +84,8 @@ public class DialogServiceImpl implements DialogService {
 
     @Override
     public DialogResponse dialogCreate(Long userId, Principal principal) {
-        Person recipient = findPersonById(userId);
         Person author = findPersonByEmail(principal.getName());
+        Person recipient = findPersonById(userId);
         Dialog dialog = new Dialog();
         Message message = Message.builder()
                 .author(author)
@@ -111,8 +112,8 @@ public class DialogServiceImpl implements DialogService {
 
     @Override
     public DialogResponse dialogDelete(Long dialogId, Principal principal) {
-        Dialog dialog = findDialogById(dialogId);
         findPersonByEmail(principal.getName());
+        Dialog dialog = findDialogById(dialogId);
         dialogRepository.delete(dialog);
         return DialogResponse.builder()
                 .error("string")
@@ -125,8 +126,8 @@ public class DialogServiceImpl implements DialogService {
 
     @Override
     public DialogResponse messageDelete(Long dialogId, Long messageId, Principal principal) {
-        Dialog dialog = findDialogById(dialogId);
         findPersonByEmail(principal.getName());
+        Dialog dialog = findDialogById(dialogId);
         Message message = findMessageById(messageId);
         messageRepository.delete(message);
         dialog.getMessages().remove(message);
@@ -154,6 +155,6 @@ public class DialogServiceImpl implements DialogService {
     }
     private Person findPersonByEmail(String email) {
         return personRepository.findByEmail(email)
-                .orElseThrow(() -> new PersonNotFoundException("Person not found"));
+                .orElseThrow(() -> new PersonNotAuthorized("Sorry you are not authorized"));
     }
 }
