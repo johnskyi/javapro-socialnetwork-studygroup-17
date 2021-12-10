@@ -3,7 +3,6 @@ package ru.skillbox.socialnetwork.service.impl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.PasswordRecoveryResponse;
@@ -41,8 +40,8 @@ public class PasswordRecoveryServiceImpl {
                 .build();
     }
 
-    public PasswordRecoveryResponse setPassword(String password, String token) {
-        Person person = findPersonByCode(token);
+    public PasswordRecoveryResponse setPassword(String password, Principal principal) {
+        Person person = findPersonByEmail(principal.getName());
         person.setPassword(new BCryptPasswordEncoder(12).encode(password));
         personRepo.save(person);
         return PasswordRecoveryResponse.builder()
@@ -68,11 +67,6 @@ public class PasswordRecoveryServiceImpl {
     private Person findPersonByEmail(String email) {
         return personRepo.findByEmail(email)
                 .orElseThrow(() -> new PersonNotAuthorized("Sorry you are not authorized"));
-    }
-
-    private Person findPersonByCode(String token) {
-        return personRepo.findByCode(token)
-                .orElseThrow(() -> new UsernameNotFoundException("Sorry user with this token not found"));
     }
 
     private void sendEmail(String email, String token) {
