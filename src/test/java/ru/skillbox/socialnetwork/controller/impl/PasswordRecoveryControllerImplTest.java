@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 
 import java.security.Principal;
@@ -115,8 +116,8 @@ class PasswordRecoveryControllerImplTest {
 
     @Test
     @DisplayName("Set email. Person unauthorized")
-    public void setEmail_notAuthorizedUser_throwsUsernameNotFound() {
-        assertThrows(UsernameNotFoundException.class, () -> controller.setEmail("test3@yandex.ru",principal));
+    public void setEmail_notAuthorizedUser_throwsPersonNotAuthorized() {
+        assertThrows(PersonNotAuthorized.class, () -> controller.setEmail("test3@yandex.ru",principal));
     }
     @Test
     @DisplayName("FindByCode Throws PersonNotFoundException")

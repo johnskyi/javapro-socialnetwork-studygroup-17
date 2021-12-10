@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.skillbox.socialnetwork.controller.AdviceController;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
@@ -27,12 +28,19 @@ public class AdviceControllerImpl implements AdviceController {
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
-
+    @Override
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public  ResponseEntity<ErrorResponse> noHandlerFoundExceptionHandler(NoHandlerFoundException exception) {
+        log.error("Ups! Handler for this request not found! \n" + exception.getRequestURL() + "\n" + exception.getMessage());
+        return new ResponseEntity<>(new ErrorResponse("server_error",
+                "Ups! We have the error! Sorry! We  have already started to fix it"),HttpStatus.BAD_REQUEST);
+    }
+    @Override
     @ExceptionHandler(PersonNotAuthorized.class)
     public ResponseEntity<ErrorResponse> personNotAuthorizedExceptionHandler(PersonNotAuthorized exception) {
         log.error(exception.getMessage());
-        return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("not_authorized", exception.getMessage()),
+                HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -43,6 +51,7 @@ public class AdviceControllerImpl implements AdviceController {
     }
 
     @Override
+    @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<ErrorResponse> postNotFoundExceptionHandler(PostNotFoundException exception) {
         log.error(exception.getMessage());
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
