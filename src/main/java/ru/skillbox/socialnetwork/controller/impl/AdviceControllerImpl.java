@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.skillbox.socialnetwork.controller.AdviceController;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
@@ -26,6 +27,13 @@ public class AdviceControllerImpl implements AdviceController {
         log.error(exception.getMessage());
         return new ResponseEntity<>(new ErrorResponse("invalid_request", exception.getMessage()),
                 HttpStatus.BAD_REQUEST);
+    }
+    @Override
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public  ResponseEntity<ErrorResponse> noHandlerFoundExceptionHandler(NoHandlerFoundException exception) {
+        log.error("Ups! Handler for this request not found! " + exception.getRequestURL() + "\n" + exception.getMessage());
+        return new ResponseEntity<>(new ErrorResponse("Ups! We have the error! Sorry! We  have already started to fix it",
+                exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
     @Override
     @ExceptionHandler(PersonNotAuthorized.class)
