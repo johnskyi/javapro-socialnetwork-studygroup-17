@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,20 +72,19 @@ class PasswordRecoveryControllerImplTest {
         when(personRepo.findByEmail(any())).thenReturn(Optional.of(person));
         this.mockMvc.perform(put("/api/v1/account/password/recovery")
                 .param("email", person.getEmail()))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     @DisplayName("Check sendPassword method")
+    @WithMockUser(username = "test2@test2.com",password = "12345678")
     void setPassword() throws Exception {
         when(principal.getName()).thenReturn("test2@test2.com");
-        when(personRepo.findByCode(any())).thenReturn(Optional.of(person));
+        when(personRepo.findByEmail(any())).thenReturn(Optional.of(person));
         this.mockMvc.perform(put("/api/v1/account/password/set")
-                        .param("token", person.getCode())
-                        .param("password",person.getPassword()))
-                .andDo(print())
+                        .param("password",person.getPassword())
+                        .principal(principal))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -101,7 +98,6 @@ class PasswordRecoveryControllerImplTest {
         this.mockMvc.perform(put("/api/v1/account/email")
                         .param("email","test3@test3.com")
                         .principal(principal))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -120,10 +116,10 @@ class PasswordRecoveryControllerImplTest {
         assertThrows(PersonNotAuthorized.class, () -> controller.setEmail("test3@yandex.ru",principal));
     }
     @Test
-    @DisplayName("FindByCode Throws PersonNotFoundException")
-    void findByCode_unknownCode_throwPersonNotFoundException() {
-        when(personRepo.findByCode("unknown code")).thenThrow(PersonNotFoundException.class);
-        assertThatThrownBy(() -> controller.setPassword("unknown code","new password") ).isInstanceOf(PersonNotFoundException.class);
+    @DisplayName("Set password. Person unauthorized")
+    public void setPassword_notAuthorizedUser_throwsPersonNotAuthorized() {
+        when(personRepo.findByEmail(any())).thenThrow(PersonNotAuthorized.class);
+        assertThrows(PersonNotAuthorized.class, () -> controller.setPassword("password",principal));
     }
 
 }

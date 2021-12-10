@@ -33,9 +33,9 @@ public class PasswordRecoveryControllerImpl {
 
     @PutMapping("/api/v1/account/password/set")
     @ApiOperation(value="Смена пароля")
-    public ResponseEntity<PasswordRecoveryResponse> setPassword(@RequestParam("token") String token, @RequestParam("password") String password) {
-        log.info("PUT /api/v1/account/password/set " + token);
-        return ResponseEntity.ok(passwordRecoveryService.setPassword(password, token));
+    public ResponseEntity<PasswordRecoveryResponse> setPassword( @RequestParam("password") String password, Principal principal) {
+        log.info("PUT /api/v1/account/password/set " + principal.getName());
+        return ResponseEntity.ok(passwordRecoveryService.setPassword(password, principal));
     }
     @PutMapping("/api/v1/account/email")
     @ApiOperation(value="Смена почты")
