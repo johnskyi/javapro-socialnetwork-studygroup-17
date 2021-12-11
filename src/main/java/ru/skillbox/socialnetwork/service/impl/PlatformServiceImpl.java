@@ -1,15 +1,12 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.PlatformResponse;
 import ru.skillbox.socialnetwork.data.entity.Country;
-import ru.skillbox.socialnetwork.data.entity.Platform;
 import ru.skillbox.socialnetwork.data.entity.Town;
 import ru.skillbox.socialnetwork.data.repository.CountryRepository;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
@@ -20,6 +17,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PlatformServiceImpl implements PlatformService {
@@ -52,7 +50,7 @@ public class PlatformServiceImpl implements PlatformService {
 
     @Override
     public PlatformResponse getCountries(String country, Integer offset, Integer itemPerPage) {
-        logger.info("country {}, offset {}, itemPerPage {}", country, offset, itemPerPage);
+        log.info("country {}, offset {}, itemPerPage {}", country, offset, itemPerPage);
         List<Country> pages = countryRepository.findAll();
         return PlatformResponse.builder()
                 .error("string")

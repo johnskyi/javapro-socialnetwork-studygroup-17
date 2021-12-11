@@ -13,7 +13,7 @@ import ru.skillbox.socialnetwork.data.dto.NotificationResponse;
 import ru.skillbox.socialnetwork.service.NotificationService;
 
 import java.security.Principal;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notifications")
@@ -27,6 +27,7 @@ public class NotificationControllerImpl implements NotificationController {
     public ResponseEntity<NotificationResponse> getNotifications(@RequestParam(value = "offset", defaultValue = "0") String offset,
                                                                  @RequestParam(value = "itemPerPage", defaultValue = "20") String itemPerPage,
                                                                  Principal principal) {
+        log.info("/api/v1/notifications get " + principal.getName());
         return ResponseEntity.ok(notificationService.getNotifications(offset, itemPerPage, principal));
     }
 
@@ -35,6 +36,7 @@ public class NotificationControllerImpl implements NotificationController {
     public ResponseEntity<NotificationResponse> putNotifications(@RequestParam(value = "id", required = false, defaultValue = "0") Long id,
                                                                 @RequestParam(value = "all", required = false, defaultValue = "false") Boolean deleteAllNotifications,
                                                                 Principal principal) {
+        log.info("/api/v1/notifications put " + principal.getName());
         return ResponseEntity.ok(notificationService.putNotifications(id, deleteAllNotifications, principal));
     }
 }

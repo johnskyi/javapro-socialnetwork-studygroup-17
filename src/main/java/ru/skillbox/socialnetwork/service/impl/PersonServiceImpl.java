@@ -12,11 +12,13 @@ import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse.Data;
 import ru.skillbox.socialnetwork.data.dto.PersonSearchResponse;
-import ru.skillbox.socialnetwork.data.entity.Country;
 import ru.skillbox.socialnetwork.data.entity.File;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.Town;
-import ru.skillbox.socialnetwork.data.repository.*;
+import ru.skillbox.socialnetwork.data.repository.CountryRepository;
+import ru.skillbox.socialnetwork.data.repository.FileRepository;
+import ru.skillbox.socialnetwork.data.repository.PersonRepo;
+import ru.skillbox.socialnetwork.data.repository.TownRepository;
 import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
 import ru.skillbox.socialnetwork.exception.UnauthorizedException;
 import ru.skillbox.socialnetwork.service.PersonService;
@@ -180,12 +182,12 @@ public class PersonServiceImpl implements PersonService {
         personRepository.flush();
     }
 
-    private String getFormattedPhone(String phone) {
-        phone = phone.replaceAll("\\D", "");
-        return String.format("+7%s", phone.matches("[78]\\d{10}")
-                ? phone.substring(1)
-                : phone);
-    }
+//    private String getFormattedPhone(String phone) {
+//        phone = phone.replaceAll("\\D", "");
+//        return String.format("+7%s", phone.matches("[78]\\d{10}")
+//                ? phone.substring(1)
+//                : phone);
+//    }
 
     private Person findPerson(Principal principal) {
         if (Objects.isNull(principal.getName())) {
