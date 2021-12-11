@@ -1,6 +1,5 @@
 package ru.skillbox.socialnetwork.service;
 
-import org.springframework.http.ResponseEntity;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
 import ru.skillbox.socialnetwork.data.dto.PersonSearchResponse;
@@ -20,7 +19,7 @@ public interface PersonService {
 
      Person getCurrentUser();
 
-    public PersonSearchResponse searchPerson(String firstName, String lastName, String ageFrom,
+     PersonSearchResponse searchPerson(String firstName, String lastName, String ageFrom,
                                              String ageTo, String countryId, String cityId, String offset, String itemPerPage);
 
 //    ResidencyResponse getPersonResidency(ResidencyRequest request);
