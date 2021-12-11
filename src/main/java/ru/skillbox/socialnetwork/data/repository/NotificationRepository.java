@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.socialnetwork.data.entity.Notification;
 
-import java.util.Optional;
-
 
 @Repository
 @Transactional

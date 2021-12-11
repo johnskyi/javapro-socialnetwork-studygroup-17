@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.skillbox.socialnetwork.data.entity.Friendship;
-import ru.skillbox.socialnetwork.data.entity.FriendshipStatus;
 import ru.skillbox.socialnetwork.data.entity.FriendshipStatusType;
 import ru.skillbox.socialnetwork.data.entity.Person;
 
