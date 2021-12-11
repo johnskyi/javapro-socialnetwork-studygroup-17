@@ -24,7 +24,7 @@ services:
         aliases:
           - frontend
   grafana:
-    build: './builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/grafana'
+    build: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/grafana
     ports:
       - "3000:3000"
     user: "$UID:$GID"

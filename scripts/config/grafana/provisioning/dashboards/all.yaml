@@ -1,6 +1,4 @@
-# grafana/provisioning/dashboards/all.yaml
 apiVersion: 1
-
 providers:
   - name: 'default'
     folder: 'default'
