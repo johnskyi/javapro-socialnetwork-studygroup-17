@@ -4,6 +4,7 @@ services:
     build:
       context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
       dockerfile: Dockerfile
+    container_name: backend
     ports:
       - "8086:8086"
     networks:
@@ -11,7 +12,7 @@ services:
         aliases:
           - backend
   social_network_frontend:
-    image: nginx:latest
+    build: ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/docker
     volumes:
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/nginx:/etc/nginx/conf.d
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/dist:/var/www
@@ -25,6 +26,7 @@ services:
           - frontend
   grafana:
     build: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/grafana
+    container_name: grafana
     ports:
       - "3000:3000"
     user: "$UID:$GID"
@@ -38,7 +40,8 @@ services:
         aliases:
           - grafana
   prometheus:
-    image: prom/prometheus
+    build: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/
+    container_name: prometheus
     ports:
       - "9090:9090"
     user: "$UID:$GID"
@@ -52,4 +55,3 @@ services:
 networks:
   infrastructure:
     driver: "bridge"
-  monitoring:
