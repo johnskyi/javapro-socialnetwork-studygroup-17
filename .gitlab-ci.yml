@@ -5,7 +5,6 @@ stages:
 verify:
   stage: verify
   only:
-    - main
     - dev
     - merge_request
   except:
@@ -22,9 +21,8 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - mvn clean package
+    - mvn clean install
     - cd /home/gitlab-runner/
-    - docker-compose down
-    - docker system prune -a -f
     - docker-compose up --build -d
+    - docker system prune -a -f
 
