@@ -102,7 +102,7 @@ public class DatabaseBackupCreateTask {
     }
 
     public void createBackupFile(String simpleFileName) {
-        String cmd = "pg_dump" +
+        String cmd = "sudo pg_dump" +
                 " --host=" + host +
                 " --username=javapro" +
                 " --file=" + localPath + simpleFileName +
@@ -111,7 +111,6 @@ public class DatabaseBackupCreateTask {
         try {
             log.info("Run cmd: " + cmd);
             Process proc = Runtime.getRuntime().exec(cmd);
-            System.out.println(proc.getOutputStream());
             proc.waitFor();//40, TimeUnit.SECONDS);
             File file = new File(localPath + simpleFileName);
             if(file.exists()) {
