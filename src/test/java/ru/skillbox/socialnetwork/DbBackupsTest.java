@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory;
 import ru.skillbox.socialnetwork.service.GoogleDriveService;
 import ru.skillbox.socialnetwork.utils.DatabaseBackupCreateTask;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import static org.junit.Assert.*;
 
@@ -31,6 +30,14 @@ public class DbBackupsTest {
 
         File localFolder = new File(databaseBackupCreateTask.getLocalPath());
         databaseBackupCreateTask.createBackupDirectory(localFolder);
+
+        try(PrintWriter writer = new PrintWriter("/home/gitlab-runner/.pgpass", "UTF-8")){
+            writer.println("45.134.255.54:5432:javapro:javapro:iddqd");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
