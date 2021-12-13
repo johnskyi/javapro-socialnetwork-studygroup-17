@@ -110,7 +110,9 @@ public class DatabaseBackupCreateTask {
 
         try {
             log.info("Run cmd: " + cmd);
-            Runtime.getRuntime().exec(cmd).waitFor();//40, TimeUnit.SECONDS);
+            Process proc = Runtime.getRuntime().exec(cmd);
+            System.out.println(proc.getOutputStream());
+            proc.waitFor();//40, TimeUnit.SECONDS);
             File file = new File(localPath + simpleFileName);
             if(file.exists()) {
                 log.info("Created database backup file:" + localPath + simpleFileName);

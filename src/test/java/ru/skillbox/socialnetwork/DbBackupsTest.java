@@ -29,7 +29,7 @@ public class DbBackupsTest {
         databaseBackupCreateTask.setMaxFilesCount(Long.MAX_VALUE);
         databaseBackupCreateTask.setMaxCleaningIteration(3);
 
-        File localFolder = new java.io.File(databaseBackupCreateTask.getLocalPath());
+        File localFolder = new File(databaseBackupCreateTask.getLocalPath());
         databaseBackupCreateTask.createBackupDirectory(localFolder);
     }
 
