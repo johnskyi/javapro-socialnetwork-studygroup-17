@@ -11,7 +11,7 @@ verify:
     - tags
   script:
     - echo "do build, test and package jar"
-    - mvn clean verify
+    - ./mvnw clean verify
 
 deploy:
   stage: deploy
@@ -21,7 +21,7 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - mvn package
+    - ./mvnw package
     - cd /home/gitlab-runner/
     - docker-compose up --build -d
     - docker system prune -a -f
