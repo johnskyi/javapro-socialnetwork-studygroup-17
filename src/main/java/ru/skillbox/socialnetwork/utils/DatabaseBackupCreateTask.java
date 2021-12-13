@@ -102,7 +102,7 @@ public class DatabaseBackupCreateTask {
     }
 
     public void createBackupFile(String simpleFileName) {
-        String cmd = "sudo pg_dump" +
+        String cmd = "pg_dump" +
                 " --host=" + host +
                 " --username=javapro" +
                 " --file=" + localPath + simpleFileName +
