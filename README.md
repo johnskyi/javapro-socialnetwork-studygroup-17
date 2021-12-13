@@ -10,7 +10,7 @@
 ```shell
 git clone  https://gitlab.skillbox.ru/javapro17/javapro-socialnetwork-studygroup-17
 ```
-3. Run in the root directory.
+3. Run in the docker/local/ directory.
 ```shell
-docker-compose up -d
+docker-compose up --build -d
 ```
