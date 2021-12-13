@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.concurrent.TimeUnit;
 
 @Data
 @Component
@@ -66,7 +65,7 @@ public class DatabaseBackupCreateTask {
             return;
         }
 
-        java.io.File localFolder = new java.io.File(localPath);
+        File localFolder = new File(localPath);
 
         if(!localFolder.exists()){
             this.createBackupDirectory(localFolder);
@@ -195,7 +194,7 @@ public class DatabaseBackupCreateTask {
             return "error delete";
         }
     }
-    public void createBackupDirectory(java.io.File folder){
+    public void createBackupDirectory(File folder){
         try {
             log.info("Creating database backup directory: " + folder.getName());
             FileUtils.forceMkdir(folder);
