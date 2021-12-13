@@ -21,7 +21,7 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - ./mvnw package
+    - ./mvnw package -Dmaven.test.skip=true
     - cd /home/gitlab-runner/
     - docker-compose up --build -d
     - docker system prune -a -f
