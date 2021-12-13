@@ -1,9 +1,7 @@
 version: "3.7"
 services:
-  social_network:
-    build:
-      context: ./../../
-      dockerfile: Dockerfile
+  server:
+    build: ./../../
     container_name: backend
     ports:
       - "8086:8086"
@@ -33,7 +31,6 @@ services:
       - "9090:9090"
     user: "$UID:$GID"
     volumes:
-      - ./../../scripts/config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./../../monitoring/prometheus:/prometheus
     networks:
       infrastructure:
