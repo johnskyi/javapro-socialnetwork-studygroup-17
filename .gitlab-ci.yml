@@ -21,7 +21,7 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - mvn clean install
+    - mvn package
     - cd /home/gitlab-runner/
     - docker-compose up --build -d
     - docker system prune -a -f
