@@ -4,6 +4,7 @@ package ru.skillbox.socialnetwork.data.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,7 +24,11 @@ public class Dialog {
     @JoinColumn(name = "recipient_id", referencedColumnName = "id")
     private Person recipient;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "messages")
-    private  List<Message> messages;
+    @OneToMany
+    @JoinTable(name = "message",
+            joinColumns = {@JoinColumn(name = "dialog_id")},
+            inverseJoinColumns = {@JoinColumn(name = "id")}
+    )
+
+    private  List<Message> messages = new ArrayList<>();
 }

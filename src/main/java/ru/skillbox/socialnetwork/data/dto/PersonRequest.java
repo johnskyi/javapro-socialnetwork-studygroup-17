@@ -1,40 +1,52 @@
 package ru.skillbox.socialnetwork.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.annotations.NullOrPattern;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
+import ru.skillbox.socialnetwork.data.entity.Town;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PersonRequest {
-    @JsonProperty("first_name")
-    @NullOrPattern(pattern = "[\\wа-яёА-ЯЁ]{2,30}",
-            message = "Имя указано неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
-    private String firstName;
+    private Data data;
 
-    @JsonProperty("last_name")
-    @NullOrPattern(pattern = "[\\wа-яёА-ЯЁ]{2,30}",
-            message = "Фамилия указана неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
-    private String lastName;
+    @lombok.Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Data {
+        @JsonProperty("first_name")
+        @NullOrPattern(pattern = "[\\wа-яёА-ЯЁ]{2,30}",
+                message = "Имя указано неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
+        private String firstName;
 
-    @JsonProperty("birth_date")
-    private String birthDate;
+        @JsonProperty("last_name")
+        @NullOrPattern(pattern = "[\\wа-яёА-ЯЁ]{2,30}",
+                message = "Фамилия указана неверно (допускается от 2 до 30 буквенно-цифровых символов или знак подчёркивания.")
+        private String lastName;
 
-    @NullOrPattern(pattern = "^\\+?[78]?-?\\s?\\(?\\d{3}\\)?-?\\s?\\d{3}-?\\s?\\d{2}-?\\s?\\d{2}$",
-            message = "Неверный формат телефона")
-    private String phone;
+        @JsonProperty("birth_date")
+        private String birthDate;
 
-    @JsonProperty("photo_id")
-    private Long photoId;
+        @NullOrPattern(pattern = "^\\+?[78]?-?\\s?\\(?\\d{3}\\)?-?\\s?\\d{3}-?\\s?\\d{2}-?\\s?\\d{2}$",
+                message = "Неверный формат телефона")
+        private String phone;
 
-    private String about;
+        @JsonProperty("photo_id")
+        private Long photoId;
 
-    @JsonProperty("town_id")
-    private Long townId;
+        private String about;
 
-    @JsonProperty("country_id")
-    private Long countryId;
+        private Town town;
 
-    @JsonProperty("messages_permission")
-    private MessagePermission messagePermission;
+        private String country;
+
+        @JsonProperty("messages_permission")
+        private MessagePermission messagePermission;
+    }
 }

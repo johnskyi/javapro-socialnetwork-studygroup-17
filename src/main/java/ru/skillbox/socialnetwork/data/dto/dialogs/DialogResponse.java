@@ -1,9 +1,8 @@
-package ru.skillbox.socialnetwork.data.dto.message;
+package ru.skillbox.socialnetwork.data.dto.dialogs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.ReadStatus;
 
 import java.time.LocalDateTime;

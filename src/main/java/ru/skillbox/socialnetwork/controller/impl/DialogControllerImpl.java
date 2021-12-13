@@ -7,10 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.socialnetwork.controller.DialogController;
-import ru.skillbox.socialnetwork.data.dto.message.DialogResponse;
+import ru.skillbox.socialnetwork.data.dto.dialogs.DialogRequest;
+import ru.skillbox.socialnetwork.data.dto.dialogs.DialogResponse;
 import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
 
 import java.security.Principal;
+
 
 @RestController
 @Api(tags = "Работа с диалогами")
@@ -23,9 +25,9 @@ public class DialogControllerImpl implements DialogController {
 
     @Override
     @ApiOperation(value="Отправка сообщений")
-    public ResponseEntity<DialogResponse> sendMessage(Principal principal,Long dialogId, String message) {
-        log.info("POST /api/v1/dialogs/messages" + message);
-        return ResponseEntity.ok(dialogService.sendMessage(principal,dialogId, message));
+    public ResponseEntity<DialogResponse> sendMessage(DialogRequest request, Principal principal) {
+        log.info("POST /api/v1/dialogs/messages " + request.getMessage());
+        return ResponseEntity.ok(dialogService.sendMessage(request,principal));
     }
 
     @Override

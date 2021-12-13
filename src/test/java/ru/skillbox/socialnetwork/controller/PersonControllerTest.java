@@ -1,7 +1,6 @@
 package ru.skillbox.socialnetwork.controller;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,7 +10,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.skillbox.socialnetwork.controller.impl.PersonControllerImpl;
 import ru.skillbox.socialnetwork.data.dto.PersonRequest;
 import ru.skillbox.socialnetwork.data.dto.PersonResponse;
-import ru.skillbox.socialnetwork.data.entity.*;
+import ru.skillbox.socialnetwork.data.entity.Country;
+import ru.skillbox.socialnetwork.data.entity.MessagePermission;
+import ru.skillbox.socialnetwork.data.entity.Person;
+import ru.skillbox.socialnetwork.data.entity.Town;
+import ru.skillbox.socialnetwork.data.repository.CountryRepository;
 import ru.skillbox.socialnetwork.data.repository.FileRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
@@ -40,6 +43,9 @@ class PersonControllerTest {
 
     @MockBean
     private TownRepository townRepository;
+
+    @MockBean
+    private CountryRepository countryRepository;
 
     @MockBean
     private FileRepository fileRepository;
@@ -117,16 +123,16 @@ class PersonControllerTest {
     @BeforeAll
     static void initPersonRequest() {
         personRequest = new PersonRequest();
-        personRequest.setFirstName("new first name");
-        personRequest.setLastName("new Last name");
-        personRequest.setBirthDate("1988-02-23T00:00:00+03:00");
-        personRequest.setPhone("+72002002020");
-
-        personRequest.setPhotoId(1L);
-        personRequest.setAbout("No.. I'm teapot");
-        personRequest.setCountryId(1L);
-        personRequest.setTownId(1L);
-        personRequest.setMessagePermission(MessagePermission.FRIENDS);
+        PersonRequest.Data.builder()
+                .firstName("new first name")
+                .lastName("new Last name")
+                .birthDate("1988-02-23T00:00:00+03:00")
+                .phone("+72002002020")
+                .photoId(1L)
+                .about("No.. I'm teapot")
+                .country("Россия")
+                .messagePermission(MessagePermission.FRIENDS)
+                .build();
     }
 
     @BeforeAll
@@ -174,27 +180,12 @@ class PersonControllerTest {
     public void getPersonDetailWithUnauthorizedTest() {
         assertThrows(PersonNotAuthorized.class, () -> personController.getPersonDetail(principal));
     }
-
-    @Test
-    @Disabled
-    @DisplayName("Update person details is successful")
-    public void putPersonDetail() {
-        when(principal.getName()).thenReturn("test@test.com");
-        when(personRepository.findByEmail("test@test.com")).thenReturn(Optional.of(person));
-        File file = new File();
-        file.setRelativeFilePath("http://2.jpg");
-        when(townRepository.getById(any())).thenReturn(town);
-        when(fileRepository.getById(any())).thenReturn(file);
-        assertEquals(Objects.requireNonNull(personController.putPersonDetail(personRequest, principal).getBody(),
-                "putPersonDetail method turned out to be null").getData(), personResponseForPutDetail.getData());
-    }
-
     @Test
     @DisplayName("Update person details. Incorrect firstname format")
     public void putPersonDetailWrongFirstName() {
         PersonRequest request = new PersonRequest();
-        request.setFirstName("1");
-        Set<ConstraintViolation<PersonRequest>> violations = validator.validate(request);
+        request.setData(PersonRequest.Data.builder().firstName("1").build());
+        Set<ConstraintViolation<PersonRequest.Data>> violations = validator.validate(request.getData());
         assertFalse(violations.isEmpty());
     }
 
@@ -202,8 +193,8 @@ class PersonControllerTest {
     @DisplayName("Update person details. Incorrect lastname format")
     public void putPersonDetailWrongLastName() {
         PersonRequest request = new PersonRequest();
-        request.setLastName("1");
-        Set<ConstraintViolation<PersonRequest>> violations = validator.validate(request);
+        request.setData(PersonRequest.Data.builder().lastName("1").build());
+        Set<ConstraintViolation<PersonRequest.Data>> violations = validator.validate(request.getData());
         assertFalse(violations.isEmpty());
     }
 
@@ -211,8 +202,8 @@ class PersonControllerTest {
     @DisplayName("Update person details. Incorrect phone format")
     public void putPersonDetailWrongPhone() {
         PersonRequest request = new PersonRequest();
-        request.setPhone("7900900909011");
-        Set<ConstraintViolation<PersonRequest>> violations = validator.validate(request);
+        request.setData(PersonRequest.Data.builder().phone("7900900909011").build());
+        Set<ConstraintViolation<PersonRequest.Data>> violations = validator.validate(request.getData());
         assertFalse(violations.isEmpty());
     }
 
@@ -220,7 +211,7 @@ class PersonControllerTest {
     @DisplayName("Update person details. Correct phone format")
     public void putPersonDetailCorrectPhone() {
         PersonRequest request = new PersonRequest();
-        request.setPhone("7-(900) 300-20-20");
+        request.setData(PersonRequest.Data.builder().phone("7-(900) 300-20-20").build());
         Set<ConstraintViolation<PersonRequest>> violations = validator.validate(request);
         assertTrue(violations.isEmpty());
     }

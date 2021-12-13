@@ -64,7 +64,7 @@ public class DatabaseBackupCreateTask {
             return;
         }
 
-        File localFolder = new java.io.File(localPath);
+        File localFolder = new File(localPath);
         try {
             FileUtils.forceMkdir(localFolder);
         } catch (IOException e) {
@@ -74,13 +74,12 @@ public class DatabaseBackupCreateTask {
         long iter = 0;
 
         while (checkTooManyBackups(localFolder)) {
-            if ((iter++ >= maxCleaningIteration)) {
+            if (iter++ >= maxCleaningIteration) {
                 log.info("Done " + maxCleaningIteration + " try for clean backups and no effect. Process backup failed");
                 return;
             }
             log.info("Backup delete: " + cleanOldestBackup(localFolder));
         }
-        ;
 
         String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
 
@@ -93,13 +92,11 @@ public class DatabaseBackupCreateTask {
         try {
             Runtime.getRuntime().exec(cmd).waitFor();
             log.info("Created database backup file:" + localPath + simpleFileName);
-        } catch (IOException e) {
-            log.info("Created database backup file error:" + e.getMessage());
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             log.info("Created database backup file error:" + e.getMessage());
         }
 
-        FileContent content = new FileContent("application/x-tar", new java.io.File(localPath + simpleFileName));
+        FileContent content = new FileContent("application/x-tar", new File(localPath + simpleFileName));
 
         try {
             googleDriveService.uploadFile(content, simpleFileName);
@@ -118,7 +115,6 @@ public class DatabaseBackupCreateTask {
             log.info("Too many backups: enabled minimal FreeSpace = " + minFreeSpace + " but now " + folder.getUsableSpace());
             return true;
         }
-        ;
 
         long filesCount = 0;
         long filesSize = 0;
@@ -136,13 +132,11 @@ public class DatabaseBackupCreateTask {
             log.info("Too many backups: enabled maximal files count = " + maxFilesCount + " but now " + filesCount);
             return true;
         }
-        ;
 
         if (filesSize > maxTotalFilesSize) {
             log.info("Too many backups: enabled maximal total files size = " + maxTotalFilesSize + " but now " + filesSize);
             return true;
         }
-        ;
 
         return false;
     }

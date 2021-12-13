@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
 import ru.skillbox.socialnetwork.exception.MessageNotFoundException;
@@ -22,4 +23,6 @@ public interface AdviceController {
     ResponseEntity<ErrorResponse> dialogNotFoundExceptionHandler(DialogNotFoundException exception);
 
     ResponseEntity<ErrorResponse> messageNotFoundExceptionHandler(MessageNotFoundException exception);
+
+    ResponseEntity<ErrorResponse> noHandlerFoundExceptionHandler(NoHandlerFoundException exception);
 }
