@@ -34,6 +34,7 @@ public class DbBackupsTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Проверка создания папки")
     public void createFolderTest() throws IOException {
 
@@ -61,6 +62,7 @@ public class DbBackupsTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Проверка загрузки бэкапа на гугл драйв")
     public void googleDriveLoadTest(){
 
