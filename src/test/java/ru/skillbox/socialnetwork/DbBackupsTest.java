@@ -22,7 +22,7 @@ public class DbBackupsTest {
 
         databaseBackupCreateTask = new DatabaseBackupCreateTask(new GoogleDriveService());
 
-        databaseBackupCreateTask.setLocalPath("db_backup_test/");
+        databaseBackupCreateTask.setLocalPath("/");//db_backup_test/");
         databaseBackupCreateTask.setHost("45.134.255.54");
         databaseBackupCreateTask.setMaxTotalFilesSize(Long.MAX_VALUE);
         databaseBackupCreateTask.setMinFreeSpace(0);
