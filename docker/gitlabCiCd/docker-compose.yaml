@@ -3,7 +3,7 @@ services:
   social_network:
     build:
       context: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
-      dockerfile: Dockerfile
+      dockerfile: ../../Dockerfile
     container_name: backend
     ports:
       - "8086:8086"
