@@ -1,6 +1,5 @@
 package ru.skillbox.socialnetwork.utils;
 
-import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;

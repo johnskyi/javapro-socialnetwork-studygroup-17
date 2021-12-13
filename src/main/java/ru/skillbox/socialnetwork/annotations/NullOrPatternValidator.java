@@ -11,7 +11,7 @@ public class NullOrPatternValidator implements ConstraintValidator<NullOrPattern
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return Objects.isNull(value) || (!value.isBlank() && Pattern.compile(pattern).matcher(value).matches());
+        return Objects.isNull(value) || !value.isBlank() && Pattern.compile(pattern).matcher(value).matches();
     }
 
     @Override

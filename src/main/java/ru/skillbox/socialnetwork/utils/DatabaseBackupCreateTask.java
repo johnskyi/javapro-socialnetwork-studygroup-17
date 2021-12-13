@@ -75,7 +75,7 @@ public class DatabaseBackupCreateTask {
         long iter = 0;
 
         while (checkTooManyBackups(localFolder)) {
-            if ((iter++ >= maxCleaningIteration)) {
+            if (iter++ >= maxCleaningIteration) {
                 log.info("Done " + maxCleaningIteration + " try for clean backups and no effect. Process backup failed");
                 return;
             }

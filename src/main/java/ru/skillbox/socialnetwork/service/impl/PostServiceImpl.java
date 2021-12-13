@@ -1,8 +1,6 @@
 package ru.skillbox.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -34,7 +32,6 @@ public class PostServiceImpl implements PostService {
     private final PostCommentsRepository postCommentsRepository;
     private final PostLikesRepository postLikesRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     @Override
     public PostResponse addNewPost(Long authorId, AddPostRequest addPostRequest, Long publicationTimestamp) {

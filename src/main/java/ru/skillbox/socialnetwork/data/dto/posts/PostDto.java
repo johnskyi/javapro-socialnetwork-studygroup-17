@@ -7,9 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.data.entity.Post;
-import ru.skillbox.socialnetwork.data.repository.PostCommentsRepository;
 
-import javax.persistence.Entity;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class PostDto {
 
     public PostDto(Post post) {
         this.id = post.getId();
-        this.time = post.getTime().toEpochSecond(ZoneOffset.UTC);;
+        this.time = post.getTime().toEpochSecond(ZoneOffset.UTC);
         this.author = new AuthorDto(post.getAuthor());
         this.title = post.getTitle();
         this.text = post.getTextHtml();

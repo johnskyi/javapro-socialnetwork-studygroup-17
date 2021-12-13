@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.skillbox.socialnetwork.data.entity.Person;
-import ru.skillbox.socialnetwork.data.entity.User;
 
 import java.util.Collection;
 import java.util.List;

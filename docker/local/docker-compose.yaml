@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  server:
+    build: ./../../
+    container_name: backend
+    ports:
+      - "8086:8086"
+    networks:
+      infrastructure:
+        aliases:
+          - backend
+  grafana:
+    build: ./../../scripts/config/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    user: "$UID:$GID"
+    volumes:
+      - ./../../monitoring/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      infrastructure:
+        aliases:
+          - grafana
+  prometheus:
+    build: ./../../scripts/
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    user: "$UID:$GID"
+    volumes:
+      - ./../../monitoring/prometheus:/prometheus
+    networks:
+      infrastructure:
+        aliases:
+          - prometheus
+networks:
+  infrastructure:
+    driver: "bridge"
