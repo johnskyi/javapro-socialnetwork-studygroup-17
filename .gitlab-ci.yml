@@ -23,6 +23,6 @@ deploy:
     - echo "do deploy"
     - ./mvnw package -Dmaven.test.skip=true
     - cd /home/gitlab-runner/
-    - docker-compose up --build -d
+    - docker-compose up --no-cache --build -d
     - docker system prune -a -f --volumes
 
