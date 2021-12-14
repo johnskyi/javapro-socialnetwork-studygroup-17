@@ -1,6 +1,11 @@
 stages:
   - verify
   - deploy
+cache:
+  paths:
+    - logs
+    - backup
+
 
 verify:
   stage: verify
