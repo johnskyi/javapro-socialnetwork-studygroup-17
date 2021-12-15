@@ -3,8 +3,8 @@ stages:
   - deploy
 cache:
   paths:
-    - .logs
-    - .backup
+    - .logs/*
+    - .backup/*
 verify:
   stage: verify
   only:
