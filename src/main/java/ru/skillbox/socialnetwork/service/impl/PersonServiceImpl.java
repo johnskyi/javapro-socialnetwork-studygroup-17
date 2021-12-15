@@ -108,7 +108,6 @@ public class PersonServiceImpl implements PersonService {
                 lastName.equals("") ? null : lastName,
                 dateFromBirth,
                 dateToBirth,
-                country.equals("") ? null : country,
                 city.equals("") ? null : city,
                 pageable);
 
