@@ -34,14 +34,15 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
                     "or (concat(p.lastName, ' ', p.firstName) like %:firstName%))" +
             "AND (:lastName is null or p.lastName LIKE %:lastName%) " +
             "AND (p.birthTime >= :ageFrom AND p.birthTime <= :ageTo) " +
+            "AND (:countryId is null or p.town.country.id = :countryId)" +
             "AND (:city is null or p.town.name = :city) " +
-            "AND (:country is null or c.name = :country)")
+            "order by p.lastName, p.firstName" )
     Page<Person> findAllBySearchFilter(@Param("firstName") String firstName,
                                        @Param("lastName") String lastName,
                                        @Param("ageFrom") LocalDateTime ageFrom,
                                        @Param("ageTo") LocalDateTime ageTo,
-                                       @Param("country") String country,
                                        @Param("city") String city,
+                                       @Param("countryId") Long countryId,
                                        Pageable pageable);
 
     @Query(value = "select P from #{#entityName} P where P not in :known")

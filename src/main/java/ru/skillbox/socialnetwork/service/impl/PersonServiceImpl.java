@@ -99,7 +99,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonSearchResponse searchPerson(String firstName, String lastName, String ageFrom,
-                                             String ageTo, String country, String city, String offset, String itemPerPage){
+                                             String ageTo, String countryId, String city, String offset, String itemPerPage){
         Pageable pageable = PageRequest.of(Integer.parseInt(offset), Integer.parseInt(itemPerPage));
         LocalDateTime dateFromBirth = LocalDateTime.now().minusYears(Integer.parseInt(ageTo));
         LocalDateTime dateToBirth = LocalDateTime.now().minusYears(Integer.parseInt(ageFrom));
@@ -108,8 +108,8 @@ public class PersonServiceImpl implements PersonService {
                 lastName.equals("") ? null : lastName,
                 dateFromBirth,
                 dateToBirth,
-                country.equals("") ? null : country,
                 city.equals("") ? null : city,
+                countryId.equals("") ? null : Long.parseLong(countryId),
                 pageable);
 
         List<Data> data = new ArrayList<>();

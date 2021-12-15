@@ -19,7 +19,8 @@ public interface TownRepository extends JpaRepository<Town, Long> {
     Page<Town> findTownsByQuery(String city, Long countryId, Pageable pageable);
     @Query("select t from Town t where " +
             "(:city is null or t.name like %:city%)" +
-            "and t.country.id = :countryId")
+            "and t.country.id = :countryId " +
+            "order by t.name")
     List<Town> findAllByCountry_Id(Long countryId, String city);
 
     List<Town> findByName(String name);
