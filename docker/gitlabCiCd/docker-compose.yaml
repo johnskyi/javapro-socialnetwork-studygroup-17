@@ -11,7 +11,7 @@ services:
       - POSTGRES_DB=javapro
     volumes:
          - ./pgdata:/var/lib/postgresql/data
-         - ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/backup:/backup
+         - ./backup:/backup
     networks:
       infrastructure:
         aliases:
@@ -19,7 +19,7 @@ services:
   social_network:
     build: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
     volumes: 
-      - ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/logs:/logs
+      - ./serverlogs:/logs
     container_name: backend
     ports:
       - "8086:8086"
