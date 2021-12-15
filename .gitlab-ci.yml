@@ -1,9 +1,6 @@
 stages:
   - verify
   - deploy
-cache:
-  paths:
-    - .logs
 verify:
   stage: verify
   only:
