@@ -1,14 +1,12 @@
 stages:
   - verify
   - deploy
-cache:
-  paths:
-    - logs/
-    - backup/
-
-
 verify:
   stage: verify
+  cache:
+    paths:
+      - logs
+      - backup
   only:
     - dev
     - merge_request
@@ -20,6 +18,10 @@ verify:
 
 deploy:
   stage: deploy
+  cache:
+    paths:
+      - logs
+      - backup
   only:
     - main
   except:
