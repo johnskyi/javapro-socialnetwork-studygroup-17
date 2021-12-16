@@ -3,15 +3,6 @@ stages:
   - deploy
   - test-dump
 
-test-dump:
-  stage: test-dump
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-  script:
-    - cd /home/gitlab-runner/
-    - PGPASSWORD="iddqd"  pg_dump --host=localhost --username=javapro --file=backup/dbbackup.tar --format=tar
-    - ./mvnw verify
-
 verify:
   stage: verify
   only:
