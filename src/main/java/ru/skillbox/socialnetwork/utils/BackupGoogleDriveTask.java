@@ -38,7 +38,8 @@ public class BackupGoogleDriveTask {
 
     @Value("${backup.localpath}")
     private String localPath;
-    private final String dbbackupFolderId = "1KYc0gAockN-Vu_qY7ijCsT6dMefgJ-jF";
+
+    private static final String dbbackupFolderId = "1KYc0gAockN-Vu_qY7ijCsT6dMefgJ-jF";
 
     //every day on 3:00
     @Scheduled(cron = "0 0 3 * * *")
