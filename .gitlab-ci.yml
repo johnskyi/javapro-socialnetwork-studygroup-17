@@ -1,10 +1,10 @@
 stages:
   - verify
   - deploy
-  - job
+  - test-dump
 
-job:
-  stage: job
+test-dump:
+  stage: test-dump
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
