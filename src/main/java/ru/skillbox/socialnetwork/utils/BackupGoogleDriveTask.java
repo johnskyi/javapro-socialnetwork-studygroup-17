@@ -28,7 +28,7 @@ public class BackupGoogleDriveTask {
     private static final FilenameFilter filenameFilter = (dir, name) -> {
         try {
             fileNameDateFormat.parse(name.substring(0, name.indexOf('.')));
-        }catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             return false;
         }
         return true;
@@ -38,49 +38,39 @@ public class BackupGoogleDriveTask {
 
     @Value("${backup.localpath}")
     private String localPath;
-    @Value("${backup.host}")
-    private String host;
-
-    @Value("${backup.files.maxcount}")
-    private long maxFilesCount;
-
-    @Value("${backup.files.maxtotalsize}")
-    private long maxTotalFilesSize;
-
-    @Value("${backup.files.minfreespace}")
-    private long minFreeSpace;
-
-    @Value("${backup.files.maxcleaningiterations}")
-    private long maxCleaningIteration;
+    private final String dbbackupFolderId = "1KYc0gAockN-Vu_qY7ijCsT6dMefgJ-jF";
 
     //every day on 3:00
-    //@Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 0 3 * * *")
+
     // One hour
     //@Scheduled(fixedRate = 1000 * 60 * 60)
-    @Scheduled(fixedRate = 1000)
-    public void createBackupAndMoveToGoogleDrive() {
+
+    public void copyDataToGoogleDrive() {
         if (!System.getProperty("os.name").equals(VALID_SYSTEM_NAME)) {
             log.info("Failed copy backup to google drive. This option implement only for linux system");
             return;
         }
 
-        File localFolder = new File(localPath);
+        File folder = new File(getLocalPath());
 
-        if(!localFolder.exists()){
-            log.info("Failed copy backup to google drive. Local backups folder not exist: " + localFolder.getAbsolutePath());
-            return;
+        if (folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            for (File file : files) {
+                System.out.println(file.getAbsolutePath());
+                String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar.test";
+                loadFileToGoogleDrive(file.getName(), simpleFileName, dbbackupFolderId);
+            }
+        } else {
+            log.error("Folder " + folder.getAbsolutePath() + " is not exists");
         }
-
-        String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
-
-        loadFileToGoogleDrive(simpleFileName, simpleFileName);
     }
 
-    public boolean loadFileToGoogleDrive(String srcFileName, String destFileName) {
+    public boolean loadFileToGoogleDrive(String srcFileName, String destFileName, String parentsId) {
         FileContent content = new FileContent("application/x-tar", new File(localPath + srcFileName));
 
         try {
-            googleDriveService.uploadFile(content, destFileName);
+            googleDriveService.uploadFile(content, destFileName, parentsId);
             log.info("File " + localPath + srcFileName + " uploaded to google drive");
             return true;
         } catch (Exception e) {

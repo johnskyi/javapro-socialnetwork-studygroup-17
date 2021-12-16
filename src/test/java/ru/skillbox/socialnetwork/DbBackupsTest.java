@@ -20,6 +20,7 @@ public class DbBackupsTest {
     private static final DateTimeFormatter fileNameDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 
     private static String testFileName = LocalDateTime.now().format(fileNameDateFormat) + ".test";
+    private static String testFolderId = "1-_KEk819bSMEB81Kjr1EzPslKqBCfDto";
 
     @BeforeAll
     static void init() {
@@ -52,16 +53,28 @@ public class DbBackupsTest {
     @DisplayName("Проверка метода загрузки файлов на гугл драйв")
     public void googleDriveLoadTest(){
 
+        databaseBackupCreateTask.setLocalPath("test/");
+
         File file = new File(databaseBackupCreateTask.getLocalPath() + testFileName);
 
         assertTrue(file.exists());
-        assertTrue(databaseBackupCreateTask.loadFileToGoogleDrive(file.getName(),file.getName()));
+        assertTrue(databaseBackupCreateTask.loadFileToGoogleDrive(file.getName(),file.getName(), testFolderId));
+    }
+
+    @Test
+    @DisplayName("Проверка таска по бэкапам")
+    public void googleDriveTaskTest(){
+
+        databaseBackupCreateTask.setLocalPath("/home/alexey/backup/");
+
+        databaseBackupCreateTask.copyDataToGoogleDrive();
+
     }
 
 
     @AfterAll
     static void afterAllTests(){
-        File folder = new File(databaseBackupCreateTask.getLocalPath());
+        File folder = new File("test/");
         if (folder.exists()) {
             File[] files = folder.listFiles();
             for (File file : files) {
