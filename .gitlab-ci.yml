@@ -1,7 +1,7 @@
 stages:
   - verify
   - deploy
-  - shedule
+  - job
 
 job:on-schedule:
   rules:
