@@ -22,7 +22,7 @@ deploy:
     - echo "do deploy"
     - ./mvnw package -Dmaven.test.skip=true
     - cd /home/gitlab-runner/
-    - pg_dump -h localhost -U javapro -F c -f /backup/backup.tar.gz javapro
+    - pg_dump --host=localhost --username=javapro --file=backup/dbbackup.tar --format=tar
     - docker-compose build --no-cache
     - docker-compose up -d
     - docker system prune -a -f --volumes
