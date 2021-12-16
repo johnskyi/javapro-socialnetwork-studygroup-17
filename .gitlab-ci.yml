@@ -25,6 +25,8 @@ verify:
 
 deploy:
   stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
   only:
     - main
   except:
