@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   db:
-    build: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/postgres
+    image: "postgres-10-postgis:latest"
     container_name: postgresql
     ports:
       - 5432:5432
