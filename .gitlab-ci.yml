@@ -3,7 +3,7 @@ stages:
   - deploy
   - job
 
-job:on-schedule:
+job:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
