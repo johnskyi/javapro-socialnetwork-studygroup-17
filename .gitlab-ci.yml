@@ -24,7 +24,7 @@ deploy:
     - cd /home/gitlab-runner/postgres/
     - docker-compose up -d
     - cd ./../
-    - pg_dump --host=localhost --username=javapro --file=backup/dbbackup.tar --format=tar
+    - PGPASSWORD="iddqd"  pg_dump --host=localhost --username=javapro --file=backup/dbbackup.tar --format=tar
     - docker-compose build --no-cache
     - docker-compose up -d
     - docker system prune -a -f --volumes
