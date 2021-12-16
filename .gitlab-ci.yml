@@ -1,9 +1,9 @@
 stages:
   - verify
   - deploy
-  - shedule 
+  - shedule
 
-shedule-test:
+shedule:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
