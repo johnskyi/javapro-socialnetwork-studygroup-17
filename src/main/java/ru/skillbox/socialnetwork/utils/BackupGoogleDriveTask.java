@@ -56,6 +56,10 @@ public class BackupGoogleDriveTask {
 
         if (folder.isDirectory()) {
             File[] files = folder.listFiles();
+            if(files == null){
+                log.info("No files in backup folder.");
+                return;
+            }
             for (File file : files) {
                 System.out.println(file.getAbsolutePath());
                 String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar.test";

@@ -65,7 +65,7 @@ public class DbBackupsTest {
     @DisplayName("Проверка таска по бэкапам")
     public void googleDriveTaskTest(){
 
-        databaseBackupCreateTask.setLocalPath("/home/alexey/backup/");
+        databaseBackupCreateTask.setLocalPath("/home/gitlab-runner/backup/");
 
         databaseBackupCreateTask.copyDataToGoogleDrive();
 
