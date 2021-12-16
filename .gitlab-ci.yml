@@ -4,6 +4,7 @@ stages:
   - job
 
 job:
+  stage: job
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
