@@ -59,6 +59,8 @@ public class PersonResponse {
         @JsonProperty("is_blocked")
         private Boolean isBlocked;
 
+        private Boolean isDeleted;
+
         private String message;
 
         private String token;
@@ -80,6 +82,7 @@ public class PersonResponse {
                 this.lastOnlineTime = ConvertTimeService.getTimestamp(person.getLastOnlineTime());
             }
             this.isBlocked = person.isBlocked();
+            this.isDeleted = person.isDeleted();
         }
     }
 }

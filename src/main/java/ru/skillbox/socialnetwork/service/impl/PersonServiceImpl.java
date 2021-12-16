@@ -216,6 +216,7 @@ public class PersonServiceImpl implements PersonService {
                         .messagePermission(person.getMessagePermission())
                         .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
                         .isBlocked(person.isBlocked())
+                        .isDeleted(person.isDeleted())
                         .build())
                 .build();
     }

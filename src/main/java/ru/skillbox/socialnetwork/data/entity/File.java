@@ -2,6 +2,7 @@ package ru.skillbox.socialnetwork.data.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Person owner;
 
@@ -33,7 +34,7 @@ public class File {
     @Column(name = "file_type")
     private String fileType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
