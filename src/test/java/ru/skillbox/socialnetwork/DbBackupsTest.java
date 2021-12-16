@@ -65,9 +65,9 @@ public class DbBackupsTest {
         if (folder.exists()) {
             File[] files = folder.listFiles();
             for (File file : files) {
-                //file.delete();
+                file.delete();
             }
-            //folder.delete();
+            folder.delete();
         }
     }
 }
