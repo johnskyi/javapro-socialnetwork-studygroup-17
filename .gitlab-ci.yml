@@ -1,6 +1,17 @@
 stages:
   - verify
   - deploy
+  - shedule 
+
+shedule-test:
+  stage: shedule
+  rules:
+    - if: $CI_PIPELINE_SOURCE = "push"
+  script:
+    - cd /home/gitlab-runner/
+    - PGPASSWORD="iddqd"  pg_dump --host=localhost --username=javapro --file=backup/dbbackup.tar --format=tar
+    - ./mvnw verify
+
 verify:
   stage: verify
   only:
