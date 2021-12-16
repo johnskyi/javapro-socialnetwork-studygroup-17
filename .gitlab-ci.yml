@@ -4,9 +4,8 @@ stages:
   - shedule 
 
 shedule-test:
-  stage: shedule
   rules:
-    - if: $CI_PIPELINE_SOURCE = "push"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
     - cd /home/gitlab-runner/
     - PGPASSWORD="iddqd"  pg_dump --host=localhost --username=javapro --file=backup/dbbackup.tar --format=tar
