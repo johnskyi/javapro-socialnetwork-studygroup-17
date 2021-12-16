@@ -2,7 +2,11 @@ version: "3.7"
 services:
   social_network:
     build: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
+    volumes: 
+      - ./serverlogs:/logs
     container_name: backend
+    volumes:
+      - ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/:./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/
     ports:
       - "8086:8086"
     networks:
