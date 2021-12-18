@@ -59,9 +59,9 @@ public class DialogControllerImpl implements DialogController {
     }
 
     @Override
-    public ResponseEntity<DialogResponse> getAllDialogs() {
+    public ResponseEntity<DialogResponse> getAllDialogs(Principal principal) {
         log.info("GET /api/v1/dialogs/");
-        return ResponseEntity.ok(dialogService.getAllDialogs());
+        return ResponseEntity.ok(dialogService.getAllDialogs(principal));
     }
 
     @Override

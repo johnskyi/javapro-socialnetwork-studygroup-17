@@ -27,6 +27,7 @@ import ru.skillbox.socialnetwork.service.impl.DialogServiceImpl;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,7 @@ class DialogControllerImplTest {
     private static Person personOne;
     private static Person personTwo;
     private static Dialog dialog;
+    private static List<Dialog> testDialogs;
     private static DialogRequest dialogRequest;
 
 
@@ -94,6 +96,8 @@ class DialogControllerImplTest {
                 .text("Hi")
                 .build();
         dialog.setMessages(List.of(messageOne));
+        testDialogs = new ArrayList<>();
+        testDialogs.add(dialog);
     }
     @BeforeAll
     static void initDialogRequest() {
@@ -186,9 +190,6 @@ class DialogControllerImplTest {
 
         assertEquals(ResponseEntity.ok(dialogResponseDelete),dialogController.dialogDelete(1L,principal));
         verify(dialogService,times(1)).dialogDelete(1L,principal);
-
-
-
     }
 
     @Test
@@ -210,6 +211,45 @@ class DialogControllerImplTest {
         assertEquals(ResponseEntity.ok(dialogResponseDelete),dialogController.messageDelete(1L,1L,principal));
         verify(dialogService,times(1)).messageDelete(1L,1L,principal);
     }
+    @Test
+    @DisplayName("Get all dialogs")
+    void getAllDialogs() {
+        when(dialogRepository.findAllAuthorDialogs(any())).thenReturn(testDialogs);
+        DialogResponse dialogResponse = DialogResponse.builder()
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .dialogs(testDialogs)
+                        .build())
+                .build();
+        when(dialogService.getAllDialogs(any())).thenReturn(dialogResponse);
+        assertEquals(ResponseEntity.ok(dialogResponse),dialogController.getAllDialogs(principal));
+    }
+    @Test
+    @DisplayName("Get dialog by Id")
+    void getDialog() {
+        when(dialogRepository.findById(any())).thenReturn(Optional.ofNullable(dialog));
+        DialogResponse dialogResponse = DialogResponse.builder()
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .id(1L)
+                        .build())
+                .build();
+        when(dialogService.getDialog(1L)).thenReturn(dialogResponse);
+        assertEquals(ResponseEntity.ok(dialogResponse),dialogController.getDialog(1L));
+    }
+    @Test
+    @DisplayName("Get dialog unknown id")
+    public void getDialog_unknownId_throwsDialogNotFound() {
+        when(dialogService.getDialog(any())).thenThrow(DialogNotFoundException.class);
+        assertThrows(DialogNotFoundException.class, () -> dialogController.getDialog(any()));
+    }
+    @Test
+    @DisplayName("Get dialogs not authorized person")
+    public void getDialogs_notAuthorized_throwsPersonNotAuthorized() {
+        when(dialogService.getAllDialogs(any())).thenThrow(PersonNotAuthorized.class);
+        assertThrows(PersonNotAuthorized.class, () -> dialogController.getAllDialogs(any()));
+    }
+
 
     @Test
     @DisplayName("Set message  person unauthorized throws PersonNotAuthorized")

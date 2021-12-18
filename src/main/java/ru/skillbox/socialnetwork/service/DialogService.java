@@ -20,5 +20,5 @@ public interface DialogService {
 
     DialogResponse getDialog(Long dialogId);
 
-    DialogResponse getAllDialogs();
+    DialogResponse getAllDialogs(Principal principal);
 }

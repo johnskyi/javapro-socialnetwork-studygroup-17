@@ -31,7 +31,7 @@ public interface DialogController {
                                                  @RequestParam("messageId") Long messageId, Principal principal);
     /**Get all dialogs.*/
     @GetMapping("/api/v1/dialogs/")
-    ResponseEntity<DialogResponse> getAllDialogs();
+    ResponseEntity<DialogResponse> getAllDialogs(Principal principal);
 
     /**Get dialog by id.*/
     @GetMapping("api/v1/dialog/")
