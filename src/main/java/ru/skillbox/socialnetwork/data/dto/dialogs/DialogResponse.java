@@ -3,9 +3,11 @@ package ru.skillbox.socialnetwork.data.dto.dialogs;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import ru.skillbox.socialnetwork.data.entity.Dialog;
 import ru.skillbox.socialnetwork.data.entity.ReadStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -31,6 +33,7 @@ public class DialogResponse {
         private Long recipientId;
         private String messageText;
         private ReadStatus readStatus;
+        private List<Dialog> dialogs;
     }
 
 }
