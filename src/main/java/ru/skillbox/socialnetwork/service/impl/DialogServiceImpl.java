@@ -86,28 +86,37 @@ public class DialogServiceImpl implements DialogService {
     public DialogResponse dialogCreate(Long userId, Principal principal) {
         Person author = findPersonByEmail(principal.getName());
         Person recipient = findPersonById(userId);
-        Dialog dialog = new Dialog();
-        Message message = Message.builder()
-                .author(author)
-                .recipient(recipient)
-                .time(LocalDateTime.now())
-                .dialog(dialog)
-                .readStatus(ReadStatus.SENT)
-                .text("User " + author.getFirstName() + "start dialog")
-                .build();
-        dialog.setRecipient(recipient);
-        dialog.setAuthor(author);
-        dialog.getMessages().add(message);
-        messageRepository.save(message);
-        dialogRepository.save(dialog);
-        return DialogResponse.builder()
-                .error("string")
-                .timestamp(System.currentTimeMillis())
-                .data(DialogResponse.Data.builder()
-                        .id(dialog.getId())
-                        .messageText(message.getText())
-                        .build())
-                .build();
+        Dialog dialog;
+        Message message;
+        if(checkDialogByRecipient(recipient)) {
+            dialog = findDialogByRecipient(recipient);
+            int messagesNumber = dialog.getMessages().size();
+            message = dialog.getMessages().get(messagesNumber);
+        } else {
+            dialog = new Dialog();
+            message = Message.builder()
+                    .author(author)
+                    .recipient(recipient)
+                    .time(LocalDateTime.now())
+                    .dialog(dialog)
+                    .readStatus(ReadStatus.SENT)
+                    .text("User " + author.getFirstName() + "start dialog")
+                    .build();
+            dialog.setRecipient(recipient);
+            dialog.setAuthor(author);
+            dialog.getMessages().add(message);
+            messageRepository.save(message);
+            dialogRepository.save(dialog);
+        }
+            return DialogResponse.builder()
+                    .error("string")
+                    .timestamp(System.currentTimeMillis())
+                    .data(DialogResponse.Data.builder()
+                            .id(dialog.getId())
+                            .messageText(message.getText())
+                            .build())
+                    .build();
+
     }
 
     @Override
@@ -141,6 +150,30 @@ public class DialogServiceImpl implements DialogService {
                 .build();
     }
 
+    @Override
+    public DialogResponse getDialog(Long dialogId) {
+        Dialog dialog = findDialogById(dialogId);
+        return DialogResponse.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .id(dialog.getId())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public DialogResponse getAllDialogs() {
+        List<Dialog> dialogs = dialogRepository.findAll();
+        return DialogResponse.builder()
+                .error("string")
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .dialogs(dialogs)
+                        .build())
+                .build();
+    }
+
     private Dialog findDialogById(Long id) {
         return dialogRepository.findById(id)
                 .orElseThrow(() -> new DialogNotFoundException("Dialog not found"));
@@ -156,5 +189,11 @@ public class DialogServiceImpl implements DialogService {
     private Person findPersonByEmail(String email) {
         return personRepository.findByEmail(email)
                 .orElseThrow(() -> new PersonNotAuthorized("Sorry you are not authorized"));
+    }
+    private Boolean checkDialogByRecipient(Person person) {
+        return dialogRepository.findByRecipient(person).isPresent();
+    }
+    private Dialog findDialogByRecipient(Person person) {
+        return dialogRepository.findByRecipient(person).orElseThrow(() -> new DialogNotFoundException("Dialog not found"));
     }
 }
