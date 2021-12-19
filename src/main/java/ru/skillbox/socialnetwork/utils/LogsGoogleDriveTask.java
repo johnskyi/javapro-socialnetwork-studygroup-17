@@ -12,14 +12,14 @@ import ru.skillbox.socialnetwork.service.GoogleDriveService;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @Data
 @Component
 @RequiredArgsConstructor
-public class BackupGoogleDriveTask {
+public class LogsGoogleDriveTask {
 
     private final GoogleDriveService googleDriveService;
 
@@ -34,52 +34,61 @@ public class BackupGoogleDriveTask {
         return true;
     };
 
-    private static final Logger log = LoggerFactory.getLogger(BackupGoogleDriveTask.class);
+    private static final Logger log = LoggerFactory.getLogger(LogsGoogleDriveTask.class);
 
-    @Value("${backup.localpath}")
+    @Value("${logs.localpath}")
     private String localPath;
 
-    private static final String dbbackupFolderId = "1KYc0gAockN-Vu_qY7ijCsT6dMefgJ-jF";
+    private static final String loginfoFolderId = "1FMu_ALeaH6KfaaIruLspd-bEzwkF5eQg";
+    private static final String logerrorFolderId = "1NO6U88qx2w6qoh2xh_Jyh2uEGShP58lO";
 
     //every day on 3:00
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
 
     // One hour
     //@Scheduled(fixedRate = 1000 * 60 * 60)
 
-    public void copyDataToGoogleDrive() {
+    public void copyLogsToGoogleDrive() {
         if (!System.getProperty("os.name").equals(VALID_SYSTEM_NAME)) {
             log.info("Failed copy backup to google drive. This option implement only for linux system");
             return;
         }
+        loadFilesFromFolder(new File(getLocalPath() + "/info"), loginfoFolderId);
+        loadFilesFromFolder(new File(getLocalPath() + "/error"), logerrorFolderId);
 
-        File folder = new File(getLocalPath());
+    }
+
+    public void loadFilesFromFolder(File folder, String remoteFolderId) {
+
+        String maskForFileCandidateToCopy = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         if (folder.isDirectory()) {
             File[] files = folder.listFiles();
-            if(files == null){
+            if (files == null) {
                 log.info("No files in backup folder.");
-                return;
-            }
-            for (File file : files) {
-                System.out.println(file.getAbsolutePath());
-                String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
-                loadFileToGoogleDrive(file.getName(), simpleFileName, dbbackupFolderId);
+            } else {
+                for (File file : files) {
+                    if (file.getName().contains(maskForFileCandidateToCopy)) {
+                        log.info("Load logs to drive " + file.getName() + " success: " +
+                                loadFileToGoogleDrive(file.getAbsolutePath(), file.getName(), remoteFolderId));
+                    }
+                }
             }
         } else {
             log.error("Folder " + folder.getAbsolutePath() + " is not exists");
         }
     }
 
+
     public boolean loadFileToGoogleDrive(String srcFileName, String destFileName, String parentsId) {
-        FileContent content = new FileContent("application/x-tar", new File(localPath + srcFileName));
+        FileContent content = new FileContent("application/x-tar", new File(srcFileName));
 
         try {
             googleDriveService.uploadFile(content, destFileName, parentsId);
-            log.info("File " + localPath + srcFileName + " uploaded to google drive");
+            log.info("File " + srcFileName + " uploaded to google drive");
             return true;
         } catch (Exception e) {
-            log.info("File " + localPath + srcFileName + " uploading to google drive error: " + e.getMessage());
+            log.error("File " + srcFileName + " uploading to google drive error: " + e.getMessage());
             return false;
         }
     }

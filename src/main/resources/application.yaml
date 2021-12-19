@@ -40,6 +40,8 @@ management:
         "[http.server.requests]": true
 backup:
   localpath: /home/gitlab-runner/backup/
+logs:
+  localpath: /home/gitlab-runner/serverlogs/
 
 
 
