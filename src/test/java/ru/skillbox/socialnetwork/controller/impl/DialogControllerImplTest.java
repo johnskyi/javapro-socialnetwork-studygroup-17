@@ -214,7 +214,7 @@ class DialogControllerImplTest {
     @Test
     @DisplayName("Get all dialogs")
     void getAllDialogs() {
-        when(dialogRepository.findAllAuthorDialogs(any())).thenReturn(testDialogs);
+        when(dialogRepository.findAllUserDialogs(any())).thenReturn(testDialogs);
         DialogResponse dialogResponse = DialogResponse.builder()
                 .timestamp(System.currentTimeMillis())
                 .data(DialogResponse.Data.builder()
