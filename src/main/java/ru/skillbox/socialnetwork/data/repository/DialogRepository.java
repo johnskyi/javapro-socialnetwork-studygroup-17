@@ -16,6 +16,6 @@ public interface DialogRepository extends JpaRepository<Dialog, Long> {
     @Query("select d from Dialog d where d.author = :author and d.recipient = :recipient")
     Optional<Dialog> findByParticipants(@Param("author") Person author, @Param("recipient") Person recipient);
 
-    @Query("select d from Dialog d where d.author = :author")
-    List<Dialog> findAllAuthorDialogs(@Param("author") Person author);
+    @Query("select d from Dialog d where d.author = :author or d.recipient = :author")
+    List<Dialog> findAllUserDialogs(@Param("author") Person author);
 }
