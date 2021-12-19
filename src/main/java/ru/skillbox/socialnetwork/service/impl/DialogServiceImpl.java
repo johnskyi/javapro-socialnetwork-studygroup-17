@@ -158,7 +158,7 @@ public class DialogServiceImpl implements DialogService {
     public DialogResponse getAllDialogs(Principal principal) {
         String authorEmail = principal.getName();
         Person author = findPersonByEmail(authorEmail);
-        List<Dialog> dialogs = dialogRepository.findAllAuthorDialogs(author);
+        List<Dialog> dialogs = dialogRepository.findAllUserDialogs(author);
         if(dialogs.isEmpty()) {
             throw new DialogNotFoundException("Dialogs list is empty");
         }
