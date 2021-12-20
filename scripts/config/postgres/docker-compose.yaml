@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  db:
+    image: "postgres:9.6"
+    container_name: postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=javapro
+      - POSTGRES_PASSWORD=iddqd
+      - POSTGRES_DB=javapro
+    volumes:
+         - ./pgdata:/var/lib/postgresql/data
+         - ./backup:/backup
+    networks:
+      infrastructure:
+        aliases:
+          - postgres
+networks:
+  infrastructure:
+    driver: "bridge"
+

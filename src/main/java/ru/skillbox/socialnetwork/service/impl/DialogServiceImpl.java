@@ -49,7 +49,6 @@ public class DialogServiceImpl implements DialogService {
         dialog.getMessages().add(newMessage);
         dialogRepository.save(dialog);
         return DialogResponse.builder()
-                .error("string")
                 .timestamp(System.currentTimeMillis())
                 .data(DialogResponse.Data.builder()
                         .id(dialog.getId())
@@ -67,11 +66,8 @@ public class DialogServiceImpl implements DialogService {
         Dialog dialog = findDialogById(dialogId);
         List<Message> messages = dialog.getMessages();
         return DialogResponse.builder()
-                .error("string")
                 .timestamp(System.currentTimeMillis())
                 .total(dialog.getMessages().size())
-                .offset(1)
-                .perPage(10)
                 .data(DialogResponse.Data.builder()
                         .id(dialog.getId())
                         .author(dialog.getAuthor().getId())
@@ -86,28 +82,36 @@ public class DialogServiceImpl implements DialogService {
     public DialogResponse dialogCreate(Long userId, Principal principal) {
         Person author = findPersonByEmail(principal.getName());
         Person recipient = findPersonById(userId);
-        Dialog dialog = new Dialog();
-        Message message = Message.builder()
-                .author(author)
-                .recipient(recipient)
-                .time(LocalDateTime.now())
-                .dialog(dialog)
-                .readStatus(ReadStatus.SENT)
-                .text("User " + author.getFirstName() + "start dialog")
-                .build();
-        dialog.setRecipient(recipient);
-        dialog.setAuthor(author);
-        dialog.getMessages().add(message);
-        messageRepository.save(message);
-        dialogRepository.save(dialog);
-        return DialogResponse.builder()
-                .error("string")
-                .timestamp(System.currentTimeMillis())
-                .data(DialogResponse.Data.builder()
-                        .id(dialog.getId())
-                        .messageText(message.getText())
-                        .build())
-                .build();
+        Dialog dialog;
+        Message message;
+        if(checkDialogByRecipient(author,recipient)) {
+            dialog = findDialogByParticipants(author, recipient);
+            int messagesNumber = dialog.getMessages().size();
+            message = dialog.getMessages().get(messagesNumber);
+        } else {
+            dialog = new Dialog();
+            message = Message.builder()
+                    .author(author)
+                    .recipient(recipient)
+                    .time(LocalDateTime.now())
+                    .dialog(dialog)
+                    .readStatus(ReadStatus.SENT)
+                    .text("User " + author.getFirstName() + "start dialog")
+                    .build();
+            dialog.setRecipient(recipient);
+            dialog.setAuthor(author);
+            dialog.getMessages().add(message);
+            messageRepository.save(message);
+            dialogRepository.save(dialog);
+        }
+            return DialogResponse.builder()
+                    .timestamp(System.currentTimeMillis())
+                    .data(DialogResponse.Data.builder()
+                            .id(dialog.getId())
+                            .messageText(message.getText())
+                            .build())
+                    .build();
+
     }
 
     @Override
@@ -116,7 +120,6 @@ public class DialogServiceImpl implements DialogService {
         Dialog dialog = findDialogById(dialogId);
         dialogRepository.delete(dialog);
         return DialogResponse.builder()
-                .error("string")
                 .timestamp(System.currentTimeMillis())
                 .data(DialogResponse.Data.builder()
                         .id(dialogId)
@@ -133,10 +136,36 @@ public class DialogServiceImpl implements DialogService {
         dialog.getMessages().remove(message);
         dialogRepository.save(dialog);
         return DialogResponse.builder()
-                .error("string")
                 .timestamp(System.currentTimeMillis())
                 .data(DialogResponse.Data.builder()
                         .id(messageId)
+                        .build())
+                .build();
+    }
+
+    @Override
+    public DialogResponse getDialog(Long dialogId) {
+        Dialog dialog = findDialogById(dialogId);
+        return DialogResponse.builder()
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .id(dialog.getId())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public DialogResponse getAllDialogs(Principal principal) {
+        String authorEmail = principal.getName();
+        Person author = findPersonByEmail(authorEmail);
+        List<Dialog> dialogs = dialogRepository.findAllUserDialogs(author);
+        if(dialogs.isEmpty()) {
+            throw new DialogNotFoundException("Dialogs list is empty");
+        }
+        return DialogResponse.builder()
+                .timestamp(System.currentTimeMillis())
+                .data(DialogResponse.Data.builder()
+                        .dialogs(dialogs)
                         .build())
                 .build();
     }
@@ -156,5 +185,11 @@ public class DialogServiceImpl implements DialogService {
     private Person findPersonByEmail(String email) {
         return personRepository.findByEmail(email)
                 .orElseThrow(() -> new PersonNotAuthorized("Sorry you are not authorized"));
+    }
+    private Boolean checkDialogByRecipient(Person author, Person recipient) {
+       return   dialogRepository.findByParticipants(author, recipient).isPresent();
+    }
+    private Dialog findDialogByParticipants(Person author, Person recipient) {
+        return dialogRepository.findByParticipants(author, recipient).orElseThrow(() -> new DialogNotFoundException("Dialog not found"));
     }
 }

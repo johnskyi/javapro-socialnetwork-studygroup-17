@@ -57,4 +57,18 @@ public class DialogControllerImpl implements DialogController {
         log.info("DELETE /api/v1/dialogs/messages" + dialogId + " -- " +  messageId);
         return ResponseEntity.ok(dialogService.messageDelete(dialogId,messageId, principal));
     }
+
+    @Override
+    @ApiOperation(value="Получение всех диалогов пользователя")
+    public ResponseEntity<DialogResponse> getAllDialogs(Principal principal) {
+        log.info("GET /api/v1/dialogs/");
+        return ResponseEntity.ok(dialogService.getAllDialogs(principal));
+    }
+
+    @Override
+    @ApiOperation(value="Получение диалога по его id")
+    public ResponseEntity<DialogResponse> getDialog(Long dialogId) {
+        log.info("GET /api/v1/dialog/" + dialogId);
+        return ResponseEntity.ok(dialogService.getDialog(dialogId));
+    }
 }

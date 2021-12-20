@@ -1,6 +1,7 @@
 stages:
   - verify
   - deploy
+  - test-dump
 
 verify:
   stage: verify
@@ -11,7 +12,7 @@ verify:
     - tags
   script:
     - echo "do build, test and package jar"
-    - mvn clean verify
+    - ./mvnw clean verify
 
 deploy:
   stage: deploy
@@ -21,8 +22,12 @@ deploy:
     - tags
   script:
     - echo "do deploy"
-    - mvn clean install
-    - cd /home/gitlab-runner/
-    - docker-compose up --build -d
-    - docker system prune -a -f
+    - ./mvnw package -Dmaven.test.skip=true
+    - cd /home/gitlab-runner/postgres/
+    - docker-compose up -d
+    - cd ./../
+    - PGPASSWORD="iddqd"  pg_dump --host=localhost --username=javapro --file=backup/dbbackup.tar --format=tar
+    - docker-compose build --no-cache
+    - docker-compose up -d
+    - docker system prune -a -f --volumes
 

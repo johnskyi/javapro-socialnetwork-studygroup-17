@@ -81,6 +81,6 @@
     <rule ref="category/java/multithreading.xml/DoubleCheckedLocking"/>
 
     <rule ref="category/java/performance.xml/BigIntegerInstantiation"/>
-    <rule ref="category/java/performance.xml/BooleanInstantiation"/>
+    <rule ref="category/java/bestpractices.xml/PrimitiveWrapperInstantiation" />
 
 </ruleset>

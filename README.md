@@ -3,6 +3,7 @@
 ## Prerequisite
 1. JDK 11
 2. Stand-alone Git
+3. Stand-alone Docker
 
 ## Pull  project at once
 1. Create the `ZeroneServer` root folder in your working space. You can choose another name if you want.
