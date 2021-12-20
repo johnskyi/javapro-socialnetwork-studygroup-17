@@ -21,7 +21,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     generate-ddl: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   session:
     jdbc:
       initialize-schema: always
