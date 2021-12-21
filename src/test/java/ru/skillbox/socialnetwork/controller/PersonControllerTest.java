@@ -116,6 +116,7 @@ class PersonControllerTest {
                         .messagePermission(MessagePermission.ALL)
                         .lastOnlineTime(1L)
                         .isBlocked(false)
+                        .isDeleted(false)
                         .build())
                 .build();
     }
@@ -155,6 +156,7 @@ class PersonControllerTest {
                         .messagePermission(MessagePermission.FRIENDS)
                         .lastOnlineTime(1L)
                         .isBlocked(false)
+                        .isDeleted(false)
                         .build())
                 .build();
     }

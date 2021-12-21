@@ -42,4 +42,10 @@ public class PostComment {
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostCommentLike> postCommentLikes;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostComment> commentsChild;
+
+    @OneToMany(mappedBy = "postComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BlockHistory> blockHistories;
 }
