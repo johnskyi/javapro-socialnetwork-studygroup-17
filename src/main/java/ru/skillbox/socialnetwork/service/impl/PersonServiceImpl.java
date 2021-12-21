@@ -65,7 +65,7 @@ public class PersonServiceImpl implements PersonService {
             person.setLastName("User");
             person.setPhoto("https://static.thenounproject.com/png/438810-200.png");
             person.setApproved(false);
-            person.setBlocked(true);
+            person.setDeleted(true);
             personRepository.save(person);
         }
         SecurityContextHolder.clearContext();
@@ -216,6 +216,7 @@ public class PersonServiceImpl implements PersonService {
                         .messagePermission(person.getMessagePermission())
                         .lastOnlineTime(person.getLastOnlineTime().toEpochSecond(ZoneOffset.UTC))
                         .isBlocked(person.isBlocked())
+                        .isDeleted(person.isDeleted())
                         .build())
                 .build();
     }
