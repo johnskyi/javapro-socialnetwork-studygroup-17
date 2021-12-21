@@ -1,26 +1,26 @@
 package ru.skillbox.socialnetwork.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.ConfirmUserRequest;
-import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
 import ru.skillbox.socialnetwork.data.dto.RegisterRequest;
 import ru.skillbox.socialnetwork.data.dto.RegisterResponse;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.UserType;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.data.repository.TownRepository;
+import ru.skillbox.socialnetwork.exception.PasswordsNotEqualsException;
+import ru.skillbox.socialnetwork.exception.PersonAlReadyRegisterException;
+import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class RegisterService {
 
     private final TownRepository townRepository;
@@ -32,55 +32,71 @@ public class RegisterService {
     @Value("${spring.mail.username}")
     private String userName;
 
-    public RegisterService(PersonRepo personRepo, TownRepository townRepository, JavaMailSender javaMailSender) {
-        this.personRepo = personRepo;
-        this.townRepository = townRepository;
-        this.javaMailSender = javaMailSender;
-
+    public RegisterResponse regPerson(RegisterRequest registerRequest) throws PersonAlReadyRegisterException, PasswordsNotEqualsException {
+        Person person = createPerson(registerRequest);
+        personRepo.save(person);
+        sendConfirmMessage(person.getEmail(), String.valueOf(person.getId()));
+        return RegisterResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .data(RegisterResponse.Data.builder()
+                        .message("ok")
+                        .build())
+                .build();
     }
 
-    public ResponseEntity regPerson(RegisterRequest registerRequest) {
-        if (!registerRequest.getPasswd1().equals(registerRequest.getPasswd2())) {
-            return new ResponseEntity<>(new ErrorResponse("invalid_request", "Пароли не совпадают"),
-                    HttpStatus.BAD_REQUEST);
-        }
-        String email = registerRequest.getEmail();
-        Optional<Person> personOptional = personRepo.findByEmail(email);
-        if (!personOptional.isEmpty()) {
-            return new ResponseEntity<>(new ErrorResponse("invalid_request", "Пользователь уже существует"),
-                    HttpStatus.BAD_REQUEST);
-        }
-        Person person = new Person();
-        person.setFirstName(registerRequest.getFirstName());
-        person.setLastName(registerRequest.getLastName());
-        person.setBirthTime(LocalDateTime.now());
-        person.setTown(townRepository.getById(6L));
-        person.setEmail(registerRequest.getEmail());
-        person.setCode(Integer.toString(new Random().nextInt(9999 - 1000) + 1000));
-        person.setPassword(new BCryptPasswordEncoder().encode(registerRequest.getPasswd1()));
-        person.setRegTime(LocalDateTime.now());
-        person.setLastOnlineTime(LocalDateTime.now());
-        person.setType(UserType.USER);
+    public RegisterResponse confirmPerson(ConfirmUserRequest confirmUserRequest) {
+        Person person = findPersonById(confirmUserRequest);
+        person.setApproved(true);
         personRepo.save(person);
-        RegisterResponse registerResponse = new RegisterResponse("", LocalDateTime.now(), new RegisterResponse.Data("ok"));
+        return RegisterResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .data(RegisterResponse.Data.builder()
+                        .message("ok")
+                        .build())
+                .build();
+    }
+
+    private void sendConfirmMessage(String email, String personId) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(userName);
         mailMessage.setTo(email);
         mailMessage.setSubject("Подтверждение учетной записи");
         mailMessage.setText("Для подтверждение учетной записи, пожалуйста, пройдите по ссылке \n" +
-                "http://45.134.255.54:5000/registration/complete?userId=" + person.getId() + "&token=" + person.getCode());
+                "http://45.134.255.54:5000/registration/complete?userId=" + personId);
         javaMailSender.send(mailMessage);
-        return new ResponseEntity<>(registerResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity confirmPerson(ConfirmUserRequest confirmUserRequest) {
-        Person person = personRepo.findByIdAndCode(confirmUserRequest.getUserId(), confirmUserRequest.getToken()).get();
-        if (person != null) {
-            person.setApproved(true);
-            personRepo.save(person);
-            return new ResponseEntity<>(HttpStatus.OK);
+    private Person createPerson(RegisterRequest registerRequest) throws PersonAlReadyRegisterException, PasswordsNotEqualsException {
+        checkEqualsPasswords(registerRequest);
+        checkPersonIsPresent(registerRequest);
+        Person person = new Person();
+            person.setFirstName(registerRequest.getFirstName());
+            person.setLastName(registerRequest.getLastName());
+            person.setEmail(registerRequest.getEmail());
+            person.setPassword(new BCryptPasswordEncoder().encode(registerRequest.getPasswd1()));
+            person.setRegTime(LocalDateTime.now());
+            person.setLastOnlineTime(LocalDateTime.now());
+            person.setType(UserType.USER);
+        return person;
+    }
+
+    private Boolean checkPersonIsPresent(RegisterRequest request) throws PersonAlReadyRegisterException {
+        if (personRepo.findByEmail(request.getEmail()).isPresent()) {
+            return true;
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new PersonAlReadyRegisterException("Person already register");
         }
+    }
+
+    private Boolean checkEqualsPasswords(RegisterRequest registerRequest) throws PasswordsNotEqualsException {
+        if (registerRequest.getPasswd1().equals(registerRequest.getPasswd2())) {
+            return true;
+        } else {
+            throw new PasswordsNotEqualsException("Passwords not Equals");
+        }
+    }
+
+    private Person findPersonById(ConfirmUserRequest request) {
+        return personRepo.findById(request.getUserId()).orElseThrow(() -> new PersonNotFoundException("Person not Found"));
     }
 }
