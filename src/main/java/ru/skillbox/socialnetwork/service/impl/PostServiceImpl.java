@@ -31,6 +31,7 @@ public class PostServiceImpl implements PostService {
     private final Post2TagRepository post2TagRepository;
     private final PostCommentsRepository postCommentsRepository;
     private final PostLikesRepository postLikesRepository;
+    private final NotificationRepository notificationRepository;
 
 
     @Override
@@ -54,6 +55,8 @@ public class PostServiceImpl implements PostService {
             }
             post2TagRepository.save(new Post2Tag(post, tag));
         }
+
+        addNotification(NotificationType.POST, person);
 
         return createFullPostResponse(person, post, 0, null);
     }
@@ -114,6 +117,9 @@ public class PostServiceImpl implements PostService {
                 .build();
         if(addCommentRequest.getParentId() != null) {
             newComment.setParent(postCommentsRepository.getById(addCommentRequest.getParentId()));
+            addNotification(NotificationType.COMMENT_COMMENT, author);
+        }else{
+            addNotification(NotificationType.POST_COMMENT, author);
         }
 
         postCommentsRepository.save(newComment);
@@ -200,5 +206,15 @@ public class PostServiceImpl implements PostService {
                         .comments(comments)
                         .build())
                 .build();
+    }
+
+    private void addNotification(NotificationType notificationType, Person person){
+
+        notificationRepository.save(new Notification(notificationType,
+                LocalDateTime.now(),
+                person,
+                person.getId(),
+                person.getEmail()));
+
     }
 }
