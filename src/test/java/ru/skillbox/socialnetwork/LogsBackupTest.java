@@ -5,10 +5,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.skillbox.socialnetwork.service.GoogleDriveService;
-import ru.skillbox.socialnetwork.utils.BackupGoogleDriveTask;
 import ru.skillbox.socialnetwork.utils.LogsGoogleDriveTask;
 
 import java.io.File;
@@ -18,11 +15,8 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.Assert.assertTrue;
-
 public class LogsBackupTest {
 
-    private static final Logger log = LoggerFactory.getLogger(DbBackupsTest.class);
     private static LogsGoogleDriveTask dataCreateTask;
     private static final DateTimeFormatter fileNameDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 
@@ -37,13 +31,11 @@ public class LogsBackupTest {
         dataCreateTask.setLocalPath("test/");
 
         File localFolder = new File(dataCreateTask.getLocalPath());
-        log.info("Folder for tests: " + localFolder.getAbsolutePath());
 
         if(!localFolder.exists()){
             try {
                 FileUtils.forceMkdir(localFolder);
             } catch (IOException ex) {
-                log.info("Cannot create folder: " + localFolder.getAbsolutePath());
                 ex.printStackTrace();
                 return;
             }

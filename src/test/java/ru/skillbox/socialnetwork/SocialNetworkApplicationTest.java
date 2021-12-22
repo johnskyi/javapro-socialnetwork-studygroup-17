@@ -18,9 +18,8 @@ class SocialNetworkApplicationTest {
     private ApplicationContext context;
 
     @Test
-    @DisplayName("Тестируем старт приложения и наличие контекста")
+    @DisplayName("Test start application and presence of context")
     public void contextLoads() throws InterruptedException {
-        Thread.sleep(5000);
         assertNotNull(context);
     }
 

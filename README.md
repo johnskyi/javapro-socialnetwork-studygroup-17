@@ -11,7 +11,12 @@
 ```shell
 git clone  https://gitlab.skillbox.ru/javapro17/javapro-socialnetwork-studygroup-17
 ```
-3. Run in the docker/local/ directory.
+3. Run in the scripts/config/postgres directory.
+```shell
+docker-compose up -d
+```
+3. Run in the docker/local directory.
 ```shell
 docker-compose up --build -d
 ```
+
