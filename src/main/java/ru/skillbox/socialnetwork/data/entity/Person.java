@@ -40,6 +40,8 @@ public class Person {
 
     private String about;
 
+    private String gender;
+
     @ManyToOne
     private Town town;
 
