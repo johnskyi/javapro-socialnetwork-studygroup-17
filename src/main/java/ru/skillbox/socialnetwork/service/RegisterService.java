@@ -12,7 +12,6 @@ import ru.skillbox.socialnetwork.data.dto.RegisterResponse;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.UserType;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
-import ru.skillbox.socialnetwork.data.repository.TownRepository;
 import ru.skillbox.socialnetwork.exception.PasswordsNotEqualsException;
 import ru.skillbox.socialnetwork.exception.PersonAlReadyRegisterException;
 import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
@@ -22,8 +21,6 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class RegisterService {
-
-    private final TownRepository townRepository;
 
     private final PersonRepo personRepo;
 

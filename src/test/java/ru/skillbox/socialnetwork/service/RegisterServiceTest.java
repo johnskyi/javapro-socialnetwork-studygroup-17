@@ -1,68 +1,80 @@
 package ru.skillbox.socialnetwork.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import ru.skillbox.socialnetwork.controller.AccountController;
-import ru.skillbox.socialnetwork.data.dto.ConfirmUserRequest;
+import ru.skillbox.socialnetwork.data.dto.RegisterRequest;
+import ru.skillbox.socialnetwork.data.dto.RegisterResponse;
+import ru.skillbox.socialnetwork.exception.PasswordsNotEqualsException;
+import ru.skillbox.socialnetwork.exception.PersonAlReadyRegisterException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
 public class RegisterServiceTest {
-    @Autowired
-    private ObjectMapper objectMapper;
+
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Mock
     private AccountController accountController;
+    @MockBean
+    private RegisterService registerService;
 
-//    @Test
-//    @DisplayName("User successfully register")
-//    @Disabled
-//    public void regPerson() throws Exception{
-//        String email = (Math.random() * 49 + 1) + "@mail.ru";
-//        RegisterRequest registerRequest = new RegisterRequest(email, "1111111", "1111111", "Имя",  "Фамилия");
-//        mockMvc.perform(
-//                post("/api/v1/account/register/")
-//                        .content(objectMapper.writeValueAsString(registerRequest))
-//                        .contentType(MediaType.APPLICATION_JSON)
-//        )
-//                .andExpect(status().isOk());
-//    }
+    RegisterRequest registerRequest;
+    RegisterResponse registerResponse;
 
-    @Test
-    @DisplayName("User successfully confirm")
-    @Disabled
-    public void confirmPerson() throws Exception {
-        ConfirmUserRequest confirmUserRequest = new ConfirmUserRequest(1L,"1234");
-        mockMvc.perform(
-                post("/api/v1/account/register/confirm")
-                        .content(objectMapper.writeValueAsString(confirmUserRequest))
-                        .contentType(MediaType.APPLICATION_JSON)
-        )
-                .andExpect(status().isOk());
+    @BeforeEach
+    void setUp() {
+        registerRequest = new RegisterRequest();
     }
 
     @Test
-    void testRegPerson() {
+    @DisplayName("Register valid person")
+    void regPerson_returnResponseOk() {
+        registerResponse = RegisterResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .data(RegisterResponse.Data.builder()
+                        .message("ok")
+                        .build())
+                .build();
+        when(registerService.regPerson(any(RegisterRequest.class))).thenReturn(registerResponse);
+        assertEquals(ResponseEntity.ok(registerResponse),accountController.regPerson(registerRequest));
+        verify(registerService,times(1)).regPerson(registerRequest);
+
+    }
+    @Test
+    @DisplayName("Register valid person but passwords not equals")
+    void regPerson_throwPasswordNotEquals() {
+        registerRequest.setEmail("test@test.ru");
+        registerRequest.setPasswd1("123");
+        registerRequest.setPasswd2("321");
+        when(registerService.regPerson(any())).thenThrow(PasswordsNotEqualsException.class);
+        assertThrows(PasswordsNotEqualsException.class, () -> accountController.regPerson(registerRequest));
+        verify(registerService,times(1)).regPerson(registerRequest);
+    }
+    @Test
+    @DisplayName("Register valid person but person already register")
+    void regPerson_throwPersonAlReadyRegister() {
+        registerRequest.setEmail("test@test.ru");
+        when(registerService.regPerson(any())).thenThrow(PersonAlReadyRegisterException.class);
+        assertThrows(PersonAlReadyRegisterException.class, () -> accountController.regPerson(registerRequest));
+        verify(registerService,times(1)).regPerson(registerRequest);
     }
 
     @Test
+    @DisplayName("Confirm valid person")
     void testConfirmPerson() {
     }
 }
