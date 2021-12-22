@@ -5,10 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.skillbox.socialnetwork.data.dto.ErrorResponse;
-import ru.skillbox.socialnetwork.exception.DialogNotFoundException;
-import ru.skillbox.socialnetwork.exception.MessageNotFoundException;
-import ru.skillbox.socialnetwork.exception.PersonNotAuthorized;
-import ru.skillbox.socialnetwork.exception.PostNotFoundException;
+import ru.skillbox.socialnetwork.exception.*;
 
 public interface AdviceController {
 
@@ -25,4 +22,8 @@ public interface AdviceController {
     ResponseEntity<ErrorResponse> messageNotFoundExceptionHandler(MessageNotFoundException exception);
 
     ResponseEntity<ErrorResponse> noHandlerFoundExceptionHandler(NoHandlerFoundException exception);
+
+    ResponseEntity<ErrorResponse> personAllReadyRegisterExceptionHandler(PersonAlReadyRegisterException exception);
+
+    ResponseEntity<ErrorResponse> passwordsNotEqualsExceptionHandler(PersonAlReadyRegisterException exception);
 }

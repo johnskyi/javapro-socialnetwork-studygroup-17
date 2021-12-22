@@ -36,6 +36,17 @@ services:
       infrastructure:
         aliases:
           - prometheus
+  exporter:
+    image: wrouesnel/postgres_exporter
+    container_name: exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://localhost:5432/javapro?user=javapro&password=iddqd&sslmode=disable"
+    ports:
+      - "9187:9187"
+    networks:
+      infrastructure:
+        aliases:
+          - exporter
 networks:
   infrastructure:
     driver: "bridge"

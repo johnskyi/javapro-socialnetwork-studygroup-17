@@ -31,6 +31,7 @@ public class PostServiceImpl implements PostService {
     private final Post2TagRepository post2TagRepository;
     private final PostCommentsRepository postCommentsRepository;
     private final PostLikesRepository postLikesRepository;
+    private final NotificationRepository notificationRepository;
 
 
     @Override
@@ -55,6 +56,8 @@ public class PostServiceImpl implements PostService {
             post2TagRepository.save(new Post2Tag(post, tag));
         }
 
+        addNotification(NotificationType.POST, person);
+
         return createFullPostResponse(person, post, 0, null);
     }
 
@@ -75,6 +78,16 @@ public class PostServiceImpl implements PostService {
     public GetUserPostsResponse getUserPosts(Long personId, int offset, int limit) {
 
         Person person = personRepository.findById(personId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if(person.isDeleted()){
+            return GetUserPostsResponse.builder()
+                    .error("string")
+                    .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                    .total(0)
+                    .offset(offset)
+                    .perPage(limit)
+                    .posts(new ArrayList<>())
+                    .build();
+        }
         List<PostDto> posts = new ArrayList<>();
         Page<Post> postPage = postRepository.findPostsByAuthor(person, PageRequest.of(offset/limit, limit, Sort.by("time").descending()));
 
@@ -114,6 +127,9 @@ public class PostServiceImpl implements PostService {
                 .build();
         if(addCommentRequest.getParentId() != null) {
             newComment.setParent(postCommentsRepository.getById(addCommentRequest.getParentId()));
+            addNotification(NotificationType.COMMENT_COMMENT, author);
+        }else{
+            addNotification(NotificationType.POST_COMMENT, author);
         }
 
         postCommentsRepository.save(newComment);
@@ -200,5 +216,15 @@ public class PostServiceImpl implements PostService {
                         .comments(comments)
                         .build())
                 .build();
+    }
+
+    private void addNotification(NotificationType notificationType, Person person){
+
+        notificationRepository.save(new Notification(notificationType,
+                LocalDateTime.now(),
+                person,
+                person.getId(),
+                person.getEmail()));
+
     }
 }

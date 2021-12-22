@@ -40,6 +40,8 @@ public class Person {
 
     private String about;
 
+    private String gender;
+
     @ManyToOne
     private Town town;
 
@@ -62,6 +64,12 @@ public class Person {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 16)
     private UserType type;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<File> files;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications;
@@ -89,6 +97,15 @@ public class Person {
 
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
     private List<Message> recipientMessages;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dialog> authorDialog;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dialog> recipientDialog;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BlockHistory> blockHistories;
 
     public Role getRole() {
         if (type.name().equals("USER")) {
