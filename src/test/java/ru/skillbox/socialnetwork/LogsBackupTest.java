@@ -62,7 +62,7 @@ public class LogsBackupTest {
     @DisplayName("Проверка метода загрузки логов на гугл драйв")
     public void googleDriveLoadTest(){
 
-        dataCreateTask.setLocalPath("test/");
+        dataCreateTask.setLocalPath("/home/gitlab-runner/serverlogs");
 
         dataCreateTask.copyLogsToGoogleDrive();
     }

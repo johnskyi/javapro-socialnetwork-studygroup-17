@@ -42,8 +42,8 @@ public class LogsGoogleDriveTask {
     private static final String loginfoFolderId = "1FMu_ALeaH6KfaaIruLspd-bEzwkF5eQg";
     private static final String logerrorFolderId = "1NO6U88qx2w6qoh2xh_Jyh2uEGShP58lO";
 
-    //every day on 3:00
-    @Scheduled(cron = "0 0 0 * * *")
+    //every day on 4:00
+    @Scheduled(cron = "0 0 4 * * *")
 
     // One hour
     //@Scheduled(fixedRate = 1000 * 60 * 60)
@@ -88,7 +88,7 @@ public class LogsGoogleDriveTask {
             log.info("File " + srcFileName + " uploaded to google drive");
             return true;
         } catch (Exception e) {
-            log.error("File " + srcFileName + " uploading to google drive error: " + e.getMessage());
+            log.error("File " + srcFileName + " uploadFile to google drive error: " + e.getMessage());
             return false;
         }
     }

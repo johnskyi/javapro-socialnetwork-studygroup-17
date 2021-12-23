@@ -29,7 +29,7 @@ public class GoogleDriveService {
 
     private static final String APPLICATION_NAME = "test google drive on spring boot";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "javapro-socialnetwork-studygroup-17/src/main/resources";
+    private static final String TOKENS_DIRECTORY_PATH = "src/main/resources";
 
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
 
