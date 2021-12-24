@@ -77,11 +77,11 @@ public class RegisterService {
         return person;
     }
 
-    private Boolean checkPersonIsPresent(RegisterRequest request) throws PersonAlReadyRegisterException {
+    private Boolean checkPersonIsPresent(RegisterRequest request) {
         if (personRepo.findByEmail(request.getEmail()).isPresent()) {
-            return true;
-        } else {
             throw new PersonAlReadyRegisterException("Person already register");
+        } else {
+            return true;
         }
     }
 
