@@ -171,11 +171,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (request.getData().getTown() != null) {
-//            Country country = countryRepository.findByName(request.getData().getCountry()).orElse(null);
-//            Town town = country == null ?
-//                    (!townRepository.findByName(request.getData().getTown().getName()).isEmpty() ?
-//                            townRepository.findByName(request.getData().getTown().getName()).get(0) : null) : townRepository.findByNameAndCountry(request.getData().getTown().getName(), country).orElse(null);
-            Town town = townRepository.findByNameAndCountry(request.getData().getTown().getName(), countryRepository.findByName(request.getData().getCountry()).orElse(null)).orElse(null);
+            Town town = townRepository.findById(request.getData().getTown()).orElse(null);
             person.setTown(town != null ? town : person.getTown());
         }
         personRepository.save(person);

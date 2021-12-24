@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetwork.annotations.NullOrPattern;
 import ru.skillbox.socialnetwork.data.entity.MessagePermission;
-import ru.skillbox.socialnetwork.data.entity.Town;
 
 @Data
 @AllArgsConstructor
@@ -42,9 +41,9 @@ public class PersonRequest {
 
         private String about;
 
-        private Town town;
+        private Long town;
 
-        private String country;
+        private Long country;
 
         @JsonProperty("messages_permission")
         private MessagePermission messagePermission;
