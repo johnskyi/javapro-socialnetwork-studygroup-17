@@ -83,32 +83,18 @@ public class DialogServiceImpl implements DialogService {
         Person author = findPersonByEmail(principal.getName());
         Person recipient = findPersonById(userId);
         Dialog dialog;
-        Message message;
         if(checkDialogByRecipient(author,recipient)) {
             dialog = findDialogByParticipants(author, recipient);
-            int messagesNumber = dialog.getMessages().size();
-            message = dialog.getMessages().get(messagesNumber);
         } else {
             dialog = new Dialog();
-            message = Message.builder()
-                    .author(author)
-                    .recipient(recipient)
-                    .time(LocalDateTime.now())
-                    .dialog(dialog)
-                    .readStatus(ReadStatus.SENT)
-                    .text("User " + author.getFirstName() + "start dialog")
-                    .build();
             dialog.setRecipient(recipient);
             dialog.setAuthor(author);
-            dialog.getMessages().add(message);
-            messageRepository.save(message);
-            dialogRepository.save(dialog);
+            dialog = dialogRepository.save(dialog);
         }
             return DialogResponse.builder()
                     .timestamp(System.currentTimeMillis())
                     .data(DialogResponse.Data.builder()
                             .id(dialog.getId())
-                            .messageText(message.getText())
                             .build())
                     .build();
 
@@ -158,7 +144,7 @@ public class DialogServiceImpl implements DialogService {
     public DialogResponse getAllDialogs(Principal principal) {
         String authorEmail = principal.getName();
         Person author = findPersonByEmail(authorEmail);
-        List<Dialog> dialogs = dialogRepository.findAllUserDialogs(author);
+        List<Dialog> dialogs = dialogRepository.findAllByAuthorOrRecipient(author, author);
         if(dialogs.isEmpty()) {
             throw new DialogNotFoundException("Dialogs list is empty");
         }
@@ -187,9 +173,9 @@ public class DialogServiceImpl implements DialogService {
                 .orElseThrow(() -> new PersonNotAuthorized("Sorry you are not authorized"));
     }
     private Boolean checkDialogByRecipient(Person author, Person recipient) {
-       return   dialogRepository.findByParticipants(author, recipient).isPresent();
+       return   dialogRepository.findByAuthorAndRecipient(author, recipient).isPresent();
     }
     private Dialog findDialogByParticipants(Person author, Person recipient) {
-        return dialogRepository.findByParticipants(author, recipient).orElseThrow(() -> new DialogNotFoundException("Dialog not found"));
+        return dialogRepository.findByAuthorAndRecipient(author, recipient).orElseThrow(() -> new DialogNotFoundException("Dialog not found"));
     }
 }
