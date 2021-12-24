@@ -12,13 +12,13 @@ spring:
     url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://45.134.255.54:5432/javapro?user=javapro&password=iddqd
+    url: jdbc:postgresql://localhost:5432/javapro?user=javapro&password=iddqd
     platform: postgres
     initialization-mode: always
     continue-on-error: true
   jpa:
     show-sql: false
-    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
     hibernate:
       ddl-auto: update

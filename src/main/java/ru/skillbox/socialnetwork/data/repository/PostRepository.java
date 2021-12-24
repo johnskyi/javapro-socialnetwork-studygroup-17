@@ -12,6 +12,7 @@ import ru.skillbox.socialnetwork.data.entity.Tag;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,5 +35,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                      @Param("author") String author,
                                      @Param("tags") Collection<Tag> tags,
                                      Pageable pageable);
+
+    @Query(value = "select p FROM Post p WHERE p.time >= :date_from and p.time <= :date_to")
+    List<Post> findAllByTimeBetweenDates(@Param("date_from") LocalDateTime dateFrom,
+                                         @Param("date_to") LocalDateTime dateTo);
 
 }

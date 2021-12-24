@@ -51,4 +51,8 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
     @Modifying
     @Query(value = "delete from Person p WHERE p.email = :email")
     void deletePersonByEmail(@Param("email") String email);
+
+    @Query(value = "select p from Person p WHERE p.regTime >= :date_from and p.regTime >= :date_to")
+    List<Person> findAllByRegTimeBetweenDates(@Param("date_from") LocalDateTime dateFrom,
+                                              @Param("date_to") LocalDateTime dateTo);
 }
