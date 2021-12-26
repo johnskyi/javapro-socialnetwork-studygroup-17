@@ -4,10 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.NotificationResponse;
 import ru.skillbox.socialnetwork.data.entity.Notification;
+import ru.skillbox.socialnetwork.data.entity.NotificationSettings;
+import ru.skillbox.socialnetwork.data.entity.NotificationType;
+import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.repository.NotificationRepository;
+import ru.skillbox.socialnetwork.data.repository.NotificationSettingsRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.service.NotificationService;
 
@@ -16,19 +21,25 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final NotificationSettingsRepository notificationSettingsRepository;
     private final PersonRepo personRepository;
 
     @Override
     public NotificationResponse getNotifications(String offset, String itemPerPage, Principal principal) {
         Pageable pageable = PageRequest.of(Integer.parseInt(offset), Integer.parseInt(itemPerPage));
-        Page<Notification> notifications = notificationRepository.findAllByPersonId(
-                personRepository.findByEmail(principal.getName()).get().getId(), pageable);
+
+        Person person = personRepository.findByEmail(principal.getName()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        NotificationSettings notificationSetting = notificationSettingsRepository.findByPerson(person);
+        Set<NotificationType> approvedNotifications = notificationSetting.getApprovedNotification();
+        Page<Notification> notifications = notificationRepository.findAllByPerson(
+                person, approvedNotifications, pageable);
 
         List<NotificationResponse.Data> data = new ArrayList<>();
         for (Notification notification : notifications) {
@@ -51,17 +62,17 @@ public class NotificationServiceImpl implements NotificationService {
             Iterable<Notification> notifications = notificationRepository.findAllByPersonId(
                     personRepository.findByEmail(principal.getName()).get().getId()
             );
-            List<Long> notificationsId = new ArrayList<>();
+            Long notificationRemoveCount = 0L;
             List<NotificationResponse.Data> data = new ArrayList<>();
             for (Notification notification : notifications) {
                 data.add(new NotificationResponse.Data(notification, personRepository.getById(notification.getTargetPersonId())));
-                notificationsId.add(notification.getId());
+                notificationRemoveCount++;
                 notificationRepository.deleteNotificationById(notification.getId());
             }
             return NotificationResponse.builder()
                     .error("string")
                     .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
-                    .total(Long.parseLong(String.valueOf(notificationsId.size())))
+                    .total(notificationRemoveCount)
                     .offset(0L)
                     .perPage(20L)
                     .data(data)

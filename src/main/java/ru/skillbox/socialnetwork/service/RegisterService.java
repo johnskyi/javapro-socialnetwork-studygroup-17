@@ -74,6 +74,7 @@ public class RegisterService {
             person.setRegTime(LocalDateTime.now());
             person.setLastOnlineTime(LocalDateTime.now());
             person.setType(UserType.USER);
+            person.setGender("male");
         return person;
     }
 
