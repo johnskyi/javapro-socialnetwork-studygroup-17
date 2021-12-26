@@ -12,7 +12,7 @@ services:
         aliases:
           - backend
   social_network_frontend:
-    build: ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/
+    build: ./builds/zPSnmXEe/0/javapro17/javapro-socialnetwork-studygroup-17/scripts/config/frontend/
     volumes:
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/nginx:/etc/nginx/conf.d
       - ./builds/BwSi5yiA/0/javapro17/javapro_teams_frontend_original/dist:/var/www

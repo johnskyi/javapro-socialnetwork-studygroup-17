@@ -39,9 +39,9 @@ management:
       percentiles-histogram:
         "[http.server.requests]": true
 backup:
-  localpath: /home/gitlab-runner/backup/
+  localpath: backup
 logs:
-  localpath: /home/gitlab-runner/serverlogs/
+  localpath: logs
 
 
 

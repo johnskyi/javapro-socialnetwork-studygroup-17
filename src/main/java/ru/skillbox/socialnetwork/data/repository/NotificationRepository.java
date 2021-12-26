@@ -9,13 +9,20 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.socialnetwork.data.entity.Notification;
+import ru.skillbox.socialnetwork.data.entity.NotificationType;
+import ru.skillbox.socialnetwork.data.entity.Person;
+
+import java.util.Collection;
 
 
 @Repository
 @Transactional
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    Page<Notification> findAllByPersonId(Long id, Pageable pageable);
+    @Query(value = "select n from Notification n where n.person = :person and n.type in :approvedNotifications")
+    Page<Notification> findAllByPerson(@Param("person") Person person,
+                                       @Param("approvedNotifications") Collection<NotificationType> approvedNotifications,
+                                       Pageable pageable);
 
     Iterable<Notification> findAllByPersonId(Long id);
 

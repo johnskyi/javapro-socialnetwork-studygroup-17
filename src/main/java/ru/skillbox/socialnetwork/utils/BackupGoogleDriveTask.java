@@ -62,7 +62,7 @@ public class BackupGoogleDriveTask {
                 return;
             }
             for (File file : files) {
-                System.out.println(file.getAbsolutePath());
+                //System.out.println(file.getAbsolutePath());
                 String simpleFileName = LocalDateTime.now().format(fileNameDateFormat) + ".tar";
                 loadFileToGoogleDrive(file.getName(), simpleFileName, dbbackupFolderId);
             }
