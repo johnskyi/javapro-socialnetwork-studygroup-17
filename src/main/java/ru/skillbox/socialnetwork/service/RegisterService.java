@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetwork.data.dto.ConfirmUserRequest;
 import ru.skillbox.socialnetwork.data.dto.RegisterRequest;
 import ru.skillbox.socialnetwork.data.dto.RegisterResponse;
+import ru.skillbox.socialnetwork.data.entity.NotificationSettings;
 import ru.skillbox.socialnetwork.data.entity.Person;
 import ru.skillbox.socialnetwork.data.entity.UserType;
+import ru.skillbox.socialnetwork.data.repository.NotificationSettingsRepository;
 import ru.skillbox.socialnetwork.data.repository.PersonRepo;
 import ru.skillbox.socialnetwork.exception.PasswordsNotEqualsException;
 import ru.skillbox.socialnetwork.exception.PersonAlReadyRegisterException;
@@ -26,12 +28,17 @@ public class RegisterService {
 
     private final JavaMailSender javaMailSender;
 
+    private final NotificationSettingsRepository notificationSettingsRepository;
+
     @Value("${spring.mail.username}")
     private String userName;
 
     public RegisterResponse regPerson(RegisterRequest registerRequest) throws PersonAlReadyRegisterException, PasswordsNotEqualsException {
         Person person = createPerson(registerRequest);
         personRepo.save(person);
+        NotificationSettings notificationSettings = new NotificationSettings();
+        notificationSettings.setPerson(person);
+        notificationSettingsRepository.save(notificationSettings);
         sendConfirmMessage(person.getEmail(), String.valueOf(person.getId()));
         return RegisterResponse.builder()
                 .timestamp(LocalDateTime.now())
