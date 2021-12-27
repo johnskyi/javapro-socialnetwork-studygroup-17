@@ -1,7 +1,6 @@
 stages:
   - verify
   - deploy
-  - test-dump
 
 verify:
   stage: verify
