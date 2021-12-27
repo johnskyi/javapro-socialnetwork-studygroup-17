@@ -10,10 +10,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.skillbox.socialnetwork.controller.AccountController;
+import ru.skillbox.socialnetwork.data.dto.ConfirmUserRequest;
 import ru.skillbox.socialnetwork.data.dto.RegisterRequest;
 import ru.skillbox.socialnetwork.data.dto.RegisterResponse;
 import ru.skillbox.socialnetwork.exception.PasswordsNotEqualsException;
 import ru.skillbox.socialnetwork.exception.PersonAlReadyRegisterException;
+import ru.skillbox.socialnetwork.exception.PersonNotFoundException;
 
 import java.time.LocalDateTime;
 
@@ -38,17 +40,17 @@ public class RegisterServiceTest {
     @BeforeEach
     void setUp() {
         registerRequest = new RegisterRequest();
-    }
-
-    @Test
-    @DisplayName("Register valid person")
-    void regPerson_returnResponseOk() {
         registerResponse = RegisterResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .data(RegisterResponse.Data.builder()
                         .message("ok")
                         .build())
                 .build();
+    }
+
+    @Test
+    @DisplayName("Register valid person")
+    void regPerson_returnResponseOk() {
         when(registerService.regPerson(any(RegisterRequest.class))).thenReturn(registerResponse);
         assertEquals(ResponseEntity.ok(registerResponse),accountController.regPerson(registerRequest));
         verify(registerService,times(1)).regPerson(registerRequest);
@@ -75,6 +77,23 @@ public class RegisterServiceTest {
 
     @Test
     @DisplayName("Confirm valid person")
-    void testConfirmPerson() {
+    void confirmPerson_returnResponseOk() {
+        ConfirmUserRequest request = ConfirmUserRequest.builder()
+                .userId(1L)
+                .build();
+        when(registerService.confirmPerson(request)).thenReturn(registerResponse);
+        assertEquals(ResponseEntity.ok(registerResponse),accountController.confirmPerson(request));
+        verify(registerService,times(1)).confirmPerson(request);
     }
+    @Test
+    @DisplayName("Confirm invalid person")
+    void confirmPerson_throwsPersonNotFound() {
+        ConfirmUserRequest request = ConfirmUserRequest.builder()
+                .userId(2L)
+                .build();
+        when(registerService.confirmPerson(request)).thenThrow(PersonNotFoundException.class);
+        assertThrows(PersonNotFoundException.class, () -> accountController.confirmPerson(request));
+        verify(registerService,times(1)).confirmPerson(request);
+    }
+
 }

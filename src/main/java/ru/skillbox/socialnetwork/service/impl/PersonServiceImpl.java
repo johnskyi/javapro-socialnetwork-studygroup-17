@@ -61,8 +61,6 @@ public class PersonServiceImpl implements PersonService {
         if(isHardDelete) {
             personRepository.delete(person);
         } else {
-            person.setFirstName("Deleted");
-            person.setLastName("User");
             person.setPhoto("https://static.thenounproject.com/png/438810-200.png");
             person.setApproved(false);
             person.setDeleted(true);
